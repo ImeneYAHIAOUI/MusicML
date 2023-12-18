@@ -1,0 +1,62 @@
+<MusicMl> ::= 'MusicPiece' <ID> '{'
+                ('Author' <STRING>)?
+                <GlobalDirective>
+                'Tracks' <Track>+
+             '}';
+
+<GlobalDirective> ::= 'GlobalDirective' '{'
+                      'Tempo' <INT>
+                      'TimeSignature' <TimeSignature>
+                      ('midiClocksPerTick' <INT>)?
+                      ('notesPerMidiClock' <INT>)?
+                   '}';
+
+<TimeSignature> ::= <INT> '/' <INT>;
+
+<Track> ::= <ID> '{'
+              ('startTick' <INT>)?
+              'instrument' <STRING>
+              <Note>+
+           '}';
+
+<Note> ::= 'Note' '{'
+            'duration' <INT>
+             ('startTick' <INT>)?
+             ('wait' <INT> )?
+             ('channel' <INT>)?
+             ('repeat' <INT>)?
+             ('sequential' <Boolean>)?
+             ('velocity' <INT>)?
+             <NormalNote> | <DrumNote>
+         '}';
+
+
+
+
+
+
+<NormalNote> ::= <Pitch>+;
+
+<DrumNote> ::= <DrumType>+;
+
+<Pitch> ::= 'Pitch' '{'
+             'octave' <INT>
+             'value' <NoteValue> <Sharp>?
+          '}';
+
+
+<Boolean> ::= 'true' | 'false';
+
+<Sharp> ::= 'sharp';
+
+<NoteValue> ::= 'do' | 're' | 'mi' | 'fa' | 'sol' | 'la' | 'si' ;
+
+<DrumType> ::= 'bd' | 'sd' | 'ch' | 'oh' | 'cc' | 'rc';
+
+<ID> ::= ( <letter> | <digit> | "_" )+
+
+<INT> ::= <digit>+
+
+<letter> ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | 
+            "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
