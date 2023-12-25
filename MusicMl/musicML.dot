@@ -1,0 +1,90 @@
+
+    digraph textX {
+    fontname = "Bitstream Vera Sans"
+    fontsize = 8
+    node[
+        shape=record,
+        style=filled,
+        fillcolor=aliceblue
+    ]
+    nodesep = 0.3
+    edge[dir=black,arrowtail=empty]
+
+
+2454984353456[ label="{MusicPiece|name: ID\lcomposer: STRING\lticksPerQuarterNote: INT\ldefaultTempo: INT\l}"]
+
+2454984354416[ label="{Tempo|value: INT\lposition: INT\l}"]
+
+2454984351536[ label="{TimeSignature|numerator: INT\ldenominator: INT\lposition: INT\l}"]
+
+2454984359216[ label="{DefaultTimeSignature|numerator: INT\ldenominator: INT\l}"]
+
+2454984360176[ label="{Track|name: ID\linstrument: STRING\lchannel: INT\lvelocity: INT\lpitchBend: INT\l}"]
+
+2454984355376[ label="{ControlMessage|CC: INT\lvalue: INT\l}"]
+
+2454984362096[ label="{*BaseBar|}"]
+
+2454984373616[ label="{Bar|name: ID\lposition: INT\lvelocity: INT\l}"]
+
+2454984363056[ label="{ReusedBar|ref: ID\ltimes: INT\lposition: INT\lvelocity: INT\l}"]
+
+2454984366896[ label="{*MusicalEvent|}"]
+
+2454984370736[ label="{*Note|}"]
+
+2454984368816[ label="{SimpleNote|values: optional\<list[STRING]\>\lvelocity: INT\l}"]
+
+2454984371696[ label="{MidiDuration|value: INT\ldurationValue: DurationValue\l}"]
+
+2454984383216[ label="{Chord|repeat: INT\lvelocity: INT\l}"]
+
+2454984381296[ label="{Rest|}"]
+
+2454984385136[ label="{*MidiRegion|}"]
+
+2454984387056[ label="{Region|name: ID\lvelocity: INT\l}"]
+
+2454984390896[ label="{ReusedRegion|ref: ID\lvelocity: INT\l}"]
+
+
+
+2454984353456 -> 2454984354416[arrowtail=diamond, dir=both, headlabel="tempos 0..*"]
+2454984353456 -> 2454984359216[arrowtail=diamond, dir=both, headlabel="defaultTimeSignature "]
+2454984353456 -> 2454984351536[arrowtail=diamond, dir=both, headlabel="timeSignatures 0..*"]
+2454984353456 -> 2454984360176[arrowtail=diamond, dir=both, headlabel="tracks 1..*"]
+2454984360176 -> 2454984355376[arrowtail=diamond, dir=both, headlabel="controlMessages 0..*"]
+2454984360176 -> 2454984362096[arrowtail=diamond, dir=both, headlabel="bars 1..*"]
+2454984360176 -> 2454984385136[arrowtail=diamond, dir=both, headlabel="midiRegion 0..*"]
+2454984362096 -> 2454984373616 [dir=back]
+2454984362096 -> 2454984363056 [dir=back]
+2454984373616 -> 2454984366896[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
+2454984363056 -> 2454984366896[arrowtail=diamond, dir=both, headlabel="musicalEvents 0..*"]
+2454984366896 -> 2454984370736 [dir=back]
+2454984366896 -> 2454984381296 [dir=back]
+2454984370736 -> 2454984368816 [dir=back]
+2454984370736 -> 2454984383216 [dir=back]
+2454984368816 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="start "]
+2454984368816 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="duration "]
+2454984383216 -> 2454984370736[arrowtail=diamond, dir=both, headlabel="notes 1..*"]
+2454984381296 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="start "]
+2454984381296 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="duration "]
+2454984385136 -> 2454984387056 [dir=back]
+2454984385136 -> 2454984390896 [dir=back]
+2454984387056 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="start "]
+2454984387056 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="size "]
+2454984387056 -> 2454984366896[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
+2454984390896 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="start "]
+2454984390896 -> 2454984371696[arrowtail=diamond, dir=both, headlabel="size "]
+2454984390896 -> 2454984366896[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
+match_rules [ shape=plaintext, label=< <table>
+	<tr>
+		<td><b>Comment</b></td><td>\/\/.*$</td>
+	</tr>
+	<tr>
+		<td><b>DurationValue</b></td><td>whole|1/2 dotted|triplet|1/2|1/4 dotted|1/2 triplet|1/4|1/8 dotted|1/4 triplet|1/8|1/16 dotted|1/8 triplet|1/16|1/32 dotted|1/16 triplet|1/32|1/64 dotted|1/32 triplet|1/64|1/128 dotted|1/64 triplet|1/128</td>
+	</tr>
+</table> >]
+
+
+}
