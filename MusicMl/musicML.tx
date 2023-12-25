@@ -1,0 +1,96 @@
+MusicPiece:
+  'MusicPiece' name=ID
+  ('Author' composer=STRING)?
+  ('TicksPerQuarterNote' ticksPerQuarterNote=INT)?
+  'DefaultTempo' defaultTempo=INT 'bpm'
+  ('Tempos'
+  tempos+=Tempo)?
+  'DefaultTimeSignature' defaultTimeSignature=DefaultTimeSignature
+  ('TimeSignatures'
+  timeSignatures+=TimeSignature)?
+   tracks+=Track
+;
+Tempo:
+  value=INT 'bpm' 'position' position=INT
+;
+TimeSignature:
+  numerator=INT '/' denominator=INT 'position' position=INT
+;
+DefaultTimeSignature:
+  numerator=INT '/' denominator=INT
+  ;
+Track:
+    'Track' name=ID
+    'Instrument' instrument=STRING
+    ('Channel' channel=INT)?
+     controlMessages*=ControlMessage
+     bars+=BaseBar
+     midiRegion*=MidiRegion
+     'EndTrack'
+;
+ControlMessage:
+    'CC' CC=INT value=INT
+;
+BaseBar:
+    Bar | ReusedBar
+;
+Bar:
+    'Bar' name=ID
+    'position' position=INT
+    musicalEvents+=MusicalEvent
+    'EndBar'
+;
+ReusedBar:
+    'ReusedBar' ref=ID (times=INT 'times')?
+    'position' position=INT
+     musicalEvents*=MusicalEvent
+    'EndBar'
+;
+MusicalEvent:
+    Note | Rest
+;
+Note:
+    SimpleNote | Chord
+;
+SimpleNote:
+    'SimpleNote' value=STRING ('start:' start=MidiDuration)? 'duration:' duration=MidiDuration
+;
+MidiDuration:
+    'T' value=INT? |
+    durationValue=DurationValue
+;
+
+DurationValue:
+    'whole' |
+    '1/2 dotted' | 'triplet' | '1/2' | '1/4 dotted' | '1/2 triplet' | '1/4' |
+    '1/8 dotted' | '1/4 triplet' | '1/8' | '1/16 dotted' | '1/8 triplet' | '1/16' |
+    '1/32 dotted' | '1/16 triplet' | '1/32' | '1/64 dotted' | '1/32 triplet' | '1/64' |
+    '1/128 dotted' | '1/64 triplet' | '1/128'
+;
+Chord:
+    'Chord'
+    ('repeat:' repeat=INT)?
+     notes+=Note
+     'EndChord'
+;
+Rest:
+    'Rest' ('start:' start=MidiDuration)? 'duration:' duration=MidiDuration
+;
+MidiRegion:
+    Region | ReusedRegion
+;
+Region:
+    'Region' name=ID
+    'Start' start=MidiDuration 'size' size=MidiDuration
+    musicalEvents+=MusicalEvent
+;
+ReusedRegion:
+    'ReusedRegion' ref=ID
+    'Start' start=MidiDuration 'size' size=MidiDuration
+    musicalEvents+=MusicalEvent
+;
+
+
+Comment:
+    /\/\/.*$/
+;
