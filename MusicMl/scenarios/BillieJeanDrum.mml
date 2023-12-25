@@ -7,23 +7,23 @@ DefaultTimeSignature 4/4
 
 Track Drum
 Instrument 'Acoustic Bass Drum'
+
 Bar id1
 position 0
-SimpleNote 'DO2' duration: 1/8
-SimpleNote 'FA#2' duration: 1/8
+SimpleNote 'DO2' duration 1/8
+SimpleNote 'FA#2' duration 1/8
 Chord
-repeat: 2
-SimpleNote 'FA#2' start: 1/8 duration: 1/8
-SimpleNote 'FA#2' start: 1/4 duration: 1/8
-SimpleNote 'MI2' start: 1/4 duration: 1/8
-SimpleNote 'FA#2' start: 1/4 dotted duration: 1/8
-SimpleNote 'DO2' start: 1/2 duration: 1/8
-SimpleNote 'FA#2' start:  1/2 duration: 1/8
+repeat 2
+SimpleNote 'FA#2' start 1/8 duration 1/8
+SimpleNote 'FA#2' start 1/4 duration 1/8
+SimpleNote 'MI2' start 1/4 duration 1/8
+SimpleNote 'FA#2' start 1/4 dotted duration 1/8
+SimpleNote 'DO2' start 1/2 duration 1/8
+SimpleNote 'FA#2' start  1/2 duration 1/8
 EndChord
 EndBar
 ReusedBar id1
 position 1
 EndBar
-
 EndTrack
 
