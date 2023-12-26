@@ -8,7 +8,7 @@ DefaultTimeSignature 4/4
 Track Drum Instrument 'Acoustic Bass Drum'
 
 
-| Bar id1 -> ('DO2' 'FA#2' , 1/8),  Chord(rep:2 ,( 'FA#2', 1/8, 1/8), ('FA#2' 'MI2', 1/4, 1/8), ('FA#2', 1/4 dotted, 1/8), ('DO2' 'FA#2', 1/2, 1/8) ) | ReuseBar id1 3 times |
+| Bar id1 -> ('DO2' 'FA#2' , 1/8),  Chord(rep:2,( 'FA#2', 1/8, 1/8), ('FA#2' 'MI2', 1/4, 1/8), ('FA#2', 1/4 dotted, 1/8), ('DO2' 'FA#2', 1/2, 1/8) ) | ReuseBar id1 3 times |
 
 
 

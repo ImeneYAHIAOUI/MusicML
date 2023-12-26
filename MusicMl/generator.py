@@ -465,7 +465,10 @@ def calculate_music_events_length(midi_file, music_ml_meta, music_events):
         if textx_isinstance(music_event, music_ml_meta['Note']):
             if textx_isinstance(music_event, music_ml_meta['Chord']):
                 nested_chord_duration = calculate_chord_length(music_event, midi_file, music_ml_meta)
-                total_duration = max(total_duration, nested_chord_duration)
+                repeat = music_event.repeat
+                if repeat == 0:
+                    repeat = 1
+                total_duration = max(total_duration, nested_chord_duration) * repeat
             else:
                 duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
                 start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start,
