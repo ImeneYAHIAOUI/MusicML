@@ -11,75 +11,75 @@
     edge[dir=black,arrowtail=empty]
 
 
-2462217647792[ label="{MusicPiece|name: ID\lcomposer: STRING\lticksPerQuarterNote: INT\ldefaultTempo: INT\l}"]
+2043644820336[ label="{MusicPiece|name: ID\lcomposer: STRING\lticksPerQuarterNote: INT\ldefaultTempo: INT\l}"]
 
-2462217656432[ label="{Tempo|value: INT\lposition: INT\l}"]
+2043644825136[ label="{Tempo|value: INT\lposition: INT\l}"]
 
-2462217652592[ label="{TimeSignature|numerator: INT\ldenominator: INT\lposition: INT\l}"]
+2043644819376[ label="{TimeSignature|numerator: INT\ldenominator: INT\lposition: INT\l}"]
 
-2462217653552[ label="{DefaultTimeSignature|numerator: INT\ldenominator: INT\l}"]
+2043644827056[ label="{DefaultTimeSignature|numerator: INT\ldenominator: INT\l}"]
 
-2462217641072[ label="{Track|name: ID\linstrument: STRING\lchannel: INT\lvelocity: INT\l}"]
+2043644828976[ label="{Track|name: ID\linstrument: STRING\lchannel: INT\lvelocity: INT\l}"]
 
-2462217642992[ label="{ControlMessage|CC: INT\lvalue: INT\l}"]
+2043644817456[ label="{ControlMessage|CC: INT\lvalue: INT\l}"]
 
-2462217658352[ label="{*BaseBar|}"]
+2043644818416[ label="{*BaseBar|}"]
 
-2462217659312[ label="{Bar|name: ID\lvelocity: INT\l}"]
+2043644834736[ label="{Bar|name: ID\lvelocity: INT\l}"]
 
-2462217644912[ label="{ReusedBar|ref: ID\ltimes: INT\lvelocity: INT\l}"]
+2043644840496[ label="{ReusedBar|ref: ID\ltimes: INT\lvelocity: INT\l}"]
 
-2462217665072[ label="{EmptyBar|times: INT\l}"]
+2043644836656[ label="{EmptyBar|times: INT\l}"]
 
-2462217661232[ label="{*MusicalEvent|}"]
+2043644838576[ label="{*MusicalEvent|}"]
 
-2462217666032[ label="{*Note|}"]
+2043644841456[ label="{*Note|}"]
 
-2462217666992[ label="{SimpleNote|values: optional\<list[STRING]\>\lvelocity: INT\l}"]
+2043644828016[ label="{SimpleNote|values: optional\<list[STRING]\>\lvelocity: INT\l}"]
 
-2462217669872[ label="{MidiDuration|value: INT\ldurationValue: DurationValue\l}"]
+2043644845296[ label="{MidiDuration|value: INT\ldurationValue: DurationValue\l}"]
 
-2462217676592[ label="{Chord|repeat: INT\lvelocity: INT\l}"]
+2043644861616[ label="{Chord|repeat: INT\lvelocity: INT\l}"]
 
-2462217682352[ label="{Rest|}"]
+2043644846256[ label="{Rest|}"]
 
-2462217672752[ label="{*MidiRegion|}"]
+2043644847216[ label="{*MidiRegion|}"]
 
-2462217673712[ label="{Region|name: ID\lvelocity: INT\l}"]
+2043644865456[ label="{Region|name: ID\lvelocity: INT\l}"]
 
-2462217677552[ label="{ReusedRegion|ref: ID\lvelocity: INT\l}"]
+2043644857776[ label="{ReusedRegion|ref: ID\lvelocity: INT\l}"]
 
 
 
-2462217647792 -> 2462217656432[arrowtail=diamond, dir=both, headlabel="tempos 0..*"]
-2462217647792 -> 2462217653552[arrowtail=diamond, dir=both, headlabel="defaultTimeSignature "]
-2462217647792 -> 2462217652592[arrowtail=diamond, dir=both, headlabel="timeSignatures 0..*"]
-2462217647792 -> 2462217641072[arrowtail=diamond, dir=both, headlabel="tracks 1..*"]
-2462217641072 -> 2462217642992[arrowtail=diamond, dir=both, headlabel="controlMessages 0..*"]
-2462217641072 -> 2462217658352[arrowtail=diamond, dir=both, headlabel="bars 1..*"]
-2462217641072 -> 2462217672752[arrowtail=diamond, dir=both, headlabel="midiRegion 0..*"]
-2462217658352 -> 2462217659312 [dir=back]
-2462217658352 -> 2462217644912 [dir=back]
-2462217658352 -> 2462217665072 [dir=back]
-2462217659312 -> 2462217661232[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
-2462217644912 -> 2462217661232[arrowtail=diamond, dir=both, headlabel="musicalEvents 0..*"]
-2462217661232 -> 2462217666032 [dir=back]
-2462217661232 -> 2462217682352 [dir=back]
-2462217666032 -> 2462217666992 [dir=back]
-2462217666032 -> 2462217676592 [dir=back]
-2462217666992 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="start "]
-2462217666992 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="duration "]
-2462217676592 -> 2462217666032[arrowtail=diamond, dir=both, headlabel="notes 1..*"]
-2462217682352 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="start "]
-2462217682352 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="duration "]
-2462217672752 -> 2462217673712 [dir=back]
-2462217672752 -> 2462217677552 [dir=back]
-2462217673712 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="start "]
-2462217673712 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="size "]
-2462217673712 -> 2462217661232[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
-2462217677552 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="start "]
-2462217677552 -> 2462217669872[arrowtail=diamond, dir=both, headlabel="size "]
-2462217677552 -> 2462217661232[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
+2043644820336 -> 2043644825136[arrowtail=diamond, dir=both, headlabel="tempos 0..*"]
+2043644820336 -> 2043644827056[arrowtail=diamond, dir=both, headlabel="defaultTimeSignature "]
+2043644820336 -> 2043644819376[arrowtail=diamond, dir=both, headlabel="timeSignatures 0..*"]
+2043644820336 -> 2043644828976[arrowtail=diamond, dir=both, headlabel="tracks 1..*"]
+2043644828976 -> 2043644817456[arrowtail=diamond, dir=both, headlabel="controlMessages 0..*"]
+2043644828976 -> 2043644818416[arrowtail=diamond, dir=both, headlabel="bars 1..*"]
+2043644828976 -> 2043644847216[arrowtail=diamond, dir=both, headlabel="midiRegion 0..*"]
+2043644818416 -> 2043644834736 [dir=back]
+2043644818416 -> 2043644840496 [dir=back]
+2043644818416 -> 2043644836656 [dir=back]
+2043644834736 -> 2043644838576[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
+2043644840496 -> 2043644838576[arrowtail=diamond, dir=both, headlabel="musicalEvents 0..*"]
+2043644838576 -> 2043644841456 [dir=back]
+2043644838576 -> 2043644846256 [dir=back]
+2043644841456 -> 2043644828016 [dir=back]
+2043644841456 -> 2043644861616 [dir=back]
+2043644828016 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="start "]
+2043644828016 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="duration "]
+2043644861616 -> 2043644841456[arrowtail=diamond, dir=both, headlabel="notes 1..*"]
+2043644846256 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="start "]
+2043644846256 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="duration "]
+2043644847216 -> 2043644865456 [dir=back]
+2043644847216 -> 2043644857776 [dir=back]
+2043644865456 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="start "]
+2043644865456 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="size "]
+2043644865456 -> 2043644838576[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
+2043644857776 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="start "]
+2043644857776 -> 2043644845296[arrowtail=diamond, dir=both, headlabel="size "]
+2043644857776 -> 2043644838576[arrowtail=diamond, dir=both, headlabel="musicalEvents 1..*"]
 match_rules [ shape=plaintext, label=< <table>
 	<tr>
 		<td><b>Comment</b></td><td>\/\/.*$</td>

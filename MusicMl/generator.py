@@ -331,6 +331,18 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
 
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
+    if textx_isinstance(bar, music_ml_meta['Bar'] or textx_isinstance(bar, music_ml_meta['ReusedBar'])):
+
+        if textx_isinstance(bar, music_ml_meta['ReusedBar']):
+            original_bar = get_original_bar(music_ml_meta, track, bar)
+            music_events = original_bar.music_events + bar.music_events
+        else:
+            music_events = bar.musicalEvents
+        ticks_in_bar = bar_position_in_ticks(music_ml_model, midi_file, i + 1) - bar_position_in_ticks(music_ml_model, midi_file, i)
+        music_events_length = calculate_music_events_length(midi_file, music_ml_meta, music_events)
+        if music_events_length > ticks_in_bar:
+            raise TextXSemanticError('Bar is overflown, split into multiple bars', **get_location(bar))
+
     if not textx_isinstance(bar, music_ml_meta['EmptyBar']):
         if bar.velocity != 0:
             velocity = bar.velocity
@@ -441,4 +453,30 @@ def calculate_chord_length(chord, midi_file, music_ml_meta):
             note_end_time = start_time + duration
             total_duration = max(total_duration, note_end_time)
 
+    return total_duration - smallest_start_time
+
+
+def calculate_music_events_length(midi_file, music_ml_meta, music_events):
+    ticks_per_quarternote = midi_file.ticks_per_quarternote
+    total_duration = 0
+    smallest_start_time = float('inf')
+
+    for music_event in music_events:
+        if textx_isinstance(music_event, music_ml_meta['Note']):
+            if textx_isinstance(music_event, music_ml_meta['Chord']):
+                nested_chord_duration = calculate_chord_length(music_event, midi_file, music_ml_meta)
+                total_duration = max(total_duration, nested_chord_duration)
+            else:
+                duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
+                start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start,
+                                                                                   ticks_per_quarternote)
+                smallest_start_time = min(smallest_start_time, start_time)
+                note_end_time = start_time + duration
+                total_duration = max(total_duration, note_end_time)
+        elif textx_isinstance(music_event, music_ml_meta['Rest']):
+            duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
+            start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start, ticks_per_quarternote)
+            smallest_start_time = min(smallest_start_time, start_time)
+            note_end_time = start_time + duration
+            total_duration = max(total_duration, note_end_time)
     return total_duration - smallest_start_time
