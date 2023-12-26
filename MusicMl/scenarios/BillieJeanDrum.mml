@@ -13,7 +13,7 @@ ReuseBar id1 31 times -> Chord(rep:9,('LA#4', 1/8)) | Bar id2 -> Chord(rep:9,('L
 
 Track Bass Instrument 'Fretless Bass'
 
-| EmptyBar 4 times | Bar id1 ->  Chord(( 'FA#1', 1/16),( 'DO#2', 1/8, 1/16), ( 'MI2', 1/4, 1/16), ('FA#2', 2-1/4, 1/16), ('MI2', 1/2, 1/16), ('DO#2', F5/8, 1/16 ), ('SI1', F3/4, 1/16)) , ('DO#2', F7/8, 1/16 ) | ReuseBar id1 15 times |
+| EmptyBar 4 times | Bar id1 ->  ( 'FA#1', 1/16),( 'DO#2', 1/8, 1/16), ( 'MI2', 1/4, 1/16), ('FA#2', 2-1/4, 1/16), ('MI2', 1/2, 1/16), ('DO#2', F5/8, 1/16 ), ('SI1', F3/4, 1/16) , ('DO#2', F7/8, 1/16 ) | ReuseBar id1 15 times |
 
 
 
