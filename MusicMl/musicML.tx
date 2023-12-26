@@ -29,14 +29,18 @@ ControlMessage:
     'CC' CC=INT value=INT
 ;
 BaseBar:
-    Bar | ReusedBar
+    Bar | ReusedBar | EmptyBar
 ;
 Bar:
-     'Bar' name=ID ':'  position=INT (',')? ('velocity' velocity=INT ',')? musicalEvents*=MusicalEvent '|'
+     'Bar' name=ID '->'   ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent '|'
 
 ;
 ReusedBar:
-     'ReusedBar' ref=ID (times=INT 'times')? ':' position=INT (',')? ('velocity' velocity=INT ',')? musicalEvents*=MusicalEvent '|'
+     'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('vol:' velocity=INT ',')? musicalEvents*=MusicalEvent '|'
+;
+
+EmptyBar:
+    'EmptyBar' (times=INT 'times')? '|'
 ;
 MusicalEvent:
     Note | Rest

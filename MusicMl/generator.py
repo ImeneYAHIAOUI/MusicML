@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from midiutil import MIDIFile
 from textx import *
 
@@ -275,7 +277,6 @@ def bar_position_in_ticks(music_ml_model, midi_file, bar_number):
             position_in_ticks += ts.position
             numerator = ts.numerator
             denominator = ts.denominator
-
             beats_per_bar = numerator
             ticks_per_bar = ticks_per_quarternote * (4 / denominator) * beats_per_bar
 
@@ -317,18 +318,26 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
     if track.velocity != 0:
         velocity = track.velocity
     midi_file.addProgramChange(track_number, channel, 0, program_number)
+    i = 0
     for bar in track.bars:
-        compile_bar(music_ml_model, music_ml_meta, bar, midi_file, track, track_number, channel, velocity)
+        compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity)
+        if textx_isinstance(bar, music_ml_meta['Bar']):
+            i += 1
+        if textx_isinstance(bar, music_ml_meta['EmptyBar'] or textx_isinstance(bar, music_ml_meta['ReusedBar'])):
+            repeat = bar.times
+            if repeat == 0:
+                repeat = 1
+            i += repeat
 
 
-def compile_bar(music_ml_model, music_ml_meta, bar, midi_file, track, track_number, channel, velocity):
-    if bar.velocity != 0:
-        velocity = bar.velocity
-    position = bar.position
-    for music_event in bar.musicalEvents:
-        compile_music_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number, channel,
-                            velocity)
-
+def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
+    if not textx_isinstance(bar, music_ml_meta['EmptyBar']):
+        if bar.velocity != 0:
+            velocity = bar.velocity
+        for music_event in bar.musicalEvents:
+            compile_music_event(music_ml_model, music_ml_meta, music_event, i, midi_file, track_number, channel,
+                                velocity)
+    position = i
     if textx_isinstance(bar, music_ml_meta['ReusedBar']):
         original_bar = get_original_bar(music_ml_meta, track, bar)
         repeat = bar.times
@@ -382,7 +391,6 @@ def compile_simple_note_event(music_ml_model, note, position, midi_file, track_n
         if note.start is not None:
             position_in_ticks += duration_to_ticks(note.start, midi_file.ticks_per_quarternote)
         midi_file.addNote(track_number, channel, value, position_in_ticks, duration, velocity)
-
 
 
 def compile_rest_event(music_ml_model, rest, position, midi_file, track_number, channel):
