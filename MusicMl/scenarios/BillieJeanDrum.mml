@@ -5,22 +5,9 @@ DefaultTempo 116 bpm
 
 DefaultTimeSignature 4/4
 
-Track Drum
-Instrument 'Acoustic Bass Drum'
+Track Drum Instrument 'Acoustic Bass Drum'
 
-Bar id1
-position 0
-'DO2' 'FA#2' duration 1/8
-Chord
-repeat 2
-'FA#2' start 1/8 duration 1/8
-'FA#2' 'MI2' start 1/4 duration 1/8
-'FA#2' start 1/4 dotted duration 1/8
-'DO2' 'FA#2' start 1/2 duration 1/8
-EndChord
-EndBar
-ReusedBar id1
-position 1
-EndBar
-EndTrack
+| Bar id1 : 0 , ('DO2' 'FA#2' , 1/8),  Chord(rep:2 ,( 'FA#2', 1/8, 1/8), ('FA#2' 'MI2', 1/4, 1/8), ('FA#2', 1/4 dotted, 1/8), ('DO2' 'FA#2', 1/2, 1/8) ) | ReusedBar id1 : 1 |
+
+
 
