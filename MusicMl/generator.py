@@ -5,7 +5,7 @@ from textx import *
 
 
 def note_to_midi(note_string):
-    note = ''.join(char for char in note_string if char.isalpha() or char in ('#', 'b'))
+    note = ''.join(char for char in note_string if char.isalpha() or char in ('#', 'b')).upper()
     octave = int(''.join(char for char in note_string if char.isdigit()))
     note_to_midi_number1 = {'DO': 0, 'DO#': 1, 'REb': 1, 'RE': 2, 'RE#': 3, 'MIb': 3, 'MI': 4, 'FA': 5, 'FA#': 6,
                             'SOLb': 6, 'SOL': 7,
@@ -64,8 +64,8 @@ instrument_to_program_number = {
     'Bass': 33,
     'Electric Bass (finger)': 34,
     'Electric Bass (pick)': 35,
-    'Fretless Bass': 36,
-    'Slap Bass 1': 37,
+    'Fretless Bass': 35,
+    'Slap Bass 1': 36,
     'Slap Bass 2': 38,
     'Synth Bass 1': 39,
     'Synth Bass 2': 40,
@@ -211,26 +211,26 @@ percussion_instrument_to_program_number = {
 
 midi_durations = {
     'whole': 4,
-    '1/2 dotted': 3,
-    'triplet': 2 / 3,
+    '2-1/2': 3,
+    't': 2 / 3,
     '1/2': 2,
-    '1/4 dotted': 1.5,
-    '1/2 triplet': 4 / 3,
+    '2-1/4': 1.5,
+    '3-1/2': 4 / 3,
     '1/4': 1,
-    '1/8 dotted': 0.75,
-    '1/4 triplet': 2 / 3,
+    '2-1/8': 0.75,
+    '3-1/4': 2 / 3,
     '1/8': 0.5,
-    '1/16 dotted': 0.375,
-    '1/8 triplet': 1 / 3,
+    '2-1/16': 0.375,
+    '3-1/8': 1 / 3,
     '1/16': 0.25,
-    '1/32 dotted': 0.1875,
-    '1/16 triplet': 1 / 6,
+    '2-1/32': 0.1875,
+    '3-1/16': 1 / 6,
     '1/32': 0.125,
-    '1/64 dotted': 0.09375,
-    '1/32 triplet': 1 / 12,
+    '2-1/64': 0.09375,
+    '3-1/32': 1 / 12,
     '1/64': 0.0625,
-    '1/128 dotted': 0.046875,
-    '1/64 triplet': 1 / 24,
+    '2-1/128': 0.046875,
+    '3-1/64': 1 / 24,
     '1/128': 0.03125,
 }
 
@@ -238,8 +238,12 @@ midi_durations = {
 def duration_to_ticks(duration, ticks_per_quarternote):
     if duration.value != 0:
         return duration.value
-    else:
-        return int(midi_durations[duration.durationValue] * ticks_per_quarternote)
+    elif duration.fraction is not None:
+        num = duration.fraction.numerator
+        den = duration.fraction.denominator
+        return int((num / den) * 4 * ticks_per_quarternote)
+
+    return int(midi_durations[duration.durationValue] * ticks_per_quarternote)
 
 
 def instrument_program_number(instrument):
@@ -323,7 +327,7 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
         compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity)
         if textx_isinstance(bar, music_ml_meta['Bar']):
             i += 1
-        if textx_isinstance(bar, music_ml_meta['EmptyBar'] or textx_isinstance(bar, music_ml_meta['ReusedBar'])):
+        if textx_isinstance(bar, music_ml_meta['EmptyBar']) or textx_isinstance(bar, music_ml_meta['ReusedBar']):
             repeat = bar.times
             if repeat == 0:
                 repeat = 1
@@ -331,19 +335,16 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
 
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
-    if textx_isinstance(bar, music_ml_meta['Bar'] or textx_isinstance(bar, music_ml_meta['ReusedBar'])):
 
-        if textx_isinstance(bar, music_ml_meta['ReusedBar']):
-            original_bar = get_original_bar(music_ml_meta, track, bar)
-            music_events = original_bar.music_events + bar.music_events
-        else:
-            music_events = bar.musicalEvents
-        ticks_in_bar = bar_position_in_ticks(music_ml_model, midi_file, i + 1) - bar_position_in_ticks(music_ml_model, midi_file, i)
+
+
+    if textx_isinstance(bar, music_ml_meta['Bar']):
+        music_events = bar.musicalEvents
+        ticks_in_bar = bar_position_in_ticks(music_ml_model, midi_file, i + 1) - bar_position_in_ticks(music_ml_model,
+                                                                                                       midi_file, i)
         music_events_length = calculate_music_events_length(midi_file, music_ml_meta, music_events)
         if music_events_length > ticks_in_bar:
             raise TextXSemanticError('Bar is overflown, split into multiple bars', **get_location(bar))
-
-    if not textx_isinstance(bar, music_ml_meta['EmptyBar']):
         if bar.velocity != 0:
             velocity = bar.velocity
         for music_event in bar.musicalEvents:
@@ -352,11 +353,17 @@ def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_n
     position = i
     if textx_isinstance(bar, music_ml_meta['ReusedBar']):
         original_bar = get_original_bar(music_ml_meta, track, bar)
+        music_events = original_bar.musicalEvents + bar.musicalEvents
+        ticks_in_bar = bar_position_in_ticks(music_ml_model, midi_file, i + 1) - bar_position_in_ticks(music_ml_model,
+                                                                                                       midi_file, i)
+        music_events_length = calculate_music_events_length(midi_file, music_ml_meta, music_events)
+        if music_events_length > ticks_in_bar:
+            raise TextXSemanticError('Bar is overflown, split into multiple bars', **get_location(bar))
         repeat = bar.times
         if repeat == 0:
             repeat = 1
         for i in range(repeat):
-            for music_event in original_bar.musicalEvents:
+            for music_event in music_events:
                 compile_music_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number,
                                     channel, velocity)
             position += 1
@@ -399,7 +406,7 @@ def compile_simple_note_event(music_ml_model, note, position, midi_file, track_n
         position_in_ticks = bar_position_in_ticks(music_ml_model, midi_file, position) + ticks_to_add
         value = note_to_midi(note_value)
         if value is None:
-            raise TextXSemanticError('Note not supported: ' + note.Value, **get_location(note.Value))
+            raise TextXSemanticError('Note not supported: ' + note.values, **get_location(note.values))
         if note.start is not None:
             position_in_ticks += duration_to_ticks(note.start, midi_file.ticks_per_quarternote)
         midi_file.addNote(track_number, channel, value, position_in_ticks, duration, velocity)
@@ -468,7 +475,7 @@ def calculate_music_events_length(midi_file, music_ml_meta, music_events):
                 repeat = music_event.repeat
                 if repeat == 0:
                     repeat = 1
-                total_duration = max(total_duration, nested_chord_duration) * repeat
+                total_duration = max(total_duration, nested_chord_duration * (repeat-1))
             else:
                 duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
                 start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start,
