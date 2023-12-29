@@ -419,11 +419,14 @@ def compile_simple_note_event(music_ml_model, note, position, midi_file, track_n
     position_in_ticks = bar_position_in_ticks(music_ml_model, midi_file, position) + ticks_to_add
     if note.start is not None:
         position_in_ticks += duration_to_ticks(note.start, midi_file.ticks_per_quarternote)
-    for note_value in note.values:
-        value = note_to_midi(note_value)
-        if value is None:
-            raise TextXSemanticError('Note not supported: ' + note.values, **get_location(note.values))
-        midi_file.addNote(track_number, channel, value, position_in_ticks, duration, velocity)
+    repeat = 1 if note.repeat == 0 else note.repeat
+    for i in range(repeat):
+        for note_value in note.values:
+            value = note_to_midi(note_value)
+            if value is None:
+                raise TextXSemanticError('Note not supported: ' + note.values, **get_location(note.values))
+            midi_file.addNote(track_number, channel, value, position_in_ticks, duration, velocity)
+        position_in_ticks += duration
 
 
 def compile_rest_event(music_ml_model, rest, position, midi_file, track_number, channel):

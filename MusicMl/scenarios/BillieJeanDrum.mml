@@ -8,8 +8,8 @@ DefaultTimeSignature 4/4
 Track Drum Instrument 'Acoustic Bass Drum'
 
 | EmptyBar 2 times | Bar id1 -> ('DO2' 'FA#2' , 1/8),  Chord(rep:2,( 'FA#2', 1/8, 1/8), ('FA#2' 'MI2', 1/4, 1/8), ('FA#2', 2-1/4, 1/8), ('DO2' 'FA#2', 1/2, 1/8) ) | ReuseBar id1 |
-ReuseBar id1 31 times -> Chord(rep:9,('LA#4', 1/8)) | Bar id2 -> Chord(rep:9,('LA#4', 1/8)), ('DO2' 'FA#2' , 1/8),  Chord(( 'FA#2', 1/8, 1/8), ('FA#2' 'MI2', 1/4, 1/8), ('FA#2', 2-1/4, 1/8), ('DO2' 'FA#2', 1/2, 1/8) ),
- Chord(( 'FA#2', F5/8, 1/8), ('FA#2' 'MI2', F3/4, 1/8),('LA#2' , F7/8, 1/8), ('MI2' , F15/16, 1/8)) | ReuseBar id1  -> Chord(rep:9,('LA#4', 1/8)) |
+ReuseBar id1 31 times -> (rep:9,'LA#4', 1/8) | Bar id2 -> (rep:9, 'LA#4', 1/8), ('DO2' 'FA#2' , 1/8),  Chord(( 'FA#2', 1/8, 1/8), ('FA#2' 'MI2', 1/4, 1/8), ('FA#2', 2-1/4, 1/8), ('DO2' 'FA#2', 1/2, 1/8) ),
+ Chord(( 'FA#2', F5/8, 1/8), ('FA#2' 'MI2', F3/4, 1/8),('LA#2' , F7/8, 1/8), ('MI2' , F15/16, 1/8)) | ReuseBar id1  -> (rep:9,'LA#4', 1/8) |
 
 Track Bass Instrument 'Fretless Bass'
 

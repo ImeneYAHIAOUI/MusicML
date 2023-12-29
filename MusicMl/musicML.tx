@@ -56,7 +56,7 @@ Note:
     SimpleNote | Chord
 ;
 SimpleNote:
-    '(' values*=STRING ',' ( ('start:')? start=MidiDuration ',')?  ('duration:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
+    '('  ('rep:'  repeat=INT ',')? values*=STRING ',' ( ('start:')? start=MidiDuration ',')?  ('duration:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
 ;
 MidiDuration:
     'T' value=INT?
