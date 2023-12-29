@@ -23,7 +23,7 @@ Track:
     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
      controlMessages*=ControlMessage
      '|' bars+=BaseBar
-     midiRegion*=MidiRegion
+     midiRegions*=MidiRegion
 ;
 ControlMessage:
     'CC' CC=INT value=INT
@@ -84,10 +84,10 @@ MidiRegion:
     Region | ReusedRegion
 ;
 Region:
-    'Region' name=ID '{' start=MidiDuration ',' size=MidiDuration (',' velocity=INT ',')? musicalEvents+=MusicalEvent '}'
+    'Region' name=ID '->' '('  start=INT ',' size=INT ')'
 ;
 ReusedRegion:
-    'ReusedRegion' ref=ID '{' start=MidiDuration ',' size=MidiDuration ( ',' velocity=INT ',')? musicalEvents+=MusicalEvent '}'
+    'ReuseRegion' ref=ID '->' '(' start=INT ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ('overlap:' overlappingEvents*=MusicalEvent)?')'
 ;
 
 
