@@ -26,7 +26,7 @@ Track:
      midiRegions*=MidiRegion
 ;
 ControlMessage:
-    'CC' CC=INT value=INT
+    'CC:' '(' CC=INT ',' value=INT ',' position=INT ')'
 ;
 BaseBar:
     Bar | ReusedBar | EmptyBar
