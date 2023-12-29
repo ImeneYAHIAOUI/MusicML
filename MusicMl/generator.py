@@ -338,7 +338,7 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
         compile_controlMessage(controll,track, midi_file)
 
 def compile_controlMessage(controll,track, midi_file):
-    midi_file.addControllerEvent(controll,track, track.channel, track.position, track.CC, track.value)
+    midi_file.addControllerEvent(controll,track, track.channel, controll.position, controll.CC, controll.value)
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
     if textx_isinstance(bar, music_ml_meta['Bar']):
