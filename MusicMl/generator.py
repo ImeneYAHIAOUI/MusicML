@@ -335,9 +335,6 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
 
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
-
-
-
     if textx_isinstance(bar, music_ml_meta['Bar']):
         music_events = bar.musicalEvents
         ticks_in_bar = bar_position_in_ticks(music_ml_model, midi_file, i + 1) - bar_position_in_ticks(music_ml_model,
@@ -347,8 +344,17 @@ def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_n
             raise TextXSemanticError('Bar is overflown, split into multiple bars', **get_location(bar))
         if bar.velocity != 0:
             velocity = bar.velocity
-        for music_event in bar.musicalEvents:
+        for music_event in music_events:
             compile_music_event(music_ml_model, music_ml_meta, music_event, i, midi_file, track_number, channel,
+                                velocity)
+        overlapping_events = bar.overlappingEvents
+        for overlapping_event in overlapping_events:
+            event_start_position = calculate_event_start_time(midi_file, music_ml_meta, overlapping_event)
+            if event_start_position > ticks_in_bar:
+                raise TextXSemanticError('Overlapping event is out of bar bound,'
+                                         ' change the start of the event or move it to the correct bar',
+                                         **get_location(bar))
+            compile_music_event(music_ml_model, music_ml_meta, overlapping_event, i, midi_file, track_number, channel,
                                 velocity)
     position = i
     if textx_isinstance(bar, music_ml_meta['ReusedBar']):
@@ -359,6 +365,7 @@ def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_n
         music_events_length = calculate_music_events_length(midi_file, music_ml_meta, music_events)
         if music_events_length > ticks_in_bar:
             raise TextXSemanticError('Bar is overflown, split into multiple bars', **get_location(bar))
+        overlapping_events = original_bar.overlappingEvents + bar.overlappingEvents
         repeat = bar.times
         if repeat == 0:
             repeat = 1
@@ -366,6 +373,14 @@ def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_n
             for music_event in music_events:
                 compile_music_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number,
                                     channel, velocity)
+            for overlapping_event in overlapping_events:
+                event_start_position = calculate_event_start_time(midi_file, music_ml_meta, overlapping_event)
+                if event_start_position > ticks_in_bar:
+                    raise TextXSemanticError('Overlapping event is out of bar range,'
+                                             ' change the start of the event or move it to the correct bar',
+                                             **get_location(bar))
+                compile_music_event(music_ml_model, music_ml_meta, overlapping_event, position, midi_file,
+                                    track_number, channel, velocity)
             position += 1
 
 
@@ -401,14 +416,13 @@ def compile_simple_note_event(music_ml_model, note, position, midi_file, track_n
     duration = duration_to_ticks(note.duration, midi_file.ticks_per_quarternote)
     if note.velocity != 0:
         velocity = note.velocity
-
+    position_in_ticks = bar_position_in_ticks(music_ml_model, midi_file, position) + ticks_to_add
+    if note.start is not None:
+        position_in_ticks += duration_to_ticks(note.start, midi_file.ticks_per_quarternote)
     for note_value in note.values:
-        position_in_ticks = bar_position_in_ticks(music_ml_model, midi_file, position) + ticks_to_add
         value = note_to_midi(note_value)
         if value is None:
             raise TextXSemanticError('Note not supported: ' + note.values, **get_location(note.values))
-        if note.start is not None:
-            position_in_ticks += duration_to_ticks(note.start, midi_file.ticks_per_quarternote)
         midi_file.addNote(track_number, channel, value, position_in_ticks, duration, velocity)
 
 
@@ -475,7 +489,7 @@ def calculate_music_events_length(midi_file, music_ml_meta, music_events):
                 repeat = music_event.repeat
                 if repeat == 0:
                     repeat = 1
-                total_duration = max(total_duration, nested_chord_duration * (repeat-1))
+                total_duration = max(total_duration, nested_chord_duration * (repeat - 1))
             else:
                 duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
                 start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start,
@@ -490,3 +504,22 @@ def calculate_music_events_length(midi_file, music_ml_meta, music_events):
             note_end_time = start_time + duration
             total_duration = max(total_duration, note_end_time)
     return total_duration - smallest_start_time
+
+
+def calculate_event_start_time(midi_file, music_ml_meta, music_event):
+    ticks_per_quarternote = midi_file.ticks_per_quarternote
+
+    if textx_isinstance(music_event, music_ml_meta['SimpleNote']) or textx_isinstance(music_event,
+                                                                                      music_ml_meta['Rest']):
+        return 0 if music_event.start is None else duration_to_ticks(music_event.start, ticks_per_quarternote)
+
+    elif textx_isinstance(music_event, music_ml_meta['Chord']):
+        smallest_start_time = float('inf')
+        for note in music_event.notes:
+            if textx_isinstance(note, music_ml_meta['SimpleNote']):
+                start_time = 0 if note.start is None else duration_to_ticks(note.start, ticks_per_quarternote)
+                smallest_start_time = min(smallest_start_time, start_time)
+            else:
+                start_time = calculate_event_start_time(midi_file, music_ml_meta, note)
+                smallest_start_time = min(smallest_start_time, start_time)
+        return smallest_start_time

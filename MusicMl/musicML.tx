@@ -32,19 +32,26 @@ BaseBar:
     Bar | ReusedBar | EmptyBar
 ;
 Bar:
-     'Bar' name=ID '->'   ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent '|'
+     'Bar' name=ID '->'   ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent ( 'overlap:' overlappingEvents*=MusicalEvent)? '|'
 
 ;
+
+
 ReusedBar:
-     'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('vol:' velocity=INT ',')? musicalEvents*=MusicalEvent '|'
+     'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('vol:' velocity=INT ',')? musicalEvents*=MusicalEvent  ('overlap:' overlappingEvents*=MusicalEvent)? '|'
 ;
 
 EmptyBar:
     'EmptyBar' (times=INT 'times')? '|'
 ;
+
 MusicalEvent:
     Note | Rest
 ;
+
+
+
+
 Note:
     SimpleNote | Chord
 ;
