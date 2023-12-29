@@ -334,7 +334,11 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
             i += repeat
     for region in track.midiRegions:
         compile_region(music_ml_model, music_ml_meta, region, midi_file, track, track_number, channel, velocity)
+    for controll in track.controllMessages:
+        compile_controlMessage(track, midi_file)
 
+def compile_controlMessage(track, midi_file):
+    midi_file.addControllerEvent(track, track.channel, track.position, track.CC, track.value)
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
     if textx_isinstance(bar, music_ml_meta['Bar']):
