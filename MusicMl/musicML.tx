@@ -11,10 +11,10 @@ MusicPiece:
    tracks+=Track
 ;
 Tempo:
-  value=INT 'bpm' 'position' position=INT
+  value=INT 'bpm' '('bar=INT (',' start=MidiDuration)? ')'
 ;
 TimeSignature:
-  numerator=INT '/' denominator=INT 'position' position=INT
+  numerator=INT '/' denominator=INT  '('bar=INT (',' start=MidiDuration)? ')'
 ;
 DefaultTimeSignature:
   numerator=INT '/' denominator=INT
@@ -26,7 +26,7 @@ Track:
      midiRegions*=MidiRegion
 ;
 ControlMessage:
-    'CC:' '(' CC=INT ',' value=INT ',' position=INT ')'
+    'CC:' '(' CC=INT ',' value=INT ','  bar=INT (',' start=MidiDuration)? ')'
 ;
 BaseBar:
     Bar | ReusedBar | EmptyBar
@@ -84,10 +84,10 @@ MidiRegion:
     Region | ReusedRegion
 ;
 Region:
-    'Region' name=ID '->' '('  start=INT ',' size=INT ')'
+    'Region' name=ID '->' '('  bar=INT (',start:' start=MidiDuration)? ',' 'size:'size=MidiDuration ')'
 ;
 ReusedRegion:
-    'ReuseRegion' ref=ID '->' '(' start=INT ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ('overlap:' overlappingEvents*=MusicalEvent)?')'
+    'ReuseRegion' ref=ID '->' '('bar=INT (',' start=MidiDuration)? ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ')'
 ;
 
 

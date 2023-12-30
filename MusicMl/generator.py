@@ -298,11 +298,17 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
     for i, track in enumerate(music_ml_model.tracks):
         midi_file.addTempo(i, 0, music_ml_model.defaultTempo)
         for tempo in music_ml_model.tempos:
-            midi_file.addTempo(i, tempo.position, tempo.tempo)
+            position = bar_position_in_ticks(music_ml_model, midi_file, tempo.bar)
+            if tempo.start is not None:
+                position += duration_to_ticks(tempo.start, midi_file.ticks_per_quarternote)
+            midi_file.addTempo(i, position, tempo.tempo)
         midi_file.addTimeSignature(i, 0, music_ml_model.defaultTimeSignature.numerator,
                                    music_ml_model.defaultTimeSignature.denominator, 24, 8)
         for time_signature in music_ml_model.timeSignatures:
-            midi_file.addTimeSignature(i, time_signature.position, time_signature.numerator,
+            position = bar_position_in_ticks(music_ml_model, midi_file, time_signature.bar)
+            if time_signature.start is not None:
+                position += duration_to_ticks(time_signature.start, midi_file.ticks_per_quarternote)
+            midi_file.addTimeSignature(i, position, time_signature.numerator,
                                        time_signature.denominator, 24, 8)
         compile_track(music_ml_model, music_ml_meta, track, midi_file, i)
     bin_file = open(ml_file_name + '.mid', 'wb')
@@ -334,11 +340,16 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
             i += repeat
     for region in track.midiRegions:
         compile_region(music_ml_model, music_ml_meta, region, midi_file, track, track_number, channel, velocity)
-    for controll in track.controllMessages:
-        compile_controlMessage(controll,track_number,channel, midi_file)
+    for control_message in track.controlMessages:
+        compile_control_message(music_ml_model, control_message, track_number, channel, midi_file)
 
-def compile_controlMessage(controll,track_number,channel, midi_file):
-    midi_file.addControllerEvent(track_number,channel, controll.position, controll.CC, controll.value)
+
+def compile_control_message(music_ml_model, control_message, track_number, channel, midi_file):
+    position = bar_position_in_ticks(music_ml_model, midi_file, control_message.bar)
+    if control_message.start is not None:
+        position += duration_to_ticks(control_message.start, midi_file.ticks_per_quarternote)
+    midi_file.addControllerEvent(track_number, channel, position, control_message.CC, control_message.value)
+
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
     if textx_isinstance(bar, music_ml_meta['Bar']):
@@ -413,22 +424,25 @@ def get_original_region(music_ml_meta, track, region):
 
 
 def compile_region(music_ml_model, music_ml_meta, region, midi_file, track, track_number, channel, velocity):
-
     if textx_isinstance(region, music_ml_meta['ReusedRegion']):
         if region.velocity != 0:
             velocity = region.velocity
         original_region = get_original_region(music_ml_meta, track, region)
-        original_regions_start_position = original_region.start
+        original_regions_start_position = bar_position_in_ticks(music_ml_model, midi_file, original_region.bar)
+        if original_region.start is not None:
+            original_regions_start_position += duration_to_ticks(original_region.start, midi_file.ticks_per_quarternote)
 
-        original_regions_end_position = original_regions_start_position + original_region.size
+        original_regions_end_position = original_regions_start_position + duration_to_ticks(original_region.size, midi_file.ticks_per_quarternote)
 
-        reused_start_position = region.start
+        reused_start_position = bar_position_in_ticks(music_ml_model, midi_file, region.bar)
+        if region.start is not None:
+            reused_start_position += duration_to_ticks(region.start, midi_file.ticks_per_quarternote)
         track_index = track_number
         if midi_file.header.numeric_format == 1:
             track_index += 1
         midi_events = [event for event in midi_file.tracks[track_index].eventList if event.evtname == 'NoteOn' and
                        (original_regions_start_position <= event.tick < original_regions_end_position
-                        or original_regions_start_position <= event.tick +
+                        or original_regions_start_position < event.tick +
                         event.duration < original_regions_end_position
                         or (
                                 event.tick <= original_regions_start_position and event.tick
