@@ -26,13 +26,13 @@ Track:
      midiRegions*=MidiRegion
 ;
 ControlMessage:
-    'CC:' '(' CC=INT ',' value=INT ','  bar=INT (',' start=MidiDuration)? ')'
+    'CC:' '(' (CC=INT | message=STRING) ',' value=INT ','  bar=INT (',' start=MidiDuration)? ')'
 ;
 BaseBar:
     Bar | ReusedBar | EmptyBar
 ;
 Bar:
-     'Bar' name=ID '->'   ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent ( 'overlap:' overlappingEvents*=MusicalEvent)? '|'
+     'Bar' name=ID '->'  ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent ( 'overlap:' overlappingEvents*=MusicalEvent)? '|'
 
 ;
 

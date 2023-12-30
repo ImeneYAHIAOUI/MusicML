@@ -7,14 +7,14 @@ from textx import *
 def note_to_midi(note_string):
     note = ''.join(char for char in note_string if char.isalpha() or char in ('#', 'b')).upper()
     octave = int(''.join(char for char in note_string if char.isdigit()))
-    note_to_midi_number1 = {'DO': 0, 'DO#': 1, 'REb': 1, 'RE': 2, 'RE#': 3, 'MIb': 3, 'MI': 4, 'FA': 5, 'FA#': 6,
-                            'SOLb': 6, 'SOL': 7,
-                            'SOL#': 8, 'LAb': 8, 'LA': 9,
-                            'LA#': 10, 'SIb': 10, 'SI': 11}
-    note_to_midi_number2 = {'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5, 'F#': 6, 'Gb': 6,
+    note_to_midi_number1 = {'DO': 0, 'DO#': 1, 'REB': 1, 'RE': 2, 'RE#': 3, 'MIB': 3, 'MI': 4, 'FA': 5, 'FA#': 6,
+                            'SOLB': 6, 'SOL': 7,
+                            'SOL#': 8, 'LAB': 8, 'LA': 9,
+                            'LA#': 10, 'SIB': 10, 'SI': 11}
+    note_to_midi_number2 = {'C': 0, 'C#': 1, 'DB': 1, 'D': 2, 'D#': 3, 'EB': 3, 'E': 4, 'F': 5, 'F#': 6, 'GB': 6,
                             'G': 7,
-                            'G#': 8, 'Ab': 8, 'A': 9,
-                            'A#': 10, 'Bb': 10, 'B': 11}
+                            'G#': 8, 'AB': 8, 'A': 9,
+                            'A#': 10, 'BB': 10, 'B': 11}
     if note not in note_to_midi_number1 and note not in note_to_midi_number2:
         return None
     if note in note_to_midi_number1:
@@ -234,6 +234,106 @@ midi_durations = {
     '1/128': 0.03125,
 }
 
+control_messages = {
+    'bank select': 0,
+    'modulation wheel': 1,
+    'pitch bend': 1,
+    'breath controller': 2,
+    'foot pedal': 4,
+    'portamento time': 5,
+    'data entry': 6,
+    'volume': 7,
+    'balance': 8,
+    'pan': 10,
+    'expression': 11,
+    'effect control 1': 12,
+    'effect control 2': 13,
+    'general purpose slider 1': 16,
+    'general purpose slider 2': 17,
+    'general purpose slider 3': 18,
+    'general purpose slider 4': 19,
+    'lsb controller 0': 32,
+    'lsb controller 1': 33,
+    'lsb controller 2': 34,
+    'lsb controller 3': 35,
+    'lsb controller 4': 36,
+    'lsb controller 5': 37,
+    'lsb controller 6': 38,
+    'lsb controller 7': 39,
+    'lsb controller 8': 40,
+    'lsb controller 9': 41,
+    'lsb controller 10': 42,
+    'lsb controller 11': 43,
+    'lsb controller 12': 44,
+    'lsb controller 13': 45,
+    'lsb controller 14': 46,
+    'lsb controller 15': 47,
+    'lsb controller 16': 48,
+    'lsb controller 17': 49,
+    'lsb controller 18': 50,
+    'lsb controller 19': 51,
+    'lsb controller 20': 52,
+    'lsb controller 21': 53,
+    'lsb controller 22': 54,
+    'lsb controller 23': 55,
+    'lsb controller 24': 56,
+    'lsb controller 25': 57,
+    'lsb controller 26': 58,
+    'lsb controller 27': 59,
+    'lsb controller 28': 60,
+    'lsb controller 29': 61,
+    'lsb controller 30': 62,
+    'lsb controller 31': 63,
+    'damper pedal (sustain)': 64,
+    'portamento': 65,
+    'sostenuto pedal': 66,
+    'soft pedal': 67,
+    'legato pedal': 68,
+    'hold 2': 69,
+    'sound controller 1': 70,
+    'sound controller 2': 71,
+    'sound controller 3': 72,
+    'sound controller 4': 73,
+    'sound controller 5': 74,
+    'sound controller 6': 75,
+    'sound controller 7': 76,
+    'sound controller 8': 77,
+    'sound controller 9': 78,
+    'sound controller 10': 79,
+    'general purpose 1': 80,
+    'general purpose 2': 81,
+    'general purpose 3': 82,
+    'general purpose 4': 83,
+    'portamento control': 84,
+    'high resolution velocity': 88,
+    'effects 1 depth': 91,
+    'effects 2 depth': 92,
+    'effects 3 depth': 93,
+    'effects 4 depth': 94,
+    'effects 5 depth': 95,
+    'data increment': 96,
+    'data decrement': 97,
+    'non-registered parameter number (lsb)': 98,
+    'non-registered parameter number (msb)': 99,
+    'registered parameter number (lsb)': 100,
+    'registered parameter number (msb)': 101,
+    'all sound off': 120,
+    'reset all controllers': 121,
+    'local control': 122,
+    'all notes off': 123,
+    'omni mode off': 124,
+    'omni mode on': 125,
+    'mono operation': 126,
+    'poly operation': 127,
+}
+
+
+def get_control_message_number(name):
+    if name.lower() in control_messages:
+        return control_messages[name.lower()]
+    else:
+        return None
+
 
 def duration_to_ticks(duration, ticks_per_quarternote):
     if duration.value != 0:
@@ -346,9 +446,19 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
 
 def compile_control_message(music_ml_model, control_message, track_number, channel, midi_file):
     position = bar_position_in_ticks(music_ml_model, midi_file, control_message.bar)
+    cc = control_message.CC
+    if control_message.message != '':
+        cc = get_control_message_number(control_message.message)
+        if cc is None:
+            raise TextXSemanticError('Control message not supported: ' + control_message.message, **get_location(
+                control_message))
+    else:
+        if cc == 3 or cc == 9 or cc == 14 or cc == 15 or 20 <= cc <= 31 or 85 <= cc <= 87 or 89 <= cc <= 90 or 102 <= cc <= 119 or cc < 0 or cc > 127:
+            raise TextXSemanticError('cc value not supported: ' + control_message.CC, **get_location(
+                control_message))
     if control_message.start is not None:
         position += duration_to_ticks(control_message.start, midi_file.ticks_per_quarternote)
-    midi_file.addControllerEvent(track_number, channel, position, control_message.CC, control_message.value)
+    midi_file.addControllerEvent(track_number, channel, position, cc, control_message.value)
 
 
 def compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity):
@@ -432,7 +542,8 @@ def compile_region(music_ml_model, music_ml_meta, region, midi_file, track, trac
         if original_region.start is not None:
             original_regions_start_position += duration_to_ticks(original_region.start, midi_file.ticks_per_quarternote)
 
-        original_regions_end_position = original_regions_start_position + duration_to_ticks(original_region.size, midi_file.ticks_per_quarternote)
+        original_regions_end_position = original_regions_start_position + duration_to_ticks(original_region.size,
+                                                                                            midi_file.ticks_per_quarternote)
 
         reused_start_position = bar_position_in_ticks(music_ml_model, midi_file, region.bar)
         if region.start is not None:
