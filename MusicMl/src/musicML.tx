@@ -14,7 +14,7 @@ Tempo:
   value=INT 'bpm' '('bar=INT (',' start=MidiDuration)? ')'
 ;
 TimeSignature:
-  numerator=INT '/' denominator=INT  '('bar=INT (',' start=MidiDuration)? ')'
+  numerator=INT '/' denominator=INT  bar=INT
 ;
 DefaultTimeSignature:
   numerator=INT '/' denominator=INT

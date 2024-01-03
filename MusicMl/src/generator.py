@@ -25,8 +25,6 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
                                    music_ml_model.defaultTimeSignature.denominator, 24, 8)
         for time_signature in music_ml_model.timeSignatures:
             position = bar_position_in_ticks(music_ml_model, midi_file, time_signature.bar)
-            if time_signature.start is not None:
-                position += duration_to_ticks(time_signature.start, midi_file.ticks_per_quarternote)
             midi_file.addTimeSignature(i, position, time_signature.numerator,
                                        time_signature.denominator, 24, 8)
         compile_track(music_ml_model, music_ml_meta, track, midi_file, i)
