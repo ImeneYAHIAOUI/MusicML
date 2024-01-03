@@ -20,7 +20,7 @@ def main(debug=False):
     ml_file = argparse.parse_args().generate
 
     # Get metamodel from language description
-    music_ml_meta = metamodel_from_file( this_folder + '/musicML.tx', debug=debug)
+    music_ml_meta = metamodel_from_file(this_folder + '/musicML.tx', debug=debug)
     # Optionally export meta-model to dot
     metamodel_export(music_ml_meta, parent_folder + '/diagram/musicML.dot')
 
@@ -28,10 +28,9 @@ def main(debug=False):
     music_ml_model = music_ml_meta.model_from_file(parent_folder + '/' + ml_file)
 
     ml_file_name = ml_file.split('.')[0]
-    try:
-        ml_file_name = ml_file_name.split('/')[1]
-    except:
-        ml_file_name = ml_file_name.split('\\')[1]
+    ml_file_name = ml_file_name.replace('\\', '/')
+    ml_file_name = ml_file_name.split('/')[1]
+
 
     # Generate Midi file
     generate_midi_file(music_ml_meta, music_ml_model, '../generated/' + ml_file_name)
