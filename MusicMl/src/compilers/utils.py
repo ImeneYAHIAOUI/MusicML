@@ -78,14 +78,14 @@ def bar_position_in_ticks(music_ml_model, midi_file, bar_number):
         return int(default_position_in_ticks)
     position_in_ticks = default_position_in_ticks
     for ts in music_ml_model.timeSignatures:
-        if position_in_ticks + ticks_per_bar <= ts.bar  * ticks_per_bar:
-            position_in_ticks = bar_number * ticks_per_bar
+        if bar_number < ts.bar:
             break
         else:
             # Bar is beyond this time signature, move to the next
-            position_in_ticks = ts.bar * ticks_per_bar
+            position_in_ticks = ticks_per_bar * ts.bar
             beats_per_bar = ts.numerator
             ticks_per_bar = ticks_per_quarternote * (4 / ts.denominator) * beats_per_bar
+            position_in_ticks += ticks_per_bar * (bar_number - ts.bar)
 
     return int(position_in_ticks) 
 
