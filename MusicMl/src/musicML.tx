@@ -49,9 +49,6 @@ MusicalEvent:
     Note | Rest
 ;
 
-
-
-
 Note:
     SimpleNote | Chord
 ;
@@ -89,7 +86,6 @@ Region:
 ReusedRegion:
     'ReuseRegion' ref=ID '->' '('bar=INT (',' start=MidiDuration)? ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ')'
 ;
-
 
 Comment:
     /\/\/.*$/
