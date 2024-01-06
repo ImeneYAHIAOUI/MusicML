@@ -1,0 +1,14 @@
+.idea
+.idea/
+MusicMl/.idea
+MusicMl/.idea/
+.vscode
+MusicMLLangium/node_modules
+musicml-langium/node_modules
+
+*/node_modules
+./node_modules
+
+*/__pycache__
+*/__pycache__/*
+./__pycache__
