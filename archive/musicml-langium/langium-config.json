@@ -1,0 +1,12 @@
+{
+    "projectName": "MusicMl",
+    "languages": [{
+        "id": "music-ml",
+        "grammar": "src/language-server/music-ml.langium",
+        "fileExtensions": [".mml"],
+        "textMate": {
+            "out": "syntaxes/music-ml.tmLanguage.json"
+        }
+    }],
+    "out": "src/language-server/generated"
+}
