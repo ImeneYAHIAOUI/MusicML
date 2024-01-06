@@ -39,16 +39,23 @@ def get_control_message_number(name):
     else:
         return None
 
-
 def duration_to_ticks(duration, ticks_per_quarternote):
-    if duration.value != 0:
-        return duration.value
-    elif duration.fraction is not None:
-        num = duration.fraction.numerator
-        den = duration.fraction.denominator
-        return int((num / den) * 4 * ticks_per_quarternote)
-
-    return int(midi_durations[duration.durationValue] * ticks_per_quarternote)
+    try:
+        if duration.value != 0:
+            return duration.value
+        elif duration.fraction is not None:
+            num = duration.fraction.numerator
+            den = duration.fraction.denominator
+            if (den == 0):
+                raise TextXSemanticError('Invalid duration value, the denominator must be greater than 0', 
+                                         **get_location(duration))
+            return int((num / den) * 4 * ticks_per_quarternote)
+        else:
+            return int(midi_durations[duration.durationValue] * ticks_per_quarternote)
+    except KeyError:
+        raise TextXSemanticError('Invalid duration value, it must respect one of the following patterns :' \
+                                 ' T(INT), F(INT/INT) or (MidiDuration)', 
+                                 **get_location(duration))
 
 
 def instrument_program_number(instrument):
