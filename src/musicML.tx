@@ -10,32 +10,37 @@ MusicPiece:
   timeSignatures*=TimeSignature)?
    tracks+=Track
 ;
+
 Tempo:
   value=INT 'bpm' '('bar=INT (',' start=MidiDuration)? ')'
 ;
+
 TimeSignature:
   numerator=INT '/' denominator=INT  bar=INT
 ;
+
 DefaultTimeSignature:
   numerator=INT '/' denominator=INT
-  ;
+;
+
 Track:
     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
      controlMessages*=ControlMessage
      '|' bars+=BaseBar
      midiRegions*=MidiRegion
 ;
+
 ControlMessage:
     'CC:' '(' (CC=INT | message=STRING) ',' value=INT ','  bar=INT (',' start=MidiDuration)? ')'
 ;
+
 BaseBar:
     Bar | ReusedBar | EmptyBar
 ;
+
 Bar:
      'Bar' name=ID '->'  ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent ( 'overlap:' overlappingEvents*=MusicalEvent)? '|'
-
 ;
-
 
 ReusedBar:
      'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('vol:' velocity=INT ',')? musicalEvents*=MusicalEvent  ('overlap:' overlappingEvents*=MusicalEvent)? '|'
@@ -52,11 +57,13 @@ MusicalEvent:
 Note:
     SimpleNote | Chord
 ;
+
 SimpleNote:
     '('  ('rep:'  repeat=INT ',')? values*=STRING ',' ( ('start:')? start=MidiDuration ',')?  ('duration:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
 ;
+
 MidiDuration:
-    'T' value=INT?
+    'T' value=INT
     | fraction=Fraction
     | durationValue=DurationValue
 ;
@@ -64,6 +71,7 @@ MidiDuration:
 Fraction:
    'F' numerator=INT '/' denominator=INT
 ;
+
 DurationValue:
     'whole' |
     '2-1/2' | 't' | '1/2' | '2-1/4' | '3-1/2' | '1/4' |
@@ -71,18 +79,23 @@ DurationValue:
     '2-1/32' | '3-1/16' | '1/32' | '2-1/64' | '3-1/32' | '1/64' |
     '2-1/128' | '3-1/64' | '1/128' | '3-1/4'
 ;
+
 Chord:
     'Chord' '(' ('rep:'  repeat=INT ',')? ( 'vol:' velocity=INT ',')?  notes+=Note ')' (',')?
 ;
+
 Rest:
     '(' 'Rest' ('pos:' start=MidiDuration',')?  duration=MidiDuration ')' (',')?
 ;
+
 MidiRegion:
     Region | ReusedRegion
 ;
+
 Region:
     'Region' name=ID '->' '('  bar=INT (',start:' start=MidiDuration)? ',' 'size:'size=MidiDuration ')'
 ;
+
 ReusedRegion:
     'ReuseRegion' ref=ID '->' '('bar=INT (',' start=MidiDuration)? ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ')'
 ;

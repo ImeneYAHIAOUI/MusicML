@@ -1,62 +1,73 @@
-<MusicMl> ::= 'MusicPiece' <ID> '{'
-                ('Author' <STRING>)?
-                <GlobalDirective>
-                'Tracks' <Track>+
-             '}';
+<MusicPiece> ::= "MusicPiece" <ID> 
+                ("Author" <STRING>)?
+                ("TicksPerQuarterNote" <INT>)?
+                "DefaultTempo" <INT>
+                "Tempos" <Tempo>*
+                "DefaultTimeSignature" <TimeSignature>
+                "TimeSignatures" <BarTimeSignature>*
+                "Tracks" <Track>+
 
-<GlobalDirective> ::= 'GlobalDirective' '{'
-                      'Tempo' <INT>
-                      'TimeSignature' <TimeSignature>
-                      ('midiClocksPerTick' <INT>)?
-                      ('notesPerMidiClock' <INT>)?
-                   '}';
+<Tempo> ::= <INT> "bpm" "(" <ID> ("," <MidiDuration>)? ")"
 
-<TimeSignature> ::= <INT> '/' <INT>;
+<DefaultTimeSignature> ::= <FRACTION>
 
-<Track> ::= <ID> '{'
-              ('startTick' <INT>)?
-              'instrument' <STRING>
-              <Note>+
-           '}';
+<BarTimeSignature> ::= <FRACTION> <INT>
 
-<Note> ::= 'Note' '{'
-            'duration' <INT>
-             ('startTick' <INT>)?
-             ('wait' <INT> )?
-             ('channel' <INT>)?
-             ('repeat' <INT>)?
-             ('sequential' <Boolean>)?
-             ('velocity' <INT>)?
-             <NormalNote> | <DrumNote>
-         '}';
+<Track> ::= 'Track' name=<ID> 'Instrument' <STRING> 
+   ('Channel' <INT>)? 
+   ('velocity' <INT>)? 
+   <ControlMessage>* 
+   '|' <BaseBar>+
+   <MidiRegion>
 
+<ControlMessage>: 'CC:' '(' <STRING> ',' <INT> ',' <INT> (',' <MidiDuration>)? ')'
 
+<BaseBar>::= <Bar> | <ReusedBar> | <EmptyBar>
 
+<Bar>::= 'Bar' <ID> '->'  ('vol:' <INT> ',')? <MusicalEvent>+ ('overlap:' <MusicalEvent>+)? '|'
 
+<ReusedBar>::= 'ReuseBar' <ID> (<INT> 'times')? ('->' ('vol:' <INT> ',')? <MusicalEvent>*  ('overlap:' <MusicalEvent>*)? )? '|'
 
+<EmptyBar>::= 'EmptyBar' (<INT> 'times')? '|'
 
-<NormalNote> ::= <Pitch>+;
+<MusicalEvent>::= <Note> | <Rest>
 
-<DrumNote> ::= <DrumType>+;
+<Note>::= <SimpleNote> | <Chord>
 
-<Pitch> ::= 'Pitch' '{'
-             'octave' <INT>
-             'value' <NoteValue> <Sharp>?
-          '}';
+<SimpleNote>::= '(' ('rep:' <INT> ',')? <STRING>+ ',' 
+                     ( ('start:')? <MidiDuration> ',')?  
+                     ('duration:')? <MidiDuration> (',' <INT>)? 
+                ')' 
+                (',')?
 
+<MidiDuration> ::= "T" <INT> | <FRACTION> | <DurationValue>
 
-<Boolean> ::= 'true' | 'false';
+<DurationValue> ::= 'whole' | '2-1/2' | 't' | '1/2' | '2-1/4' | '3-1/2' | '1/4' | '2-1/8'  | '1/8' | '2-1/16' | '3-1/8' | '1/16' | '2-1/32' | '3-1/16' | '1/32' | '2-1/64' | '3-1/32' | '1/64' | '2-1/128' | '3-1/64' | '1/128' | '3-1/4'
 
-<Sharp> ::= 'sharp';
+<Chord>::= 'Chord' '(' ('rep:'  <INT> ',')? ( 'vol:' <INT> ',')?  <Note>+ ')' (',')?
 
-<NoteValue> ::= 'do' | 're' | 'mi' | 'fa' | 'sol' | 'la' | 'si' ;
+<Rest>:='(' 'Rest' ('pos:' <MidiDuration>',')?  <MidiDuration> ')' (',')?
 
-<DrumType> ::= 'bd' | 'sd' | 'ch' | 'oh' | 'cc' | 'rc';
+<MidiRegion>::= <Region> | <ReusedRegion>
 
-<ID> ::= ( <letter> | <digit> | "_" )+
+<Region>::= 'Region' <ID> '->' '('  <INT> (',start:' <MidiDuration>)? ',' 'size:' <MidiDuration> ')'
+
+<ReusedRegion>::= 'ReuseRegion' <ID> '->' '(' <INT> (',' <MidiDuration>)? ( ',' <INT> ',')? <MusicalEvent>* ')'
+
+<Comment>::= '//' <STRING>+
+
+<ID> ::= ( <letter> | <digit> | <character> )+
 
 <INT> ::= <digit>+
 
-<letter> ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | 
-            "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+<FRACTION> ::= <INT> '/' <INT>
+
+<STRING> ::= (<letter> | <space> | <digit> | <character> )+
+
+<letter> ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+
 <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+<character> ::= "_" | "-" | "#" | "~"
+
+<space> ::= " "
