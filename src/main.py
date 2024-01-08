@@ -22,7 +22,7 @@ def main(debug=False):
     # Get metamodel from language description
     music_ml_meta = metamodel_from_file(this_folder + '/musicML.tx', debug=debug)
     # Optionally export meta-model to dot
-    metamodel_export(music_ml_meta, parent_folder + '/diagram/musicML.dot')
+    # metamodel_export(music_ml_meta, parent_folder + '/diagram/musicML.dot')
 
     # Instantiate model
     music_ml_model = music_ml_meta.model_from_file(parent_folder + '/' + ml_file)
@@ -36,7 +36,7 @@ def main(debug=False):
     generate_midi_file(music_ml_meta, music_ml_model, '../generated/' + ml_file_name)
 
     # Optionally export model to dot
-    model_export(music_ml_model, parent_folder + '/diagram/' + ml_file_name + '.dot')
+    # model_export(music_ml_model, parent_folder + '/diagram/' + ml_file_name + '.dot')
 
 
 if __name__ == '__main__':
