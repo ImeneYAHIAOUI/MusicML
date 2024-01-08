@@ -1,4 +1,5 @@
 MusicPiece:
+  ('Player' player=STRING)?
   'MusicPiece' name=ID
   ('Author' composer=STRING)?
   ('TicksPerQuarterNote' ticksPerQuarterNote=INT)?
@@ -8,7 +9,7 @@ MusicPiece:
   'DefaultTimeSignature' defaultTimeSignature=DefaultTimeSignature
   ('TimeSignatures'
   timeSignatures*=TimeSignature)?
-   tracks+=Track
+  tracks+=Track
 ;
 
 Tempo:

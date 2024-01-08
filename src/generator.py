@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import sys
 
+from app.midi_player import play
 sys.path.append('compilers')
+sys.path.append('app')
 from midiutil import MIDIFile
 from compilers.track_compiler import *
 
@@ -28,6 +30,10 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
             midi_file.addTimeSignature(i, position, time_signature.numerator,
                                        time_signature.denominator, 24, 8)
         compile_track(music_ml_model, music_ml_meta, track, midi_file, i)
+
     bin_file = open(ml_file_name + '.mid', 'wb')
     midi_file.writeFile(bin_file)
     bin_file.close()
+
+    if music_ml_model.player == 'on':
+        play(ml_file_name)

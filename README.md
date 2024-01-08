@@ -20,6 +20,11 @@ To install the necessary libraries, run the setup.sh script located in the root 
 ./setup.sh
 ```
 
+## Resources :
+
+- For the MIDI visualizer and player : (webaudiofont)[https://surikov.github.io/webaudiofont/]
+- For the Internal DSL : (textX)[https://github.com/textX]
+
 
 
 
