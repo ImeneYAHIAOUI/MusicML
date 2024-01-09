@@ -19,12 +19,9 @@ The repository contains the following:
 To install the necessary libraries, run the setup.sh script : ```./setup.sh ```
 
 ### server 
-- cd server 
-- Run ```python server.py ```
+- Run ```./run-server.sh```
 ### client  
-- cd client
-- Run ``` yarn install ``` to install project dependencies
-- Start the project with the command : ``` yarn start ```.
+- Run ```./run-client.sh```
 - Open in your browser: http://127.0.0.1:4000/
 
 
