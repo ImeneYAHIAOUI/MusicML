@@ -16,7 +16,6 @@ To install the necessary libraries, run the setup.sh script : ```./setup.sh ```
 - cd server 
 - Run ```python server.py ```
 ### client  
-- Install the command yarn using : 
 - cd client
 - Run ``` yarn install ``` to install project dependencies
 - Start the project with the command : ``` yarn start ```.
