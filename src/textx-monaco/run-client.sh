@@ -18,11 +18,9 @@ echo -e "${BLUE}Changing directory to '$PROJECT_DIR'...${NC}"
 
 # Installer les dépendances du projet avec Yarn
 echo -e "${BLUE}Running 'yarn install' to install project dependencies...${NC}"
-yarn install
+yarn install 2>/dev/null
 
 # Démarrer le projet avec Yarn
 echo -e "${BLUE}Starting monaco editor with 'yarn start'...${NC}"
-yarn start &
+yarn start 2>/dev/null &
 wait $!
-
-
