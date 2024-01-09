@@ -1,17 +1,12 @@
-# TeamB Dsl : MusicML 🎵 
-
-This repository contains an internal Domain-Specific Language (DSL) for composing music using Python and textx as a language development framework. It is based on the MIDI standard.
-
-The DSL is designed for musicians who want to write their partitions using our language and have it generated as a MIDI file that is playable on any MIDI player.
-
+# TeamB Dsl : monaco editor 🎵 
 
 ## Content
 
 The repository contains the following:
 
-- Docs : explanations of the implemented DSL including its meta-model implemented and its grammar in Backus–Naur form. 
+- Client : 
 
-- MusicMl : the kernel of the developped language
+- Server :
 
 ## Usage 
 
@@ -27,10 +22,6 @@ npm install -g yarn
 - Run ``` yarn install ``` to install project dependencies
 - Start the project with the command ``` yarn start ```.
 - Open in your browser: http://127.0.0.1:4000/
-
-
-
-
 
 
 ## references :
