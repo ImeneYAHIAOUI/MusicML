@@ -22,7 +22,10 @@ const app = express();
 // server the static content, i.e. index.html
 app.use(express.static(__dirname));
 // start the server
-const server = app.listen(4000);
+const port = 4000; // Specify the port
+const server = app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
 // create the web socket
 const wss = new ws.Server({
     noServer: true,
