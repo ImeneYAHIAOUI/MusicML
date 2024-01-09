@@ -10,17 +10,16 @@ The repository contains the following:
 
 ## Usage 
 
+To install the necessary libraries, run the setup.sh script : ```./setup.sh ```
+
 ### server 
 - cd server 
-- python server
+- Run ```python server.py ```
 ### client  
 - Install the command yarn using : 
-```
-npm install -g yarn
-```
 - cd client
 - Run ``` yarn install ``` to install project dependencies
-- Start the project with the command ``` yarn start ```.
+- Start the project with the command : ``` yarn start ```.
 - Open in your browser: http://127.0.0.1:4000/
 
 
