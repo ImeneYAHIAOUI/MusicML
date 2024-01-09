@@ -30,7 +30,13 @@ DefaultTimeSignature 4/4
 
 Track Drum Instrument 3 // And this is a semantic error
 `;
-monaco.editor.create(document.getElementById("container")!, {
+const containerElement = document.getElementById("container")!;
+
+const newButton = document.createElement("button");
+newButton.textContent = "clear";
+document.body.appendChild(newButton);
+
+const monacoEditor = monaco.editor.create(containerElement, {
     model: monaco.editor.createModel(value, 'json', monaco.Uri.parse('inmemory://model.json')),
     glyphMargin: true,
     lightbulb: {
@@ -38,7 +44,13 @@ monaco.editor.create(document.getElementById("container")!, {
     }
 });
 
-// install Monaco language client services
+
+
+newButton.addEventListener('click', function () {
+    monacoEditor.setValue('');
+});
+
+
 MonacoServices.install(monaco);
 
 // create the web socket
