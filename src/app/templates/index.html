@@ -9,10 +9,10 @@
 
 <body>
 	<div class="wrapper">
-		<div class="container">
+		<div class="container" id="main-container">
 			<h2>MIDI Player <i>(Web Audio Font)</i></h2>
 			<canvas id="visualization" width="800" height="400"></canvas>
-
+			<div id="instrument"></div>
 			<div class="piano">
 				<!-- Octave 3 -->
 				<div class="key white" id="C3" data-key="A" data-note="48"></div> 
@@ -58,22 +58,23 @@
 			</div>
 		</div>
 		<div id='cntls'>
+			<h2 id="main-header" style="align-items: center; text-align: center;" >Load a MIDI file to start</h2>
 			<p><input type="file" id="filesinput" name="filesarr[]" /></p>
 		</div>
 		<hr />
 	</div>
 	<script>
-		
 			var AudioContextFunc = window.AudioContext || window.webkitAudioContext;
 			var audioContext = new AudioContextFunc();
-			var player=new WebAudioFontPlayer();
+			var player = new WebAudioFontPlayer();
 			player.loader.decodeAfterLoading(audioContext, '_tone_0090_JCLive_sf2_file');
-			function playKey(pitch){
-				player.queueWaveTable(audioContext, audioContext.destination, _tone_0090_JCLive_sf2_file, 0, pitch, 0.75);
-				var currentTime = audioContext.currentTime - songStart;
-				var duration = 0.75; // Adjust the duration as needed
 
-				var track = song.tracks[0]; // Assuming you want to add the note to the first track
+			function playKey(pitch){
+				var instrument = song.tracks[0].info.variable;
+				player.queueWaveTable(audioContext, audioContext.destination, window[instrument], 0, pitch, 0.75);
+				var currentTime = audioContext.currentTime - songStart;
+				var duration = 0.75;
+				var track = song.tracks[0]; 
 				track.notes.push({
 					when: currentTime,
 					duration: duration,
@@ -285,6 +286,10 @@
 		}
 		function buildControls(song) {
 			audioContext.resume();
+			var visualizer = document.getElementById('main-container');
+			visualizer.style.display = 'block';
+			var main_header = document.getElementById('main-header');
+			main_header.style.display = 'none';
 			var o = document.getElementById('cntls');
 			var html = '<h2 id="wrng">Refresh browser page to load another song</h2>';
 			html = html + '<p id="tmr"><button onclick="go();">Play</button></p>';
@@ -400,6 +405,11 @@
 				var midiFile = new MIDIFile(arrayBuffer);
 				song = midiFile.parseSong();
 				startLoad(song);
+				// add event listener to keyboard instrument
+				var keyboard_instrument = document.getElementById('instrument');
+				var html = '<h3>Currently selected instrument</h3>'; 
+				html = html + song.tracks[0].info.title;
+				keyboard_instrument.innerHTML = html;
 			};
 			fileReader.readAsArrayBuffer(file);
 		}
