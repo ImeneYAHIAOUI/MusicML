@@ -9,7 +9,7 @@ body {
 .piano {
     display: flex;
     align-items: start;
-    height: 200px;
+    height: 100px;
     border: 1px solid #000;
     border-radius: 5px;
     background-color: #fff;
@@ -25,16 +25,16 @@ body {
 }
 
 .white {
-    width: 60px;
+    width: 50px;
     background-color: #fff;
 }
 
 .black {
-    width: 40px;
+    width: 30px;
     background-color: #000;
     margin: 0 -20px;
     z-index: 1;
-    height: 60%;
+    height: 50%;
     position: relative;
 }
 
@@ -117,4 +117,11 @@ body {
     display: inline-block;
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+.wrapper-hoz{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
