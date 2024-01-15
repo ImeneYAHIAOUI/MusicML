@@ -12,49 +12,60 @@
 		<div class="container" id="main-container">
 			<h2>MIDI Player <i>(Web Audio Font)</i></h2>
 			<canvas id="visualization" width="800" height="400"></canvas>
-			<div id="instrument"></div>
+			<div class="container">
+				<div id="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span><h2>Modify Key Pitch Mapping</h2>
+						<div class="modal-content"></div>
+					</div>
+				</div>
+				<div id="instrument"></div>
+				<div id="instrument-selector"></div>
+				<button id="modifyMapping">Modify Mapping</button>
+				<br/>
+			</div>
 			<div class="piano">
 				<!-- Octave 3 -->
-				<div class="key white" id="C3" data-key="A" data-note="48"></div> 
-				<div class="key black" id="C#3" data-key="Z" data-note="49"></div> 
-				<div class="key white" id="D3" data-key="E" data-note="50"></div> 
-				<div class="key black" id="D#3" data-key="R" data-note="51"></div> 
-				<div class="key white" id="E3" data-key="T" data-note="52"></div> 
-				<div class="key white" id="F3" data-key="Y" data-note="53"></div> 
-				<div class="key black" id="F#3" data-key="U" data-note="54"></div> 
-				<div class="key white" id="G3" data-key="I" data-note="55"></div> 
-				<div class="key black" id="G#3" data-key="O" data-note="56"></div> 
-				<div class="key white" id="A3" data-key="P" data-note="57"></div> 
-				<div class="key black" id="A#3" data-key="Q" data-note="58"></div> 
-				<div class="key white" id="B3" data-key="S" data-note="59"></div> 
-		
+				<div class="key white" id="C3" data-key="A" data-note="48" data-combined="C3-A"></div> 
+				<div class="key black" id="C#3" data-key="Z" data-note="49" data-combined="C#3-Z"></div> 
+				<div class="key white" id="D3" data-key="E" data-note="50" data-combined="D3-E"></div> 
+				<div class="key black" id="D#3" data-key="R" data-note="51" data-combined="D#3-R"></div> 
+				<div class="key white" id="E3" data-key="T" data-note="52" data-combined="E3-T"></div> 
+				<div class="key white" id="F3" data-key="Y" data-note="53" data-combined="F3-Y"></div> 
+				<div class="key black" id="F#3" data-key="U" data-note="54" data-combined="F#3-U"></div> 
+				<div class="key white" id="G3" data-key="I" data-note="55" data-combined="G3-I"></div> 
+				<div class="key black" id="G#3" data-key="O" data-note="56" data-combined="G#3-O"></div> 
+				<div class="key white" id="A3" data-key="P" data-note="57" data-combined="A3-P"></div> 
+				<div class="key black" id="A#3" data-key="Q" data-note="58" data-combined="A#3-Q"></div> 
+				<div class="key white" id="B3" data-key="S" data-note="59" data-combined="B3-S"></div> 
+
 				<!-- Octave 4 -->
-				<div class="key white" id="C4" data-key="D" data-note="60"></div> 
-				<div class="key black" id="C#4" data-key="F" data-note="61"></div>
-				<div class="key white" id="D4" data-key="G" data-note="62"></div> 
-				<div class="key black" id="D#4" data-key="H" data-note="63"></div> 
-				<div class="key white" id="E4" data-key="J" data-note="64"></div> 
-				<div class="key white" id="F4" data-key="K" data-note="65"></div> 
-				<div class="key black" id="F#4" data-key="L" data-note="66"></div> 
-				<div class="key white" id="G4" data-key="M" data-note="67"></div> 
-				<div class="key black" id="G#4" data-key="ù" data-note="68"></div> 
-				<div class="key white" id="A4" data-key="*" data-note="69"></div> 
-				<div class="key black" id="A#4" data-key="W" data-note="70"></div> 
-				<div class="key white" id="B4" data-key="X" data-note="71"></div> 
-		
+				<div class="key white" id="C4" data-key="D" data-note="60" data-combined="C4-D"></div> 
+				<div class="key black" id="C#4" data-key="F" data-note="61" data-combined="C#4-F"></div>
+				<div class="key white" id="D4" data-key="G" data-note="62" data-combined="D4-G"></div> 
+				<div class="key black" id="D#4" data-key="H" data-note="63" data-combined="D#4-H"></div> 
+				<div class="key white" id="E4" data-key="J" data-note="64" data-combined="E4-J"></div> 
+				<div class="key white" id="F4" data-key="K" data-note="65" data-combined="F4-K"></div> 
+				<div class="key black" id="F#4" data-key="L" data-note="66" data-combined="F#4-L"></div> 
+				<div class="key white" id="G4" data-key="M" data-note="67" data-combined="G4-M"></div> 
+				<div class="key black" id="G#4" data-key="ù" data-note="68" data-combined="G#4-ù"></div> 
+				<div class="key white" id="A4" data-key="*" data-note="69" data-combined="A4-*"></div> 
+				<div class="key black" id="A#4" data-key="W" data-note="70" data-combined="A#4-W"></div> 
+				<div class="key white" id="B4" data-key="X" data-note="71" data-combined="B4-X"></div> 
+
 				<!-- Octave 5 -->
-				<div class="key white" id="C5" data-key="C" data-note="72"></div> 
-				<div class="key black" id="C#5" data-key="V" data-note="73"></div> 
-				<div class="key white" id="D5" data-key="B" data-note="74"></div> 
-				<div class="key black" id="D#5" data-key="N" data-note="75"></div> 
-				<div class="key white" id="E5" data-key="?" data-note="76"></div> 
-				<div class="key white" id="F5" data-key="." data-note="77"></div> 
-				<div class="key black" id="F#5" data-key="/" data-note="78"></div> 
-				<div class="key white" id="G5" data-key="§" data-note="79"></div> 
-				<div class="key black" id="G#5" data-key="1" data-note="80"></div> 
-				<div class="key white" id="A5" data-key="2" data-note="81"></div> 
-				<div class="key black" id="A#5" data-key="3" data-note="82"></div> 
-				<div class="key white" id="B5" data-key="4" data-note="83"></div> 
+				<div class="key white" id="C5" data-key="C" data-note="72" data-combined="C5-C"></div> 
+				<div class="key black" id="C#5" data-key="V" data-note="73" data-combined="C#5-V"></div> 
+				<div class="key white" id="D5" data-key="B" data-note="74" data-combined="D5-B"></div> 
+				<div class="key black" id="D#5" data-key="N" data-note="75" data-combined="D#5-N"></div> 
+				<div class="key white" id="E5" data-key="?" data-note="76" data-combined="E5-?"></div> 
+				<div class="key white" id="F5" data-key="." data-note="77" data-combined="F5-."></div> 
+				<div class="key black" id="F#5" data-key="/" data-note="78" data-combined="F#5-/"></div> 
+				<div class="key white" id="G5" data-key="§" data-note="79" data-combined="G5-§"></div> 
+				<div class="key black" id="G#5" data-key="1" data-note="80" data-combined="G#5-1"></div> 
+				<div class="key white" id="A5" data-key="2" data-note="81" data-combined="A5-2"></div> 
+				<div class="key black" id="A#5" data-key="3" data-note="82" data-combined="A#5-3"></div> 
+				<div class="key white" id="B5" data-key="4" data-note="83" data-combined="B5-4"></div> 
 			</div>
 		</div>
 		<div id='cntls'>
@@ -64,17 +75,120 @@
 		<hr />
 	</div>
 	<script>
-			var AudioContextFunc = window.AudioContext || window.webkitAudioContext;
-			var audioContext = new AudioContextFunc();
-			var player = new WebAudioFontPlayer();
-			player.loader.decodeAfterLoading(audioContext, '_tone_0090_JCLive_sf2_file');
+		function modifyKeyPitchMapping(){
+			// get all note mapping from piano
+			var notes = document.querySelectorAll('.key[data-note]');
+			// get all key mapping from piano
+			var keys = document.querySelectorAll('.key[data-key]');
 
-			function playKey(pitch){
-				var instrument = song.tracks[0].info.variable;
+			var html = '<select id="keyboardkey">';
+			for (var i = 0; i < keys.length; i++) {
+				html = html + '<option value="' + keys[i].getAttribute('data-key') + '">' + keys[i].getAttribute('data-key') + '</option>';
+			}
+			html = html + '</select>';
+
+			html = html + '<select id="keyboardkeynote">';
+			for (var i = 21; i < Object.keys(midiNotesToPitchMapping).length ; i++) {
+				html = html + '<option value="' + i + '">' + midiNotesToPitchMapping[i] + '</option>';
+			}
+			html = html + '</select>';
+
+			html = html + '<button id="addMapping">Change Mapping</button>';
+			html = html + '<button id="cancelMapping">Cancel</button>';
+
+			var modalContent = document.querySelector('.modal-content');
+			modalContent.innerHTML = html;
+
+			// add event listener to add mapping button
+			var addMapping = document.getElementById('addMapping');
+			addMapping.addEventListener('click', function(){
+				var keyboardkey = document.getElementById('keyboardkey');
+				var keyboardkeynote = document.getElementById('keyboardkeynote');
+				var key = keyboardkey.value;
+				var note = keyboardkeynote.value;
+				var pianoKey = document.querySelector(`.key[data-key="${key}"]`);
+				pianoKey.setAttribute('data-note', note);
+				pianoKey.setAttribute('data-combined', midiNotesToPitchMapping[note] + '-' + key);
+
+				var modal = document.getElementById('modal');
+				modal.style.display = 'none';
+			});
+
+			// add event listener to cancel button
+			var cancelMapping = document.getElementById('cancelMapping');
+			cancelMapping.addEventListener('click', function(){
+				var modal = document.getElementById('modal');
+				modal.style.display = 'none';
+			});
+			
+
+			
+			// create and open a modal to modify the mapping
+			var modal = document.getElementById('modal');
+			modal.style.display = 'block';
+			var modalContent = document.querySelector('.modal-content');
+			var modalClose = document.querySelector('.close');
+			modalClose.addEventListener('click', function(){
+				modal.style.display = 'none';
+			});
+		}
+		
+		// add event listener to modify mapping button
+		var modifyMapping = document.getElementById('modifyMapping');
+		modifyMapping.addEventListener('click', modifyKeyPitchMapping);
+
+		var AudioContextFunc = window.AudioContext || window.webkitAudioContext;
+		var audioContext = new AudioContextFunc();
+		var player = new WebAudioFontPlayer();
+		
+		var instrumentSelector = document.getElementById('instrument-selector');
+		var html = '<select id="selinsC">';
+			// select an instrument
+		html = html + '<option selected > Select an instrument </option>';
+		for (var i = 0; i < player.loader.instrumentKeys().length; i++) {
+				var sel = '';
+				// if (i == 8) {
+				// 	sel = ' selected';
+				// }
+				html = html + '<option value="' + i + '"' + sel + '>' + i + ': ' + player.loader.instrumentInfo(i).title + '</option>';
+		}
+		html = html + '</select>';
+		instrumentSelector.innerHTML = html;
+
+		var firstload = true;
+		// var sl = document.getElementById('selins' + 'C');
+		// 		sl.onchange = function (e) {
+		// 			var nn = sl.value;
+		// 			var info = player.loader.instrumentInfo(nn);
+		// 			player.loader.startLoad(audioContext, info.url, info.variable);
+		// 			player.loader.waitLoad(function () {
+		// 				console.log('loaded');
+		// 				var length = song.tracks.length;
+		// 				song.tracks[99].info = info;
+		// 				song.tracks[99].id = nn;
+		// 			});
+		// 		};
+
+		function playKey(pitch){
+				let numberoftracks = song.tracks.length - 1;
+				if (firstload){
+					var sl = document.getElementById('selinsC');
+					var nn = sl.value;
+					var info = player.loader.instrumentInfo(nn);
+					player.loader.startLoad(audioContext, info.url, info.variable);
+					player.loader.waitLoad(function () {
+						console.log('loaded');
+						song.tracks[numberoftracks].info = info;
+						song.tracks[numberoftracks].id = nn;
+					});
+					firstload = false;
+				}
+				console.log("numberoftracks",numberoftracks)
+				var instrument = song.tracks[numberoftracks].info.variable;
 				player.queueWaveTable(audioContext, audioContext.destination, window[instrument], 0, pitch, 0.75);
 				var currentTime = audioContext.currentTime - songStart;
 				var duration = 0.75;
-				var track = song.tracks[0]; 
+				var track = song.tracks[numberoftracks]; 
 				track.notes.push({
 					when: currentTime,
 					duration: duration,
@@ -93,9 +207,9 @@
 					playKey(parseInt(pitch));
 					pianoKey.classList.add('playing');
 				}
-			});
+		});
 
-			document.addEventListener('keyup', function(event) {
+		document.addEventListener('keyup', function(event) {
 				const keys = document.querySelectorAll('.key');
 				keys.forEach(key => {
 					key.classList.remove('playing');
@@ -176,6 +290,27 @@
 			try {
 				startPlay(loadedsong);
 				document.getElementById('tmr').innerHTML = 'playing...';
+				var sl = document.getElementById('selinsC');
+				var numberoftracks = song.tracks.length;
+
+				console.log("==numberoftracks",numberoftracks)
+				if(!song.tracks[numberoftracks]){
+							song.tracks[numberoftracks] = {};
+							song.tracks[numberoftracks].notes = [];
+							song.tracks[numberoftracks].volume = 0.05;
+							song.tracks[numberoftracks].program = 8;
+
+						}
+				sl.onchange = function (e) {
+					var nn = sl.value;
+					var info = player.loader.instrumentInfo(nn);
+					player.loader.startLoad(audioContext, info.url, info.variable);
+					player.loader.waitLoad(function () {
+						console.log('loaded');
+						song.tracks[numberoftracks].info = info;
+						song.tracks[numberoftracks].id = nn;
+					});
+				};
 			} catch (expt) {
 				document.getElementById('tmr').innerHTML = 'error ' + expt;
 			}
@@ -407,8 +542,7 @@
 				startLoad(song);
 				// add event listener to keyboard instrument
 				var keyboard_instrument = document.getElementById('instrument');
-				var html = '<h3>Currently selected instrument</h3>'; 
-				html = html + song.tracks[0].info.title;
+				var html = '<h4>Currently selected instrument : '+ song.tracks[0].info.title +'</h4>'; 
 				keyboard_instrument.innerHTML = html;
 			};
 			fileReader.readAsArrayBuffer(file);
@@ -427,6 +561,117 @@
 			xmlHttpRequest.send(null);
 		}
 		document.getElementById('filesinput').addEventListener('change', handleFileSelect, false);
+
+		// enum of midi notes to pitch mapping
+		var midiNotesToPitchMapping = {
+			21: 'A0',
+			22: 'A#0',
+			23: 'B0',
+			24: 'C1',
+			25: 'C#1',
+			26: 'D1',
+			27: 'D#1',
+			28: 'E1',
+			29: 'F1',
+			30: 'F#1',
+			31: 'G1',
+			32: 'G#1',
+			33: 'A1',
+			34: 'A#1',
+			35: 'B1',
+			36: 'C2',
+			37: 'C#2',
+			38: 'D2',
+			39: 'D#2',
+			40: 'E2',
+			41: 'F2',
+			42: 'F#2',
+			43: 'G2',
+			44: 'G#2',
+			45: 'A2',
+			46: 'A#2',
+			47: 'B2',
+			48: 'C3',
+			49: 'C#3',
+			50: 'D3',
+			51: 'D#3',
+			52: 'E3',
+			53: 'F3',
+			54: 'F#3',
+			55: 'G3',
+			56: 'G#3',
+			57: 'A3',
+			58: 'A#3',
+			59: 'B3',
+			60: 'C4',
+			61: 'C#4',
+			62: 'D4',
+			63: 'D#4',
+			64: 'E4',
+			65: 'F4',
+			66: 'F#4',
+			67: 'G4',
+			68: 'G#4',
+			69: 'A4',
+			70: 'A#4',
+			71: 'B4',
+			72: 'C5',
+			73: 'C#5',
+			74: 'D5',
+			75: 'D#5',
+			76: 'E5',
+			77: 'F5',
+			78: 'F#5',
+			79: 'G5',
+			80: 'G#5',
+			81: 'A5',
+			82: 'A#5',
+			83: 'B5',
+			84: 'C6',
+			85: 'C#6',
+			86: 'D6',
+			87: 'D#6',
+			88: 'E6',
+			89: 'F6',
+			90: 'F#6',
+			91: 'G6',
+			92: 'G#6',
+			93: 'A6',
+			94: 'A#6',
+			95: 'B6',
+			96: 'C7',
+			97: 'C#7',
+			98: 'D7',
+			99: 'D#7',
+			100: 'E7',
+			101: 'F7',
+			102: 'F#7',
+			103: 'G7',
+			104: 'G#7',
+			105: 'A7',
+			106: 'A#7',
+			107: 'B7',
+			108: 'C8',
+			109: 'C#8',
+			110: 'D8',
+			111: 'D#8',
+			112: 'E8',
+			113: 'F8',
+			114: 'F#8',
+			115: 'G8',
+			116: 'G#8',
+			117: 'A8',
+			118: 'A#8',
+			119: 'B8',
+			120: 'C9',
+			121: 'C#9',
+			122: 'D9',
+			123: 'D#9',
+			124: 'E9',
+			125: 'F9',
+			126: 'F#9',
+			127: 'G9'
+		};
 	</script>
 </body>
 
