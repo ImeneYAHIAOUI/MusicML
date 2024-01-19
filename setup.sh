@@ -10,7 +10,7 @@ check_installation() {
     fi
 }
 
-packages=("midiutil" "textx")
+packages=("midiutil" "textx" "Flask")
 
 for package in "${packages[@]}"; do
     check_installation $package
