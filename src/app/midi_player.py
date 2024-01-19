@@ -2,7 +2,6 @@ import webbrowser
 from flask import Flask, render_template, request, send_file
 from threading import Thread
 import time
-import requests
 import os
 import signal
 

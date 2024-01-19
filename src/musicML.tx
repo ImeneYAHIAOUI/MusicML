@@ -13,7 +13,7 @@ MusicPiece:
 ;
 
 Tempo:
-  value=INT 'bpm' '('bar=INT (',' start=MidiDuration)? ')'
+  value=INT 'bpm' position=Position
 ;
 
 TimeSignature:
@@ -32,7 +32,7 @@ Track:
 ;
 
 ControlMessage:
-    'CC:' '(' (CC=INT | message=STRING) ',' value=INT ','  bar=INT (',' start=MidiDuration)? ')'
+    'CC:' '(' (CC=INT | message=STRING) ',' value=INT ','  position=Position ')'
 ;
 
 BaseBar:
@@ -40,37 +40,56 @@ BaseBar:
 ;
 
 Bar:
-     'Bar' name=ID '->'  ('vol:' velocity=INT ',')? musicalEvents+=MusicalEvent ( 'overlap:' overlappingEvents*=MusicalEvent)? '|'
+     'Bar' name=ID '->'  ('v:' velocity=INT ',')? musicalEvents+=MusicalEvent  '|'
 ;
 
 ReusedBar:
-     'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('vol:' velocity=INT ',')? musicalEvents*=MusicalEvent  ('overlap:' overlappingEvents*=MusicalEvent)? '|'
+     'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('v:' velocity=INT ',')? ('a:' '[' musicalEvents*=MusicalEvent ']')? ('r:' '[' removedNotes*=RemoveEvent ']')?  ( 'c:' '[' changedEvents*=ChangeEvent ']')?  '|'
 ;
 
+RemoveEvent:
+      value=STRING ',' position=NotePosition
+;
+
+
+ChangeEvent:
+    '(' NotePosition ',' value=STRING  ')' '-->'  to=Note
+;
 EmptyBar:
     'EmptyBar' (times=INT 'times')? '|'
 ;
 
 MusicalEvent:
-    Note | Rest
+    Note | Rest | Chord
 ;
+
+
 
 Note:
-    SimpleNote | Chord
+    '('  ('rep:'  repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ','   ('d:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
 ;
 
-SimpleNote:
-    '('  ('rep:'  repeat=INT ',')? values*=STRING ',' ( ('start:')? start=MidiDuration ',')?  ('duration:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
+Chord:
+    'Chord' '('  ('rep:'  repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)?  (',' velocity=INT)? ')' (',')?
 ;
+
+
 
 MidiDuration:
-    'T' value=INT
-    | fraction=Fraction
-    | durationValue=DurationValue
+    predefined=DurationValue |  'custom:'userDefined=MidiTime
 ;
 
-Fraction:
-   'F' numerator=INT '/' denominator=INT
+MidiTime:
+    Tick | BeatFraction
+;
+
+Tick:
+    'T' value=INT
+;
+
+
+BeatFraction:
+     numerator=INT '/' denominator=INT
 ;
 
 DurationValue:
@@ -81,12 +100,19 @@ DurationValue:
     '2-1/128' | '3-1/64' | '1/128' | '3-1/4'
 ;
 
-Chord:
-    'Chord' '(' ('rep:'  repeat=INT ',')? ( 'vol:' velocity=INT ',')?  notes+=Note ')' (',')?
+
+Position:
+    '(' bar=INT',' beat=INT',' offset=MidiTime ')'
 ;
 
+NotePosition:
+    beat=INT | '(' beat=INT ',' offset=MidiTime ')'
+;
+
+
+
 Rest:
-    '(' 'Rest' ('pos:' start=MidiDuration',')?  duration=MidiDuration ')' (',')?
+    '(' 'Rest' ('p:' position=NotePosition',')?  duration=MidiDuration ')' (',')?
 ;
 
 MidiRegion:
@@ -94,11 +120,11 @@ MidiRegion:
 ;
 
 Region:
-    'Region' name=ID '->' '('  bar=INT (',start:' start=MidiDuration)? ',' 'size:'size=MidiDuration ')'
+    'Region' name=ID '->' '(' position=Position  ',' 'duration:'duration=MidiDuration ')'
 ;
 
 ReusedRegion:
-    'ReuseRegion' ref=ID '->' '('bar=INT (',' start=MidiDuration)? ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ')'
+    'ReuseRegion' ref=ID '->' '('position=Position  ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ')'
 ;
 
 Comment:

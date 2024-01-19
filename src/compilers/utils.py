@@ -2,22 +2,17 @@ from textx import *
 from constants import *
 
 
-def calculate_chord_length(chord, midi_file, music_ml_meta):
+def calculate_chord_length(music_ml_model, chord, midi_file, music_ml_meta, bar_number):
     ticks_per_quarternote = midi_file.ticks_per_quarternote
     total_duration = 0
     smallest_start_time = float('inf')
 
     for note in chord.notes:
-        if textx_isinstance(note, music_ml_meta['Chord']):
-            # Recursively calculate the duration for nested chords
-            nested_chord_duration = calculate_chord_length(note, midi_file, music_ml_meta)
-            total_duration = max(total_duration, nested_chord_duration)
-        elif textx_isinstance(note, music_ml_meta['SimpleNote']):
-            duration = duration_to_ticks(note.duration, ticks_per_quarternote)
-            start_time = 0 if note.start is None else duration_to_ticks(note.start, ticks_per_quarternote)
-            smallest_start_time = min(smallest_start_time, start_time)
-            note_end_time = start_time + duration
-            total_duration = max(total_duration, note_end_time)
+        duration, start_time = get_not_position_and_duration(music_ml_meta, bar_number, note, music_ml_model,
+                                                                 ticks_per_quarternote)
+        smallest_start_time = min(smallest_start_time, start_time)
+        note_end_time = start_time + duration
+        total_duration = max(total_duration, note_end_time)
 
     return total_duration - smallest_start_time
 
@@ -39,23 +34,36 @@ def get_control_message_number(name):
     else:
         return None
 
-def duration_to_ticks(duration, ticks_per_quarternote):
+
+def midi_time_to_ticks(music_ml_model, music_ml_meta, midi_time, ticks_per_quarternote, bar_number):
+    if textx_isinstance(midi_time, music_ml_meta['Tick']):
+        return int(midi_time.value)
+    elif textx_isinstance(midi_time, music_ml_meta['BeatFraction']):
+        denominator = midi_time.denominator
+        numerator = midi_time.numerator
+        if denominator == 0:
+            raise TextXSemanticError('Invalid beat fraction, denominator cannot be 0', **get_location(midi_time))
+        ticks_per_beat = ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number)
+        return int((numerator / denominator) * ticks_per_beat)
+
+
+def midi_duration_to_ticks(music_ml_meta, music_ml_model, duration, ticks_per_quarternote, bar_number):
+    if textx_isinstance(duration, music_ml_meta['Tick']):
+        return duration.value
+    elif textx_isinstance(duration, music_ml_meta['BeatFraction']):
+        num = duration.fraction.numerator
+        den = duration.fraction.denominator
+        return int((num / den) * 4 * ticks_per_quarternote)
     try:
-        if duration.value != 0:
-            return duration.value
-        elif duration.fraction is not None:
-            num = duration.fraction.numerator
-            den = duration.fraction.denominator
-            if (den == 0):
-                raise TextXSemanticError('Invalid duration value, the denominator must be greater than 0', 
-                                         **get_location(duration))
-            return int((num / den) * 4 * ticks_per_quarternote)
-        else:
-            return int(midi_durations[duration.durationValue] * ticks_per_quarternote)
+        if duration.predefined is not None:
+            return int(midi_durations[duration.predefined] * ticks_per_quarternote)
+        if duration.userDefined is not None:
+            return midi_time_to_ticks(music_ml_model, music_ml_meta, duration.userDefined, ticks_per_quarternote,
+                                      bar_number)
     except KeyError:
-        raise TextXSemanticError('Invalid duration value, it must respect one of the following patterns :' \
-                                 ' T(INT), F(INT/INT) or (MidiDuration)', 
-                                 **get_location(duration))
+        raise TextXSemanticError(
+            'Invalid duration value, it must respect one of the following patterns : T(INT), F(INT/INT) or (MidiDuration)',
+            **get_location(duration))
 
 
 def instrument_program_number(instrument):
@@ -77,24 +85,57 @@ def default_channel(instrument):
 def bar_position_in_ticks(music_ml_model, midi_file, bar_number):
     ticks_per_quarternote = midi_file.ticks_per_quarternote
     time_signature = music_ml_model.defaultTimeSignature
-    numerator = time_signature.numerator
-    beats_per_bar = numerator
-    ticks_per_bar = (ticks_per_quarternote * beats_per_bar)
+    beats_per_bar = time_signature.numerator
+    beat_value = time_signature.denominator
+    ticks_per_bar = ticks_per_quarternote * (4 / beat_value) * beats_per_bar
     default_position_in_ticks = ticks_per_bar * bar_number
     if len(music_ml_model.timeSignatures) == 0:
         return int(default_position_in_ticks)
-    position_in_ticks = default_position_in_ticks
+    ticks = default_position_in_ticks
     for ts in music_ml_model.timeSignatures:
         if bar_number < ts.bar:
             break
         else:
-            # Bar is beyond this time signature, move to the next
-            position_in_ticks = ticks_per_bar * ts.bar
+            ticks = ticks_per_bar * ts.bar
             beats_per_bar = ts.numerator
-            ticks_per_bar = ticks_per_quarternote * (4 / ts.denominator) * beats_per_bar
-            position_in_ticks += ticks_per_bar * (bar_number - ts.bar)
+            beat_value = ts.denominator
+            ticks_per_bar = ticks_per_quarternote * (4 / beat_value) * beats_per_bar
+            ticks += ticks_per_bar * (bar_number - ts.bar)
 
-    return int(position_in_ticks) 
+    return int(ticks)
+
+
+def position_in_ticks(music_ml_model, music_ml_meta, midi_file, position):
+    tick_position = bar_position_in_ticks(music_ml_model, midi_file, position.bar)
+    ticks_per_quarternote = midi_file.ticks_per_quarternote
+    ticks_per_beat = ticks_in_beat(music_ml_model, ticks_per_quarternote, position.bar)
+    tick_position += ticks_per_beat * (position.beat - 1)
+    tick_position += midi_time_to_ticks(music_ml_model, music_ml_meta, position.offset, ticks_per_quarternote,
+                                        position.bar)
+    return tick_position
+
+
+def ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number):
+    time_signature = music_ml_model.defaultTimeSignature
+    beat_value = time_signature.denominator
+    ticks_per_beat = ticks_per_quarternote * (4 / beat_value)
+    for ts in music_ml_model.timeSignatures:
+        if bar_number.bar < ts.bar:
+            break
+        else:
+            beat_value = ts.denominator
+            ticks_per_beat = ticks_per_quarternote * (4 / beat_value)
+    return ticks_per_beat
+
+
+def current_time_signature(music_ml_model, bar_number):
+    time_signature = music_ml_model.defaultTimeSignature
+    for ts in music_ml_model.timeSignatures:
+        if bar_number < ts.bar:
+            break
+        else:
+            time_signature = ts
+    return time_signature
 
 
 def get_original_bar(music_ml_meta, track, bar):
@@ -119,48 +160,63 @@ def get_original_region(music_ml_meta, track, region):
     return original_region
 
 
-def calculate_music_events_length(midi_file, music_ml_meta, music_events):
-    ticks_per_quarternote = midi_file.ticks_per_quarternote
-    total_duration = 0
-    smallest_start_time = float('inf')
-    for music_event in music_events:
-        if textx_isinstance(music_event, music_ml_meta['Note']):
-            if textx_isinstance(music_event, music_ml_meta['Chord']):
-                nested_chord_duration = calculate_chord_length(music_event, midi_file, music_ml_meta)
-                repeat = music_event.repeat
-                if repeat == 0:
-                    repeat = 1
-                total_duration = max(total_duration, nested_chord_duration * (repeat - 1))
-            else:
-                duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
-                start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start,
-                                                                                   ticks_per_quarternote)
-                smallest_start_time = min(smallest_start_time, start_time)
-                note_end_time = start_time + duration
-                total_duration = max(total_duration, note_end_time)
-        elif textx_isinstance(music_event, music_ml_meta['Rest']):
-            duration = duration_to_ticks(music_event.duration, ticks_per_quarternote)
-            start_time = 0 if music_event.start is None else duration_to_ticks(music_event.start, ticks_per_quarternote)
-            smallest_start_time = min(smallest_start_time, start_time)
-            note_end_time = start_time + duration
-            total_duration = max(total_duration, note_end_time)
-    return total_duration - smallest_start_time
+def get_not_position_and_duration(music_ml_meta, bar_number, music_event, music_ml_model,
+                                  ticks_per_quarternote):
+    duration = midi_duration_to_ticks(music_ml_meta, music_ml_model, music_event.duration, ticks_per_quarternote,
+                                      bar_number)
+    start_time = note_position_to_ticks(bar_number, music_event, music_ml_meta, music_ml_model,
+                                        ticks_per_quarternote)
+    return duration, start_time
 
 
-def calculate_event_start_time(midi_file, music_ml_meta, music_event):
+def note_position_to_ticks(bar_number, music_event, music_ml_meta, music_ml_model, ticks_per_quarternote):
+    start_time = 0
+    if music_event.position is not None:
+        if music_event.position.beat > current_time_signature(music_ml_model, bar_number).numerator:
+            raise TextXSemanticError(
+                'Beat number is greater than the number of beats in the time signature: ' + str(
+                    music_event.position.beat), **get_location(music_event.position.beat))
+        start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
+                music_event.position.beat - 1)
+        if music_event.position.offset is not None:
+            start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, music_event.position.offset,
+                                             ticks_per_quarternote,
+                                             bar_number)
+    return start_time
+
+
+def calculate_event_start_time(music_ml_model, midi_file, music_ml_meta, music_event, bar_number):
     ticks_per_quarternote = midi_file.ticks_per_quarternote
 
-    if textx_isinstance(music_event, music_ml_meta['SimpleNote']) or textx_isinstance(music_event,
+    if textx_isinstance(music_event, music_ml_meta['Note']) or textx_isinstance(music_event,
                                                                                       music_ml_meta['Rest']):
-        return 0 if music_event.start is None else duration_to_ticks(music_event.start, ticks_per_quarternote)
+        start_time = 0
+        if music_event.position is not None:
+            start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
+                    music_event.position.beat - 1)
+            if music_event.position.offset is not None:
+                start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, music_event.position.offset,
+                                                 ticks_per_quarternote,
+                                                 bar_number)
+        return start_time
 
     elif textx_isinstance(music_event, music_ml_meta['Chord']):
         smallest_start_time = float('inf')
         for note in music_event.notes:
-            if textx_isinstance(note, music_ml_meta['SimpleNote']):
-                start_time = 0 if note.start is None else duration_to_ticks(note.start, ticks_per_quarternote)
-                smallest_start_time = min(smallest_start_time, start_time)
-            else:
-                start_time = calculate_event_start_time(midi_file, music_ml_meta, note)
-                smallest_start_time = min(smallest_start_time, start_time)
+            start_time = 0
+            if note.position is not None:
+                start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
+                        note.position.beat - 1)
+                if note.position.offset is not None:
+                    start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, note.position.offset,
+                                                         ticks_per_quarternote,
+                                                         bar_number)
+            elif music_event.position is not None:
+                start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
+                        music_event.position.beat - 1)
+                if music_event.position.offset is not None:
+                    start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, music_event.position.offset,
+                                                         ticks_per_quarternote,
+                                                         bar_number)
+            smallest_start_time = min(smallest_start_time, start_time)
         return smallest_start_time

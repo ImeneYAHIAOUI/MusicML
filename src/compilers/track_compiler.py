@@ -18,7 +18,7 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
     i = 0
     for bar in track.bars:
         compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity)
-        if textx_isinstance(bar, music_ml_meta['Bar']):
+        if textx_isinstance(bar, music_ml_meta['Bar']) :
             i += 1
         if textx_isinstance(bar, music_ml_meta['EmptyBar']) or textx_isinstance(bar, music_ml_meta['ReusedBar']):
             repeat = bar.times
@@ -28,4 +28,4 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number)
     for region in track.midiRegions:
         compile_region(music_ml_model, music_ml_meta, region, midi_file, track, track_number, channel, velocity)
     for control_message in track.controlMessages:
-        compile_control_message(music_ml_model, control_message, track_number, channel, midi_file)
+        compile_control_message(music_ml_model, music_ml_meta, control_message, track_number, channel, midi_file)
