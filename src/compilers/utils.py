@@ -120,7 +120,7 @@ def ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number):
     beat_value = time_signature.denominator
     ticks_per_beat = ticks_per_quarternote * (4 / beat_value)
     for ts in music_ml_model.timeSignatures:
-        if bar_number.bar < ts.bar:
+        if bar_number < ts.bar:
             break
         else:
             beat_value = ts.denominator
