@@ -48,12 +48,12 @@ ReusedBar:
 ;
 
 RemoveEvent:
-      value=STRING ',' position=NotePosition
+       '(' values*=STRING ',' position=NotePosition ')' (',')?
 ;
 
 
 ChangeEvent:
-    '(' NotePosition ',' value=STRING  ')' '-->'  to=Note
+    '(' value=STRING ',' position=NotePosition   ')' '-->'  newValue=STRING (',')?
 ;
 EmptyBar:
     'EmptyBar' (times=INT 'times')? '|'

@@ -61,3 +61,5 @@ def compile_chord_event(music_ml_model, music_ml_meta, chord, position, midi_fil
                                velocity,
                                ticks_to_add, chord_position)
         ticks_to_add += duration
+
+
