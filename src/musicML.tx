@@ -1,5 +1,5 @@
 MusicPiece:
-  ('Player' player=STRING)?
+  ('Live' live=ID)?
   'MusicPiece' name=ID
   ('Author' composer=STRING)?
   ('TicksPerQuarterNote' ticksPerQuarterNote=INT)?

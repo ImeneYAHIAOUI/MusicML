@@ -1,15 +1,18 @@
 body {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
     background-color: #f0f0f0;
+    padding: 0;
+}
+
+#ctrl{
+    display: none;
 }
 
 .piano {
     display: flex;
     align-items: start;
-    height: 100px;
+    height: 200px;
     border: 1px solid #000;
     border-radius: 5px;
     background-color: #fff;
@@ -25,12 +28,12 @@ body {
 }
 
 .white {
-    width: 50px;
+    width: 52px;
     background-color: #fff;
 }
 
 .black {
-    width: 30px;
+    width: 32px;
     background-color: #000;
     margin: 0 -20px;
     z-index: 1;
@@ -108,15 +111,18 @@ body {
 
 /* edit button */
 #modifyMapping{
-    background-color: #92927b;
+    background-color: #ffffff;
     border: none;
-    color: white;
-    padding: 10px 20px;
+    color: rgb(0, 0, 0);
+    padding: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 11px;
+    margin: 5px;
+    border: #000000 1px solid;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .wrapper-hoz{
@@ -124,4 +130,18 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: row;
+}
+
+.flex-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.flex-column{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }

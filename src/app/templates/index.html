@@ -10,71 +10,75 @@
 <body>
 	<div class="wrapper">
 		<div class="container" id="main-container">
-			<h2>MIDI Player <i>(Web Audio Font)</i></h2>
 			<div class="wrapper-hoz">
-				<canvas id="visualizationnoteslist" width="30" height="500"></canvas>
-				<canvas id="visualization" width="1170" height="500"></canvas>
+				<!-- <canvas id="visualizationnoteslist" width="30" height="850"></canvas> -->
+				<canvas id="visualization" width="900" height="850"></canvas>
 
-			</div>
-			<div class="container">
-				<div id="modal">
-					<div class="modal-content">
-						<span class="close">&times;</span><h2>Modify Key Pitch Mapping</h2>
-						<div class="modal-content"></div>
-					</div>
-				</div>
-				<div id="instrument"></div>
-				<div id="instrument-selector"></div>
-				<button id="modifyMapping">Modify Mapping</button>
-				<br/>
-			</div>
-			<div class="piano">
-				<!-- Octave 3 -->
-				<div class="key white" id="C3" data-key="A" data-note="48" data-combined="C3-A"></div> 
-				<div class="key black" id="C#3" data-key="Z" data-note="49" data-combined="C#3-Z"></div> 
-				<div class="key white" id="D3" data-key="E" data-note="50" data-combined="D3-E"></div> 
-				<div class="key black" id="D#3" data-key="R" data-note="51" data-combined="D#3-R"></div> 
-				<div class="key white" id="E3" data-key="T" data-note="52" data-combined="E3-T"></div> 
-				<div class="key white" id="F3" data-key="Y" data-note="53" data-combined="F3-Y"></div> 
-				<div class="key black" id="F#3" data-key="U" data-note="54" data-combined="F#3-U"></div> 
-				<div class="key white" id="G3" data-key="I" data-note="55" data-combined="G3-I"></div> 
-				<div class="key black" id="G#3" data-key="O" data-note="56" data-combined="G#3-O"></div> 
-				<div class="key white" id="A3" data-key="P" data-note="57" data-combined="A3-P"></div> 
-				<div class="key black" id="A#3" data-key="Q" data-note="58" data-combined="A#3-Q"></div> 
-				<div class="key white" id="B3" data-key="S" data-note="59" data-combined="B3-S"></div> 
-
-				<!-- Octave 4 -->
-				<div class="key white" id="C4" data-key="D" data-note="60" data-combined="C4-D"></div> 
-				<div class="key black" id="C#4" data-key="F" data-note="61" data-combined="C#4-F"></div>
-				<div class="key white" id="D4" data-key="G" data-note="62" data-combined="D4-G"></div> 
-				<div class="key black" id="D#4" data-key="H" data-note="63" data-combined="D#4-H"></div> 
-				<div class="key white" id="E4" data-key="J" data-note="64" data-combined="E4-J"></div> 
-				<div class="key white" id="F4" data-key="K" data-note="65" data-combined="F4-K"></div> 
-				<div class="key black" id="F#4" data-key="L" data-note="66" data-combined="F#4-L"></div> 
-				<div class="key white" id="G4" data-key="M" data-note="67" data-combined="G4-M"></div> 
-				<div class="key black" id="G#4" data-key="ù" data-note="68" data-combined="G#4-ù"></div> 
-				<div class="key white" id="A4" data-key="*" data-note="69" data-combined="A4-*"></div> 
-				<div class="key black" id="A#4" data-key="W" data-note="70" data-combined="A#4-W"></div> 
-				<div class="key white" id="B4" data-key="X" data-note="71" data-combined="B4-X"></div> 
-
-				<!-- Octave 5 -->
-				<div class="key white" id="C5" data-key="C" data-note="72" data-combined="C5-C"></div> 
-				<div class="key black" id="C#5" data-key="V" data-note="73" data-combined="C#5-V"></div> 
-				<div class="key white" id="D5" data-key="B" data-note="74" data-combined="D5-B"></div> 
-				<div class="key black" id="D#5" data-key="N" data-note="75" data-combined="D#5-N"></div> 
-				<div class="key white" id="E5" data-key="?" data-note="76" data-combined="E5-?"></div> 
-				<div class="key white" id="F5" data-key="." data-note="77" data-combined="F5-."></div> 
-				<div class="key black" id="F#5" data-key="/" data-note="78" data-combined="F#5-/"></div> 
-				<div class="key white" id="G5" data-key="§" data-note="79" data-combined="G5-§"></div> 
-				<div class="key black" id="G#5" data-key="1" data-note="80" data-combined="G#5-1"></div> 
-				<div class="key white" id="A5" data-key="2" data-note="81" data-combined="A5-2"></div> 
-				<div class="key black" id="A#5" data-key="3" data-note="82" data-combined="A#5-3"></div> 
-				<div class="key white" id="B5" data-key="4" data-note="83" data-combined="B5-4"></div> 
 			</div>
 		</div>
-		<div id='cntls'>
-			<h2 id="main-header" style="align-items: center; text-align: center;" >Load a MIDI file to start</h2>
-			<p><input type="file" id="filesinput" name="filesarr[]" /></p>
+		<div class="flex-column">
+			<div id='cntls'>
+				<h2 id="main-header" style="align-items: center; text-align: center;" >Load a MIDI file to start</h2>
+				<p><input type="file" id="filesinput" name="filesarr[]" /></p>
+			</div>
+			<div id="ctrl">
+				<div class="container">
+					<div id="modal">
+						<div class="modal-content">
+							<span class="close">&times;</span><h2>Modify Key Pitch Mapping</h2>
+							<div class="modal-content"></div>
+						</div>
+					</div>
+					<div class="flex-row">
+						<div id="instrument-selector"></div>
+						<button id="modifyMapping">Modify Mapping</button>
+					</div>
+					<br/>
+				</div>
+				<div class="piano">
+					<!-- Octave 3 -->
+					<div class="key white" id="C3" data-key="A" data-note="48" data-combined="C3-A"></div> 
+					<div class="key black" id="C#3" data-key="Z" data-note="49" data-combined="C#3-Z"></div> 
+					<div class="key white" id="D3" data-key="E" data-note="50" data-combined="D3-E"></div> 
+					<div class="key black" id="D#3" data-key="R" data-note="51" data-combined="D#3-R"></div> 
+					<div class="key white" id="E3" data-key="T" data-note="52" data-combined="E3-T"></div> 
+					<div class="key white" id="F3" data-key="Y" data-note="53" data-combined="F3-Y"></div> 
+					<div class="key black" id="F#3" data-key="U" data-note="54" data-combined="F#3-U"></div> 
+					<div class="key white" id="G3" data-key="I" data-note="55" data-combined="G3-I"></div> 
+					<div class="key black" id="G#3" data-key="O" data-note="56" data-combined="G#3-O"></div> 
+					<div class="key white" id="A3" data-key="P" data-note="57" data-combined="A3-P"></div> 
+					<div class="key black" id="A#3" data-key="Q" data-note="58" data-combined="A#3-Q"></div> 
+					<div class="key white" id="B3" data-key="S" data-note="59" data-combined="B3-S"></div> 
+		
+					<!-- Octave 4 -->
+					<div class="key white" id="C4" data-key="D" data-note="60" data-combined="C4-D"></div> 
+					<div class="key black" id="C#4" data-key="F" data-note="61" data-combined="C#4-F"></div>
+					<div class="key white" id="D4" data-key="G" data-note="62" data-combined="D4-G"></div> 
+					<div class="key black" id="D#4" data-key="H" data-note="63" data-combined="D#4-H"></div> 
+					<div class="key white" id="E4" data-key="J" data-note="64" data-combined="E4-J"></div> 
+					<div class="key white" id="F4" data-key="K" data-note="65" data-combined="F4-K"></div> 
+					<div class="key black" id="F#4" data-key="L" data-note="66" data-combined="F#4-L"></div> 
+					<div class="key white" id="G4" data-key="M" data-note="67" data-combined="G4-M"></div> 
+					<div class="key black" id="G#4" data-key="ù" data-note="68" data-combined="G#4-ù"></div> 
+					<div class="key white" id="A4" data-key="*" data-note="69" data-combined="A4-*"></div> 
+					<div class="key black" id="A#4" data-key="W" data-note="70" data-combined="A#4-W"></div> 
+					<div class="key white" id="B4" data-key="X" data-note="71" data-combined="B4-X"></div> 
+		
+					<!-- Octave 5 -->
+					<div class="key white" id="C5" data-key="C" data-note="72" data-combined="C5-C"></div> 
+					<div class="key black" id="C#5" data-key="V" data-note="73" data-combined="C#5-V"></div> 
+					<div class="key white" id="D5" data-key="B" data-note="74" data-combined="D5-B"></div> 
+					<div class="key black" id="D#5" data-key="N" data-note="75" data-combined="D#5-N"></div> 
+					<div class="key white" id="E5" data-key="?" data-note="76" data-combined="E5-?"></div> 
+					<div class="key white" id="F5" data-key="." data-note="77" data-combined="F5-."></div> 
+					<div class="key black" id="F#5" data-key="/" data-note="78" data-combined="F#5-/"></div> 
+					<div class="key white" id="G5" data-key="§" data-note="79" data-combined="G5-§"></div> 
+					<div class="key black" id="G#5" data-key="1" data-note="80" data-combined="G#5-1"></div> 
+					<div class="key white" id="A5" data-key="2" data-note="81" data-combined="A5-2"></div> 
+					<div class="key black" id="A#5" data-key="3" data-note="82" data-combined="A#5-3"></div> 
+					<div class="key white" id="B5" data-key="4" data-note="83" data-combined="B5-4"></div> 
+				</div>
+			</div>
 		</div>
 		<hr />
 	</div>
@@ -287,26 +291,32 @@
 
 
 		// draw the keys list at the left side of canvas
-		var canvas = document.getElementById('visualizationnoteslist');
-		var ctx = canvas.getContext('2d');
+		// var canvas = document.getElementById('visualizationnoteslist');
+		// var ctx = canvas.getContext('2d');
 
-		// Get the keys from the midiNotesToPitchMapping map
-		var keys = Object.values(midiNotesToPitchMapping);
+		// // Get the keys from the midiNotesToPitchMapping map
+		// var keys = Object.values(midiNotesToPitchMapping);
 
-		// Set the starting position for drawing the keys
-		var x = 0;
-		var y = 0;
+		// // reverse the keys array to start from the bottom
+		// keys.reverse();
 
-		// Set the font style for the keys
-		ctx.font = '3.5 px Arial';
+		// // remove last 21 keys
+		// keys.splice(0, 20);
 
-		// Loop through the keys and draw them on the canvas
-		keys.forEach(function(key) {
-			console.log("key",key)
-			var pitch = midiNotesToPitchMapping[key];
-			ctx.fillText(key, x, y);
-			y += 10; // Increase the y position for the next key
-		});
+		// // Set the starting position for drawing the keys
+		// var x = 0;
+		// var y = 0;
+
+		// // Set the font style for the keys
+		// ctx.font = '3.5 px Arial';
+
+		// // Loop through the keys and draw them on the canvas
+		// keys.forEach(function(key) {
+		// 	console.log("key",key)
+		// 	var pitch = midiNotesToPitchMapping[key];
+		// 	ctx.fillText(key, x, y);
+		// 	y += 10; // Increase the y position for the next key
+		// });
 
 
 		function playKey(pitch){
@@ -437,7 +447,7 @@
 				if(!song.tracks[numberoftracks]){
 							song.tracks[numberoftracks] = {};
 							song.tracks[numberoftracks].notes = [];
-							song.tracks[numberoftracks].volume = 0.05;
+							song.tracks[numberoftracks].volume = 0.5;
 							song.tracks[numberoftracks].program = 8;
 
 						}
@@ -563,7 +573,11 @@
 		function buildControls(song) {
 			audioContext.resume();
 			var visualizer = document.getElementById('main-container');
-			visualizer.style.display = 'block';
+			visualizer.style.display = 'flex';
+
+			var ctrl = document.getElementById('ctrl');
+			ctrl.style.display = 'block';
+
 			var main_header = document.getElementById('main-header');
 			main_header.style.display = 'none';
 			var o = document.getElementById('cntls');
