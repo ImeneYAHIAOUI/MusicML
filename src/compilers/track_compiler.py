@@ -61,7 +61,7 @@ def define_then_arrange(channel, midi_file, music_ml_meta, music_ml_model, track
                         ticks_to_add=0):
     i = 0
     for piece in track.arrange:
-        if textx_isinstance(piece, music_ml_meta['ArrangeBar']):
+        if textx_isinstance(piece, music_ml_meta['ArrangedBar']):
             bar = get_original_bar(music_ml_meta, track, piece)
             compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity,
                         ticks_to_add)
@@ -74,9 +74,9 @@ def define_then_arrange(channel, midi_file, music_ml_meta, music_ml_model, track
                 i += repeat
         else:
             start = bar_position_in_ticks(music_ml_model, midi_file, i)
-            if track.start is not None:
-                if textx_isinstance(track.start, music_ml_meta['NotePosition']):
-                    start -= region_position_to_ticks(i, track.start, music_ml_meta, music_ml_model,
+            if piece.start is not None:
+                if textx_isinstance(piece.start, music_ml_meta['NotePosition']):
+                    start -= region_position_to_ticks(i, piece.start, music_ml_meta, music_ml_model,
                                                       midi_file.ticks_per_quarternote)
             region = get_original_region(music_ml_meta, track, piece)
             compile_region(music_ml_model, music_ml_meta, region, midi_file, track, track_number, channel, velocity,

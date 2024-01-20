@@ -68,7 +68,7 @@ PlayableBars:
 ;
 
 ArrangedBars:
-    'bars' ':' '|' bars+=Bar
+    'bars' ':' '|' bars+=BaseBar
     'regions' ':' midiRegions*=MidiRegion
     'arrangement' ':'  arrange+=Arrangement
 ;
@@ -82,7 +82,7 @@ ArrangedBar:
 ;
 
 ArrangedRegion:
-    'region' ref=ID (start=RegionStart)? (',')?
+    'region' name=ID (start=RegionStart)? (',')?
 ;
 
 RegionStart:
@@ -172,7 +172,7 @@ Rest:
 ;
 
 MidiRegion:
-    'Region' name=ID '->' '(' start=Position  ',' end=Position ')'
+    'Region'  name=ID '->' '(' start=Position  ',' end=Position (',' velocity=INT)?  ')'
 ;
 
 Comment:

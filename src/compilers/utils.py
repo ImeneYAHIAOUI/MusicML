@@ -141,18 +141,18 @@ def current_time_signature(music_ml_model, bar_number):
 def get_original_bar(music_ml_meta, track, bar):
     original_bar = None
     for b in track.bars:
-        if textx_isinstance(b, music_ml_meta['Bar']) and b.name == bar.ref:
+        if b.name == bar.ref:
             original_bar = b
             break
     if original_bar is None:
-        raise TextXSemanticError('Reused bar not found: ' + bar.name, **get_location(bar.name))
+        raise TextXSemanticError('Reused bar not found: ' + bar.ref, **get_location(bar))
     return original_bar
 
 
 def get_original_region(music_ml_meta, track, region):
     original_region = None
     for r in track.midiRegions:
-        if textx_isinstance(r, music_ml_meta['Region']) and r.name == region.ref:
+        if r.name == region.name:
             original_region = r
             break
     if original_region is None:
