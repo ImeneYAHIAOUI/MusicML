@@ -13,8 +13,7 @@ The repository contains the following:
 
 - **src** : It contains the kernel of the developped language, and the extensions developped. It contains the following sub-directories :
   - `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
-  - `textxmonaco` : This sub-directory hosts the Monaco editor designed for the application DSL. For more details, refer to (https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/main/src/textx-monaco/README.md)[src/textx-monaco/README.md]
-
+  - `textxmonaco` : This sub-directory hosts the Monaco editor designed for the application DSL. For more details, refer to [src/textx-monaco/README.md](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/main/src/textx-monaco/README.md) 
 - **scenarios** : This section comprises various examples and scenarios that demonstrate the full range of functionalities achievable using our DSL.
 
 - **generated** : This section specifically houses MIDI files generated from the implemented scenarios, providing tangible results that highlight the expressive capabilities of the DSL.
@@ -42,5 +41,5 @@ To use our Domain-Specific Language (DSL), follow these steps:
 
 ## Resources :
 
-- For the MIDI visualizer and player : (webaudiofont)[https://surikov.github.io/webaudiofont/]
-- For the Internal DSL : (textX)[https://github.com/textX]
+- For the MIDI visualizer and player : [https://surikov.github.io/webaudiofont/](webaudiofont)
+- For the Internal DSL : [https://github.com/textX](textX)
