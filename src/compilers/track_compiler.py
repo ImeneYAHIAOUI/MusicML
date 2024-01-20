@@ -75,11 +75,23 @@ def define_then_arrange(channel, midi_file, music_ml_meta, music_ml_model, track
             print("calling there")
             compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity,
                         0,ticks_to_add)
+            if textx_isinstance(bar, music_ml_meta['Bar']):
+                i += 1
+            if textx_isinstance(bar, music_ml_meta['EmptyBar']) or textx_isinstance(bar, music_ml_meta['ReusedBar']):
+                repeat = bar.times
+                if repeat == 0:
+                    repeat = 1
+                i += repeat
         else:
             start = bar_position_in_ticks(music_ml_model, midi_file, i)
             if track.start is not None:
                 if textx_isinstance(track.start, music_ml_meta['NotePosition']):
                     start -= region_position_to_ticks(i, track.start, music_ml_meta, music_ml_model,
                                                       midi_file.ticks_per_quarternote)
-            compile_region(music_ml_model, music_ml_meta, piece, midi_file, track, track_number, channel, velocity,
+            region = get_original_region(music_ml_meta, track, piece)
+            compile_region(music_ml_model, music_ml_meta, region, midi_file, track, track_number, channel, velocity,
                            start + ticks_to_add)
+            end = position_in_ticks(music_ml_model, music_ml_meta, midi_file, region.end)
+            while bar_position_in_ticks(music_ml_model, midi_file, i) < end:
+                i += 1
+

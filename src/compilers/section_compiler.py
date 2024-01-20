@@ -4,13 +4,13 @@ from track_compiler import *
 
 def compile_section(music_ml_model, music_ml_meta, section, midi_file, position):
     for track in section.tracks:
-        track_number, track = get_track_def(music_ml_model, track.name)
+        track_number, trackDef = get_track_def(music_ml_model, track.name)
         velocity = 50
-        if track.velocity != 0:
+        if trackDef.velocity != 0:
             velocity = track.velocity
-        channel = default_channel(track.instrument)
-        if track.channel != 0:
-            channel = track.channel
+        channel = default_channel(trackDef.instrument)
+        if trackDef.channel != 0:
+            channel = trackDef.channel
         compile_music(channel, midi_file, music_ml_meta, music_ml_model, position, track, track_number, velocity)
 
 

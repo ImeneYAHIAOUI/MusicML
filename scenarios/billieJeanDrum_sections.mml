@@ -6,19 +6,29 @@ DefaultTempo 116 bpm
 
 DefaultTimeSignature 4/4
 
+tracks:
 Track Drum Instrument 'Acoustic Bass Drum'
+Track Bass Instrument 'Fretless Bass'
+Track Voice Instrument 'Voice'
+
+
+sections :
+
+Section A:
+
+Track  Drum
 
  | Bar id1 -> ('DO2' 'FA#2' , 1/8),  Chord(rep:2,( 'FA#2', p: (1, 1/2) , 1/8), ('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ) |
-ReuseBar id2 use:id1  | ReuseBar id3 use:id1 31 times -> a:[(rep:9,'LA#4', 1/8)] | Bar id4 -> (rep:9, 'LA#4', 1/8), ('DO2' 'FA#2' , 1/8), Chord(( 'FA#2', p: (1, 1/2), 1/8),('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ),
-Chord(( 'FA#2', p: (3, 1/2), 1/8), ('FA#2' 'MI2', p: 4, 1/8), ('LA#2' , p: (4, 1/2), 1/8), ('MI2' , p: (4, 3/4), 1/8) ) |  ReuseBar id5 use:id1  -> a:[(rep:9,'LA#4', 1/8)] |
+ReuseBar id2 use:id1  | ReuseBar id3 use:id1 20 times -> a:[(rep:9,'LA#4', 1/8)] |
 
 
-Track Bass Instrument 'Fretless Bass'
+Track Bass
 
 
  | EmptyBar 2 times | Bar id1 ->  ( 'FA#1', 1/16), ( 'DO#2', p: (1, 1/2), 1/16), ( 'MI2', p: 2, 1/16), ('FA#2', p: (2, 1/2), 1/16), ('MI2', p: 3, 1/16),('DO#2', p: (3, 1/2), 1/16), ('SI1', p: 4, 1/16), ('DO#2', p: (4, 1/2), 1/16)  | ReuseBar id2 use:id1 15 times |
 
-Track Voice Instrument 'Voice'
+
+Track Voice
  | EmptyBar 12 times
 | Bar id1 -> ( 'FA4', p:(1, 1/2), 1/8), ( 'DO#4', p:2, 1/8), ( 'DO#4', p: (2, 1/2), 1/8), ( 'DO#4', p: 3, 1/8), ( 'SI3', p: (3, 1/2), 1/8), ( 'LA3', p: 4, 1/8), ('SI3', p: (4, 1/2), 1/4)
 | Bar id2 ->  ( 'LA3', p:(1, 1/2), 1/8), ( 'DO#4', p:2, 1/8), ( 'LA3',  p: (2, 1/4), 1/16),( 'LA3', p: (2, 1/2), 1/16),  ( 'LA3' 'SI3', p: 3, 1/8), ( 'SI3', p: (3, 1/2), 1/8), ('DO#4', p: 4, 1/8)
@@ -31,3 +41,16 @@ Track Voice Instrument 'Voice'
 | Bar id8 ->  ( 'LA3',   p: 4, 1/16), ( 'SOL#3',  p: (4, 1/4), 1/16), ( 'FA#3', p: (4, 1/2), 1/4)
 | Bar id9 ->  ( 'LA3',  p:2, 1/16), ( 'SOL#3',  p: (2, 1/4), 1/16), ( 'FA#3', p:(2, 1/2), 1/4),( 'LA3',   p: 4, 1/16), ( 'SOL#3',  p: (4, 1/4), 1/16), ( 'FA#3', p: (4, 1/2), 1/8)
 |
+
+Section B :
+
+Track  Drum
+
+ | Bar id1 ->  Chord(rep:2,( 'FA#2', p: (1, 1/2) , 1/8), ('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ), (rep:9,'LA#4', 1/8)
+ | ReuseBar id2 use:id1 15 times -> a:[('DO2' 'FA#2' , 1/8)]
+ | Bar id4 -> (rep:9, 'LA#4', 1/8), ('DO2' 'FA#2' , 1/8), Chord(( 'FA#2', p: (1, 1/2), 1/8),('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ),
+Chord(( 'FA#2', p: (3, 1/2), 1/8), ('FA#2' 'MI2', p: 4, 1/8), ('LA#2' , p: (4, 1/2), 1/8), ('MI2' , p: (4, 3/4), 1/8) ) |
+
+
+
+arrangement: 'A' 'B'
