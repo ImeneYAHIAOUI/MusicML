@@ -34,7 +34,7 @@ This script checks the installation status of the "midiutil," "textx," and "Flas
 **3. Use DSL:**
 
 To use our Domain-Specific Language (DSL), follow these steps:
-- Write a scenario in `scenarios` directory in the format `<file>.mml`.
+- Write  a scenario following our language specifications and save it in the "scenarios" directory with the .mml format.
 -  Execute the scenario using the following command:
 ```
 ./run-scenario.sh <file>.mml
