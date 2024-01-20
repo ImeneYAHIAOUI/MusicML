@@ -7,7 +7,7 @@ DefaultTimeSignature 4/4
 
 Track Drum Instrument 'Acoustic Bass Drum'
 
-play: | Bar id1 -> ('DO2' 'FA#2' , 1/8),  Chord(rep:2,( 'FA#2', p: (1, 1/2) , 1/8), ('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ) |
+ | Bar id1 -> ('DO2' 'FA#2' , 1/8),  Chord(rep:2,( 'FA#2', p: (1, 1/2) , 1/8), ('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ) |
 ReuseBar id1 -> c:[('DO2', 1) --> 'FA4'] | ReuseBar id1 31 times -> a:[(rep:9,'LA#4', 1/8)] | Bar id2 -> (rep:9, 'LA#4', 1/8), ('DO2' 'FA#2' , 1/8), Chord(( 'FA#2', p: (1, 1/2), 1/8),('FA#2' 'MI2', p: 2, 1/8), ('FA#2', p: (2, 1/2) , 1/8), ('DO2' 'FA#2', p: 3, 1/8) ),
 Chord(( 'FA#2', p: (3, 1/2), 1/8), ('FA#2' 'MI2', p: 4, 1/8), ('LA#2' , p: (4, 1/2), 1/8), ('MI2' , p: (4, 3/4), 1/8) ) |  ReuseBar id1  -> a:[(rep:9,'LA#4', 1/8)] |
 
@@ -15,10 +15,10 @@ Chord(( 'FA#2', p: (3, 1/2), 1/8), ('FA#2' 'MI2', p: 4, 1/8), ('LA#2' , p: (4, 1
 Track Bass Instrument 'Fretless Bass'
 
 
-play: | EmptyBar 2 times | Bar id1 ->  ( 'FA#1', 1/16), ( 'DO#2', p: (1, 1/2), 1/16), ( 'MI2', p: 2, 1/16), ('FA#2', p: (2, 1/2), 1/16), ('MI2', p: 3, 1/16),('DO#2', p: (3, 1/2), 1/16), ('SI1', p: 4, 1/16), ('DO#2', p: (4, 1/2), 1/16)  | ReuseBar id1 15 times |
+ | EmptyBar 2 times | Bar id1 ->  ( 'FA#1', 1/16), ( 'DO#2', p: (1, 1/2), 1/16), ( 'MI2', p: 2, 1/16), ('FA#2', p: (2, 1/2), 1/16), ('MI2', p: 3, 1/16),('DO#2', p: (3, 1/2), 1/16), ('SI1', p: 4, 1/16), ('DO#2', p: (4, 1/2), 1/16)  | ReuseBar id1 15 times |
 
 Track Voice Instrument 'Voice'
-play: | EmptyBar 12 times
+ | EmptyBar 12 times
 | Bar id1 -> ( 'FA4', p:(1, 1/2), 1/8), ( 'DO#4', p:2, 1/8), ( 'DO#4', p: (2, 1/2), 1/8), ( 'DO#4', p: 3, 1/8), ( 'SI3', p: (3, 1/2), 1/8), ( 'LA3', p: 4, 1/8), ('SI3', p: (4, 1/2), 1/4)
 | Bar id2 ->  ( 'LA3', p:(1, 1/2), 1/8), ( 'DO#4', p:2, 1/8), ( 'LA3',  p: (2, 1/4), 1/16),( 'LA3', p: (2, 1/2), 1/16),  ( 'LA3' 'SI3', p: 3, 1/8), ( 'SI3', p: (3, 1/2), 1/8), ('DO#4', p: 4, 1/8)
 | Bar id3 -> ( 'DO#4', p:(1, 1/2), 1/8), ( 'DO#4', p:2, 1/8), ( 'DO#4', p:(2, 1/2), 1/8), ( 'DO#4', p:3, 1/8), ( 'SI3', p: (3, 1/2), 1/8), ( 'LA3',  p: 4, 1/8), ('SI3', p: (4, 1/2), 1/8)

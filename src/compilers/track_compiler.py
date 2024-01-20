@@ -19,7 +19,7 @@ def compile_track(music_ml_model, music_ml_meta, track, midi_file, track_number,
 
 
 def compile_music(channel, midi_file, music_ml_meta, music_ml_model, ticks_to_add, track, track_number, velocity):
-    if textx_isinstance(track.music, music_ml_meta['PlayBars']):
+    if textx_isinstance(track.music, music_ml_meta['PlayableBars']):
         play_bars(channel, midi_file, music_ml_meta, music_ml_model, track.music, track_number, velocity, ticks_to_add)
     else:
         define_then_arrange(channel, midi_file, music_ml_meta, music_ml_model, track.music, track_number, velocity,

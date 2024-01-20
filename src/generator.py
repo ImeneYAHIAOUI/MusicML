@@ -12,7 +12,7 @@ from compilers.section_compiler import *
 
 def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
     # Create the MIDIFile Object
-    if textx_isinstance(music_ml_model.song, music_ml_meta['SingleSection']):
+    if textx_isinstance(music_ml_model.song, music_ml_meta['Tracks']):
         track_number = len(music_ml_model.song.tracks)
     else:
         track_number = len(music_ml_model.song.trackNumber)
@@ -22,7 +22,7 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
     else:
         midi_file = MIDIFile(track_number, eventtime_is_ticks=True)
 
-    if textx_isinstance(music_ml_model.song, music_ml_meta['SingleSection']):
+    if textx_isinstance(music_ml_model.song, music_ml_meta['Tracks']):
 
         for i, track in enumerate(music_ml_model.song.tracks):
             compile_track(music_ml_model, music_ml_meta, track, midi_file, i)

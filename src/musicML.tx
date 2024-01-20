@@ -9,23 +9,9 @@ MusicPiece:
   'DefaultTimeSignature' defaultTimeSignature=DefaultTimeSignature
   ('TimeSignatures'
   timeSignatures*=TimeSignature)?
-  song=Tracks
+  song= SongDefintion
 ;
 
-Tracks:
-  SingleSection | Sections
-;
-
-SingleSection:
-  tracks+=Track
-;
-
-Sections:
-  'trackNumber:' trackNumber=INT
-  'tracks:' trackDefs+=TrackDef
-  sections+=Section
-  'arrange:' '|' arrange+=STRING
-;
 
 Tempo:
   value=INT 'bpm' position=Position
@@ -39,6 +25,21 @@ DefaultTimeSignature:
   numerator=INT '/' denominator=INT
 ;
 
+SongDefintion:
+  Tracks | Sections
+;
+
+Tracks:
+  tracks+=Track
+;
+
+Sections:
+  'trackNumber:' trackNumber=INT
+  'tracks:' trackDefs+=TrackDef
+  'sections:' sections+=Section
+  'arrangement:' '|' arrange+=STRING
+;
+
 Section:
   'Section' name=ID ':' tracks+=SectionTrack
 ;
@@ -46,43 +47,42 @@ Section:
 SectionTrack:
   'Track' name=ID
   controlMessages*=ControlMessage
-  music=Music
+  music=ContentDefintion
+;
+
+Track:
+     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
+     controlMessages*=ControlMessage
+     music=ContentDefintion
 ;
 
 TrackDef:
     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
 ;
 
-Track:
-    'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
-     controlMessages*=ControlMessage
-     music=Music
+ContentDefintion:
+     PlayableBars | ArrangedBars
 ;
 
-
-Music:
-     PlayBars | DefineThenArrange
+PlayableBars:
+    '|' bars+=BaseBar
 ;
 
-PlayBars:
-    'play:' '|' bars+=BaseBar
-;
-
-DefineThenArrange:
+ArrangedBars:
     'bars:' '|' bars+=Bar
-    midiRegions*=MidiRegion
-   'arrange:' '|' arrange+=Arrange
+    'regions:' midiRegions*=MidiRegion
+    'arrangement:' '|' arrange+=Arrangement
 ;
 
-Arrange:
-    ArrangeBar | ArrangeRegion
+Arrangement:
+    ArrangedBar | ArrangedRegion
 ;
 
-ArrangeBar:
+ArrangedBar:
     'bar' ref=ID  (',')?
 ;
 
-ArrangeRegion:
+ArrangedRegion:
     'region' ref=ID (start=RegionStart)? (',')?
 ;
 
@@ -122,8 +122,6 @@ MusicalEvent:
     Note | Rest | Chord
 ;
 
-
-
 Note:
     '('  ('rep:'  repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ','   ('d:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
 ;
@@ -131,8 +129,6 @@ Note:
 Chord:
     'Chord' '('  ('rep:'  repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)?  (',' velocity=INT)? ')' (',')?
 ;
-
-
 
 MidiDuration:
     predefined=DurationValue |  'custom:'userDefined=MidiTime
@@ -145,7 +141,6 @@ MidiTime:
 Tick:
     'T' value=INT
 ;
-
 
 BeatFraction:
      numerator=INT '/' denominator=INT
@@ -177,12 +172,9 @@ Rest:
     '(' 'Rest' ('p:' position=NotePosition',')?  duration=MidiDuration ')' (',')?
 ;
 
-
-
 MidiRegion:
     'Region' name=ID '->' '(' position=Position  ',' 'duration:'duration=MidiDuration ')'
 ;
-
 
 Comment:
     /\/\/.*$/
