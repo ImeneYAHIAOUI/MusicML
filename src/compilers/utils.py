@@ -125,7 +125,7 @@ def ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number):
         else:
             beat_value = ts.denominator
             ticks_per_beat = ticks_per_quarternote * (4 / beat_value)
-    return ticks_per_beat
+    return int(ticks_per_beat)
 
 
 def current_time_signature(music_ml_model, bar_number):
