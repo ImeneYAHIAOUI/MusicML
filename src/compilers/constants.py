@@ -246,8 +246,20 @@ note_to_midi_number2 = {
     'A': 9,
     'A#': 10,
     'BB': 10,
-    'B': 11
+    'B': 11,
 }
+
+drum_note_to_midi_number = {
+    'bd': 36,
+    'sd': 40,
+    'ch': 42,
+    'oh': 46,
+    'cc': 49,
+    'rc': 51,
+}
+
+
+
 
 control_messages = {
     'bank select': 0,

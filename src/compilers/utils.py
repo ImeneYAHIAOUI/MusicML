@@ -18,6 +18,8 @@ def calculate_chord_length(music_ml_model, chord, midi_file, music_ml_meta, bar_
 
 
 def note_to_midi(note_string):
+    if note_string in drum_note_to_midi_number:
+        return drum_note_to_midi_number[note_string]
     note = ''.join(char for char in note_string if char.isalpha() or char in ('#', 'b')).upper()
     octave = int(''.join(char for char in note_string if char.isdigit()))
     if note not in note_to_midi_number1 and note not in note_to_midi_number2:

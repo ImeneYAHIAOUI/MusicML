@@ -6,7 +6,6 @@ from app.midi_player import play
 sys.path.append('compilers')
 sys.path.append('app')
 from midiutil import MIDIFile
-from compilers.track_compiler import *
 from compilers.section_compiler import *
 
 
