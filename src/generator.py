@@ -46,7 +46,7 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
     midi_file.writeFile(bin_file)
     bin_file.close()
 
-    if music_ml_model.player == 'on':
+    if music_ml_model.live == 'on':
         play(ml_file_name)
 
 
