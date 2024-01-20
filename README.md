@@ -4,6 +4,14 @@ This repository contains an internal Domain-Specific Language (DSL) for composin
 
 The DSL is designed for musicians who want to write their partitions using our language and have it generated as a MIDI file that is playable on any MIDI player.
 
+## Extensions and AddOn done :
+Here are the extensions that have been implemented on top of our language:
+- **Support for bar modifications** 
+- **Support for human like errors**
+- **Support for user interactive input**
+Additionally, the following add-ons have been integrated:
+- **MIDI Visualizer & Player** : Enables users to witness their musical creations come to life interactively and instantly.
+- **Monaco Editor** : External validator for our DSL, enhancing the editing and validation process.
 
 ## Content
 
@@ -48,15 +56,6 @@ To activate the interactive interface dedicated to visualizing the composed piec
 ```plaintext
 Live on
 ```
-
-## Extensions and AddOn done :
-Here are the extensions that have been implemented on top of our language:
-- **Support for bar modifications** 
-- **Support for human like errors**
-- **Support for user interactive input**
-Additionally, the following add-ons have been integrated:
-- **MIDI Visualizer & Player** : Enables users to witness their musical creations come to life interactively and instantly.
-- **Monaco Editor** : External validator for our DSL, enhancing the editing and validation process.
 
 ## Resources :
 
