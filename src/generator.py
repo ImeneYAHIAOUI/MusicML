@@ -40,7 +40,11 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
         position = 0
         for arranged_section in music_ml_model.song.arrange:
             section = get_section(music_ml_model.song, arranged_section.name)
-            position = compile_section(music_ml_model, music_ml_meta, section, midi_file, position)
+            compile_section(music_ml_model, music_ml_meta, section, midi_file, position)
+            for track in midi_file.tracks:
+                for msg in track.eventList:
+                    if msg.evtname == 'NoteOff' and msg.tick > position:
+                        position = msg.tick
 
     bin_file = open(ml_file_name + '.mid', 'wb')
     midi_file.writeFile(bin_file)

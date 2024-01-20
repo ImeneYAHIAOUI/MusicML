@@ -53,7 +53,7 @@ def changed_bar_events(music_ml_meta, music_ml_model, midi_file, changed_events,
                                            midi_file.ticks_per_quarternote, bar_number)
         note = note_to_midi(changed_event.value)
         i = 0
-        for msg in midi_file.tracks[track_number +1].eventList:
+        for msg in midi_file.tracks[track_number + 1].eventList:
             if msg.evtname == 'NoteOn' and msg.pitch == note and msg.tick == int(position):
                 msg.pitch = note_to_midi(changed_event.newValue)
                 note_off = midi_file.tracks[track_number + 1].eventList[i + 1]
