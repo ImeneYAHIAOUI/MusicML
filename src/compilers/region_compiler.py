@@ -33,3 +33,4 @@ def compile_region(music_ml_model, music_ml_meta, region, midi_file, track, trac
                reused_event_start_position = reused_start_position + start - original_regions_start_position
         midi_file.addNote(track_number, channel-1, midi_event.pitch, reused_event_start_position, duration, velocity)
 
+

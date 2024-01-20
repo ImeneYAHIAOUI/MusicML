@@ -34,10 +34,9 @@ Tracks:
 ;
 
 Sections:
-  'trackNumber:' trackNumber=INT
-  'tracks:' trackDefs+=TrackDef
-  'sections:' sections+=Section
-  'arrangement:' '|' arrange+=STRING
+  'tracks' ':' trackDefs+=TrackDef
+  'sections' ':' sections+=Section
+  'arrangement' ':'  arrange+=STRING
 ;
 
 Section:
@@ -69,9 +68,9 @@ PlayableBars:
 ;
 
 ArrangedBars:
-    'bars:' '|' bars+=Bar
-    'regions:' midiRegions*=MidiRegion
-    'arrangement:' '|' arrange+=Arrangement
+    'bars' ':' '|' bars+=Bar
+    'regions' ':' midiRegions*=MidiRegion
+    'arrangement' ':'  arrange+=Arrangement
 ;
 
 Arrangement:
@@ -103,7 +102,7 @@ Bar:
 ;
 
 ReusedBar:
-     'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('v:' velocity=INT ',')? ('a:' '[' musicalEvents*=MusicalEvent ']')? ('r:' '[' removedNotes*=RemoveEvent ']')?  ( 'c:' '[' changedEvents*=ChangeEvent ']')?  '|'
+     'ReuseBar' name=ID  'use:'ref=ID  (times=INT 'times')? ('->')? ('v:' velocity=INT ',')? ('a:' '[' musicalEvents*=MusicalEvent ']')? ('r:' '[' removedNotes*=RemoveEvent ']')?  ( 'c:' '[' changedEvents*=ChangeEvent ']')?  '|'
 ;
 
 RemoveEvent:

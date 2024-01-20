@@ -13,7 +13,15 @@ def compile_bar(music_ml_model, music_ml_meta, bar, bar_number, midi_file, track
     position = bar_number
     if textx_isinstance(bar, music_ml_meta['ReusedBar']):
         original_bar = get_original_bar(music_ml_meta, track, bar)
-        bar_events = original_bar.musicalEvents + bar.musicalEvents
+        removed_notes = bar.removedNotes
+        changed_events = bar.changedEvents
+        added_notes = bar.musicalEvents
+        while textx_isinstance(original_bar, music_ml_meta['ReusedBar']):
+            removed_notes += original_bar.removedNotes
+            changed_events += original_bar.changedEvents
+            added_notes += original_bar.musicalEvents
+            original_bar = get_original_bar(music_ml_meta, track, bar)
+        bar_events = original_bar.musicalEvents + added_notes
         repeat = bar.times
         if repeat == 0:
             repeat = 1
@@ -22,8 +30,8 @@ def compile_bar(music_ml_model, music_ml_meta, bar, bar_number, midi_file, track
                 compile_music_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number,
                                     channel, velocity, ticks_to_add)
             position += 1
-        removed_bar_events(music_ml_meta, music_ml_model, midi_file, bar.removedNotes, bar_number, track_number, ticks_to_add)
-        changed_bar_events(music_ml_meta, music_ml_model, midi_file, bar.changedEvents, bar_number, track_number, ticks_to_add)
+        removed_bar_events(music_ml_meta, music_ml_model, midi_file, removed_notes, bar_number, track_number, ticks_to_add)
+        changed_bar_events(music_ml_meta, music_ml_model, midi_file, changed_events, bar_number, track_number, ticks_to_add)
 
 
 def removed_bar_events(music_ml_meta, music_ml_model, midi_file, removed_notes, bar_number, track_number, ticks_to_add=0):
