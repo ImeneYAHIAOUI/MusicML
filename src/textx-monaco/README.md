@@ -7,14 +7,6 @@ Monaco Editor is a versatile code editor that offers a lightweight and feature-r
 Check out an example of Monaco Editor in action, highlighting a syntax error in our DSL:
 ![open](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/src/textx-monaco/monaco-editor.PNG)
 
-## Content
-
-The repository contains the following:
-
-- Client : 
-
-- Server :
-
 ## Usage 
 
 To install the necessary libraries, run the setup.sh script : ```./setup.sh ```
