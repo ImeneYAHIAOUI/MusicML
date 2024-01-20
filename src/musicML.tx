@@ -51,13 +51,13 @@ SectionTrack:
 ;
 
 Track:
-     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
+     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('v:' velocity=INT)?
      controlMessages*=ControlMessage
      music=ContentDefintion
 ;
 
 TrackDef:
-    'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
+    'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('v:' velocity=INT)?
 ;
 
 ContentDefintion:
@@ -123,11 +123,11 @@ MusicalEvent:
 ;
 
 Note:
-    '('  ('rep:'  repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ','   ('d:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?
+    '('  ('rep:'  repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ','   ('d:')? duration=MidiDuration (',' 'v:' velocity=INT)? ')' (',')?
 ;
 
 Chord:
-    'Chord' '('  ('rep:'  repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)?  (',' velocity=INT)? ')' (',')?
+    'Chord' '('  ('rep:'  repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)?  (',' 'v:' velocity=INT)? ')' (',')?
 ;
 
 MidiDuration:
@@ -173,7 +173,7 @@ Rest:
 ;
 
 MidiRegion:
-    'Region'  name=ID '->' '(' start=Position  ',' end=Position (',' velocity=INT)?  ')'
+    'Region'  name=ID '->' '(' start=Position  ',' end=Position (',' 'v:' velocity=INT)?  ')'
 ;
 
 Comment:

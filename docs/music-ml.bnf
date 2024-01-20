@@ -25,9 +25,9 @@ Section ::= 'Section' name=ID ':' tracks+=SectionTrack;
 
 SectionTrack ::= 'Track' name=ID controlMessages*=ControlMessage music=ContentDefinition;
 
-Track ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)? controlMessages*=ControlMessage music=ContentDefinition;
+Track ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('v:' velocity=INT)? controlMessages*=ControlMessage music=ContentDefinition;
 
-TrackDef ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?;
+TrackDef ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('v:' velocity=INT)?;
 
 ContentDefinition ::= PlayableBars | ArrangedBars;
 
@@ -59,9 +59,9 @@ EmptyBar ::= 'EmptyBar' (times=INT 'times')? '|';
 
 MusicalEvent ::= Note | Rest | Chord;
 
-Note ::= '(' ('rep:' repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ',' ('d:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?;
+Note ::= '(' ('rep:' repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ',' ('d:')? duration=MidiDuration (',' 'v:' velocity=INT)? ')' (',')?;
 
-Chord ::= 'Chord' '(' ('rep:' repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)? (',' velocity=INT)? ')' (',')?;
+Chord ::= 'Chord' '(' ('rep:' repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)? (',' 'v:' velocity=INT)? ')' (',')?;
 
 MidiDuration ::= predefined=DurationValue | 'custom:' userDefined=MidiTime;
 
@@ -81,7 +81,7 @@ NegativeNotePosition ::= '-' NotePosition;
 
 Rest ::= '(' 'Rest' ('p:' position=NotePosition ',')? duration=MidiDuration ')' (',')?;
 
-MidiRegion ::= 'Region' name=ID '->' '(' start=Position ',' end=Position (',' velocity=INT)? ')';
+MidiRegion ::= 'Region' name=ID '->' '(' start=Position ',' end=Position (',' 'v:' velocity=INT)? ')';
 
 ID ::= [a-zA-Z0-9_]+;
 STRING ::= '[a-zA-Z0-9_]+';
