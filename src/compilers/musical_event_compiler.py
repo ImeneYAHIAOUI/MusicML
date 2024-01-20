@@ -4,15 +4,16 @@ from textx import *
 
 
 def compile_music_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number, channel,
-                        velocity):
+                        velocity, ticks_to_add=0):
     if textx_isinstance(music_event, music_ml_meta['Note']):
         compile_note_event(music_ml_meta, music_ml_model, music_event, position, midi_file, track_number, channel,
-                           velocity)
+                           velocity, ticks_to_add=ticks_to_add)
     elif textx_isinstance(music_event, music_ml_meta['Chord']):
         compile_chord_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number, channel,
-                            velocity)
+                            velocity, ticks_to_add=ticks_to_add)
     else:
-        compile_rest_event(music_ml_meta, music_ml_model, music_event, position, midi_file, track_number, channel)
+        compile_rest_event(music_ml_meta, music_ml_model, music_event, position, midi_file, track_number, channel,
+                           ticks_to_add=ticks_to_add)
 
 
 def compile_note_event(music_ml_meta, music_ml_model, note, position, midi_file, track_number, channel, velocity,
@@ -31,21 +32,20 @@ def compile_note_event(music_ml_meta, music_ml_model, note, position, midi_file,
             value = note_to_midi(note_value)
             if value is None:
                 raise TextXSemanticError('Note not supported: ', **get_location(note.values))
-            midi_file.addNote(track_number, channel, value, int(position_in_track), duration, velocity)
+            midi_file.addNote(track_number, channel - 1, value, int(position_in_track), duration, velocity)
         position_in_track += duration
 
 
-def compile_rest_event(music_ml_meta, music_ml_model, rest, position, midi_file, track_number, channel):
+def compile_rest_event(music_ml_meta, music_ml_model, rest, position, midi_file, track_number, channel, ticks_to_add=0):
     duration, start = get_not_position_and_duration(music_ml_meta, position, rest, music_ml_model,
                                                     midi_file.ticks_per_quarternote)
-    position_in_track = bar_position_in_ticks(music_ml_model, midi_file, position) + start
+    position_in_track = bar_position_in_ticks(music_ml_model, midi_file, position) + start + ticks_to_add
 
-    midi_file.addNote(track_number, channel, 60, position_in_track, duration, 0)
+    midi_file.addNote(track_number, channel-1, 60, position_in_track, duration, 0)
 
 
 def compile_chord_event(music_ml_model, music_ml_meta, chord, position, midi_file, track_number, channel,
-                        velocity):
-    ticks_to_add = 0
+                        velocity, ticks_to_add=0):
     if chord.velocity != 0:
         velocity = chord.velocity
     repeat = chord.repeat

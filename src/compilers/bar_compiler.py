@@ -1,7 +1,7 @@
 from musical_event_compiler import *
 
 
-def compile_bar(music_ml_model, music_ml_meta, bar, bar_number, midi_file, track, track_number, channel, velocity):
+def compile_bar(music_ml_model, music_ml_meta, bar, bar_number, midi_file, track, track_number, channel, velocity, ticks_to_add=0):
     if textx_isinstance(bar, music_ml_meta['Bar']):
         music_events = bar.musicalEvents
         if bar.velocity != 0:
@@ -9,7 +9,7 @@ def compile_bar(music_ml_model, music_ml_meta, bar, bar_number, midi_file, track
         for music_event in music_events:
             compile_music_event(music_ml_model, music_ml_meta, music_event, bar_number, midi_file, track_number,
                                 channel,
-                                velocity)
+                                velocity, ticks_to_add)
     position = bar_number
     if textx_isinstance(bar, music_ml_meta['ReusedBar']):
         original_bar = get_original_bar(music_ml_meta, track, bar)
@@ -20,18 +20,18 @@ def compile_bar(music_ml_model, music_ml_meta, bar, bar_number, midi_file, track
         for i in range(repeat):
             for music_event in bar_events:
                 compile_music_event(music_ml_model, music_ml_meta, music_event, position, midi_file, track_number,
-                                    channel, velocity)
+                                    channel, velocity, ticks_to_add)
             position += 1
-        removed_bar_events(music_ml_meta, music_ml_model, midi_file, bar.removedNotes, bar_number, track_number)
-        changed_bar_events(music_ml_meta, music_ml_model, midi_file, bar.changedEvents, bar_number, track_number)
+        removed_bar_events(music_ml_meta, music_ml_model, midi_file, bar.removedNotes, bar_number, track_number, ticks_to_add)
+        changed_bar_events(music_ml_meta, music_ml_model, midi_file, bar.changedEvents, bar_number, track_number, ticks_to_add)
 
 
-def removed_bar_events(music_ml_meta, music_ml_model, midi_file, removed_notes, bar_number, track_number):
+def removed_bar_events(music_ml_meta, music_ml_model, midi_file, removed_notes, bar_number, track_number, ticks_to_add=0):
     for removed_note in removed_notes:
         position = bar_position_in_ticks(music_ml_model, midi_file, bar_number) + ticks_in_beat(music_ml_model,
                                                                                                 midi_file.ticks_per_quarternote,
                                                                                                 bar_number) * (
-                               removed_note.position.beat - 1)
+                               removed_note.position.beat - 1) + ticks_to_add
         if removed_note.position.offset is not None:
             position += midi_time_to_ticks(music_ml_meta, music_ml_model, removed_note.position.offset,
                                            midi_file.ticks_per_quarternote, bar_number)
@@ -42,12 +42,12 @@ def removed_bar_events(music_ml_meta, music_ml_model, midi_file, removed_notes, 
                 msg.volume = 0
 
 
-def changed_bar_events(music_ml_meta, music_ml_model, midi_file, changed_events, bar_number, track_number):
+def changed_bar_events(music_ml_meta, music_ml_model, midi_file, changed_events, bar_number, track_number, ticks_to_add=0):
     for changed_event in changed_events:
         position = bar_position_in_ticks(music_ml_model, midi_file, bar_number) + ticks_in_beat(music_ml_model,
                                                                                                 midi_file.ticks_per_quarternote,
                                                                                                 bar_number) * (
-                               changed_event.position.beat - 1)
+                               changed_event.position.beat - 1) + ticks_to_add
         if changed_event.position.offset is not None:
             position += midi_time_to_ticks(music_ml_meta, music_ml_model, changed_event.position.offset,
                                            midi_file.ticks_per_quarternote, bar_number)

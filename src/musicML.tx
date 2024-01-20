@@ -9,7 +9,22 @@ MusicPiece:
   'DefaultTimeSignature' defaultTimeSignature=DefaultTimeSignature
   ('TimeSignatures'
   timeSignatures*=TimeSignature)?
+  song=Tracks
+;
+
+Tracks:
+  SingleSection | Sections
+;
+
+SingleSection:
   tracks+=Track
+;
+
+Sections:
+  'trackNumber:' trackNumber=INT
+  'tracks:' trackDefs+=TrackDef
+  sections+=Section
+  'arrange:' '|' arrange+=STRING
 ;
 
 Tempo:
@@ -24,11 +39,55 @@ DefaultTimeSignature:
   numerator=INT '/' denominator=INT
 ;
 
+Section:
+  'Section' name=ID ':' tracks+=SectionTrack
+;
+
+SectionTrack:
+  'Track' name=ID
+  controlMessages*=ControlMessage
+  music=Music
+;
+
+TrackDef:
+    'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
+;
+
 Track:
     'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?
      controlMessages*=ControlMessage
-     '|' bars+=BaseBar
-     midiRegions*=MidiRegion
+     music=Music
+;
+
+
+Music:
+     PlayBars | DefineThenArrange
+;
+
+PlayBars:
+    'play:' '|' bars+=BaseBar
+;
+
+DefineThenArrange:
+    'bars:' '|' bars+=Bar
+    midiRegions*=MidiRegion
+   'arrange:' '|' arrange+=Arrange
+;
+
+Arrange:
+    ArrangeBar | ArrangeRegion
+;
+
+ArrangeBar:
+    'bar' ref=ID  (',')?
+;
+
+ArrangeRegion:
+    'region' ref=ID (start=RegionStart)? (',')?
+;
+
+RegionStart:
+    NegativeNotePosition | NotePosition
 ;
 
 ControlMessage:
@@ -36,7 +95,7 @@ ControlMessage:
 ;
 
 BaseBar:
-    Bar | ReusedBar | EmptyBar
+    Bar  | ReusedBar | EmptyBar
 ;
 
 Bar:
@@ -109,23 +168,21 @@ NotePosition:
     beat=INT | '(' beat=INT ',' offset=MidiTime ')'
 ;
 
+NegativeNotePosition:
+    '-' NotePosition
 
+;
 
 Rest:
     '(' 'Rest' ('p:' position=NotePosition',')?  duration=MidiDuration ')' (',')?
 ;
 
-MidiRegion:
-    Region | ReusedRegion
-;
 
-Region:
+
+MidiRegion:
     'Region' name=ID '->' '(' position=Position  ',' 'duration:'duration=MidiDuration ')'
 ;
 
-ReusedRegion:
-    'ReuseRegion' ref=ID '->' '('position=Position  ( ',' velocity=INT ',')? musicalEvents*=MusicalEvent ')'
-;
 
 Comment:
     /\/\/.*$/

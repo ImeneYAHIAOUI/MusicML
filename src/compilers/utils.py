@@ -9,7 +9,7 @@ def calculate_chord_length(music_ml_model, chord, midi_file, music_ml_meta, bar_
 
     for note in chord.notes:
         duration, start_time = get_not_position_and_duration(music_ml_meta, bar_number, note, music_ml_model,
-                                                                 ticks_per_quarternote)
+                                                             ticks_per_quarternote)
         smallest_start_time = min(smallest_start_time, start_time)
         note_end_time = start_time + duration
         total_duration = max(total_duration, note_end_time)
@@ -77,7 +77,7 @@ def instrument_program_number(instrument):
 
 def default_channel(instrument):
     if instrument in percussion_instrument_to_program_number:
-        return 9
+        return 10
     else:
         return 1
 
@@ -120,7 +120,7 @@ def ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number):
     beat_value = time_signature.denominator
     ticks_per_beat = ticks_per_quarternote * (4 / beat_value)
     for ts in music_ml_model.timeSignatures:
-        if bar_number.bar < ts.bar:
+        if bar_number < ts.bar:
             break
         else:
             beat_value = ts.denominator
@@ -160,6 +160,7 @@ def get_original_region(music_ml_meta, track, region):
     return original_region
 
 
+
 def get_not_position_and_duration(music_ml_meta, bar_number, music_event, music_ml_model,
                                   ticks_per_quarternote):
     duration = midi_duration_to_ticks(music_ml_meta, music_ml_model, music_event.duration, ticks_per_quarternote,
@@ -175,7 +176,7 @@ def note_position_to_ticks(bar_number, music_event, music_ml_meta, music_ml_mode
         if music_event.position.beat > current_time_signature(music_ml_model, bar_number).numerator:
             raise TextXSemanticError(
                 'Beat number is greater than the number of beats in the time signature: ' + str(
-                    music_event.position.beat), **get_location(music_event.position.beat))
+                    music_event.position.beat), **get_location(music_event.position))
         start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
                 music_event.position.beat - 1)
         if music_event.position.offset is not None:
@@ -185,11 +186,25 @@ def note_position_to_ticks(bar_number, music_event, music_ml_meta, music_ml_mode
     return start_time
 
 
+def region_position_to_ticks(bar_number, position, music_ml_meta, music_ml_model, ticks_per_quarternote):
+    if position.beat > current_time_signature(music_ml_model, bar_number).numerator:
+        raise TextXSemanticError(
+            'Beat number is greater than the number of beats in the time signature: ' + str(
+                position.beat), **get_location(position.beat))
+    start_time = ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
+            position.beat - 1)
+    if position.offset is not None:
+        start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, position.offset,
+                                         ticks_per_quarternote,
+                                         bar_number)
+    return start_time
+
+
 def calculate_event_start_time(music_ml_model, midi_file, music_ml_meta, music_event, bar_number):
     ticks_per_quarternote = midi_file.ticks_per_quarternote
 
     if textx_isinstance(music_event, music_ml_meta['Note']) or textx_isinstance(music_event,
-                                                                                      music_ml_meta['Rest']):
+                                                                                music_ml_meta['Rest']):
         start_time = 0
         if music_event.position is not None:
             start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
@@ -209,14 +224,14 @@ def calculate_event_start_time(music_ml_model, midi_file, music_ml_meta, music_e
                         note.position.beat - 1)
                 if note.position.offset is not None:
                     start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, note.position.offset,
-                                                         ticks_per_quarternote,
-                                                         bar_number)
+                                                     ticks_per_quarternote,
+                                                     bar_number)
             elif music_event.position is not None:
                 start_time += ticks_in_beat(music_ml_model, ticks_per_quarternote, bar_number) * (
                         music_event.position.beat - 1)
                 if music_event.position.offset is not None:
                     start_time += midi_time_to_ticks(music_ml_model, music_ml_meta, music_event.position.offset,
-                                                         ticks_per_quarternote,
-                                                         bar_number)
+                                                     ticks_per_quarternote,
+                                                     bar_number)
             smallest_start_time = min(smallest_start_time, start_time)
         return smallest_start_time

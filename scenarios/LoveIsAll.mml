@@ -2,21 +2,21 @@ MusicPiece LoveIsAll
 Author 'Roger Glover'
 DefaultTempo 110 bpm
 Tempos
-75 bpm(6)
-70 bpm(7)
-85 bpm(10)
-100 bpm(14)
-110 bpm(18)
+75 bpm(6,2,1/2)
+70 bpm(7,2,1/2)
+85 bpm(10,2,1/2)
+100 bpm(14,2,1/2)
+110 bpm(18,2,1/2)
 DefaultTimeSignature 4/4
 TimeSignatures
 3/4 6
 4/4 23
-
 Track Drum Instrument 'Acoustic Bass Drum'
-|   EmptyBar 2 times
-|   Bar id1 -> ('DO2' 'DO#3', 1/4), ('FA#2' 'DO2' 'MI2', 1/4, 1/4) , ('DO2' 'DO2' 'FA#2', 1/2, 1/4), ('FA#2' 'DO2' 'MI2', F3/4, 1/4)
-|   ReuseBar id1 2 times
-|   Bar id2 -> ('DO2' 'DO#3' , 1/4), ('FA#2' 'MI2', 1/4, 1/4), ('DO2' 'DO#3' 'MI2', 1/2, 1/8), ('MI2', F5/8, 1/8), ('DO2' 'MI2', F3/4, 1/8), ('MI2', F7/8, 1/8)
-|   Bar id3 -> ('DO2' 'RE#3' , 1/4), ('RE#3', 1/4, 1/8), ('DO2' 'RE#3', F3/8, 1/4), ('RE#3', F5/8, 1/8)
-|   ReuseBar id3 11 times
+play:
+| EmptyBar 2 times
+| Bar id1 -> ('DO2' 'DO#3', 1/4), ('FA#2' 'DO2' 'MI2', p:2, 1/4) , ('DO2' 'DO2' 'FA#2', p:3, 1/4), ('FA#2' 'DO2' 'MI2', p:4, 1/4)
+| ReuseBar id1 2 times
+| Bar id2 -> ('DO2' 'DO#3' , 1/4), ('FA#2' 'MI2', p:2, 1/4), ('DO2' 'DO#3' 'MI2', p:3, 1/8), ('MI2', p: (3, 1/2), 1/8), ('DO2' 'MI2', p:4, 1/8), ('MI2',  p: (4, 1/2), 1/8)
+| Bar id3 -> ('DO2' 'RE#3' , 1/4), ('RE#3', p:2 , 1/8), ('DO2' 'RE#3', p: (4, 1/2), 1/4), ('RE#3', p: (3, 1/2), 1/8)
+| ReuseBar id3 11 times
 |

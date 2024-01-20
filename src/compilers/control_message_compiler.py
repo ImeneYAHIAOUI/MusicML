@@ -1,8 +1,8 @@
 from utils import *
 
 
-def compile_control_message(music_ml_model, music_ml_meta, control_message, track_number, channel, midi_file):
-    position = position_in_ticks(music_ml_model, music_ml_meta, midi_file, control_message.position)
+def compile_control_message(music_ml_model, music_ml_meta, control_message, track_number, channel, midi_file, ticks_to_add=0):
+    position = position_in_ticks(music_ml_model, music_ml_meta, midi_file, control_message.position) + ticks_to_add
     cc = control_message.CC
     if control_message.message != '':
         cc = get_control_message_number(control_message.message)
