@@ -10,7 +10,10 @@ The DSL is designed for musicians who want to write their partitions using our l
 
 The repository contains the following:
 
-- **docs** : This section contains explanations of the implemented DSL including its meta-model implemented and its grammar in Backus–Naur form (BNF). 
+- **docs** : This section includes :
+  - `music-ml.bnf` : the grammar defined in Backus–Naur Form (BNF).
+  - `notes.md` : detailed notes providing explanations about MIDI.
+  - `architecture.svg`: a metamodel representing the MusicML model.
 
 - **src** : It contains the kernel of the developped language, and the extensions developped. It contains the following sub-directories :
   - `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
