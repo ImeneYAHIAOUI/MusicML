@@ -4,7 +4,7 @@ This repository contains an internal Domain-Specific Language (DSL) for composin
 
 The DSL is designed for musicians who want to write their partitions using our language and have it generated as a MIDI file that is playable on any MIDI player.
 
-## Implemented Extensions and Add-Ons:
+## Implemented Extensions and Add-Ons
 
 Here are the extensions that have been implemented on top of our language:
 - **Support for bar modifications** 
