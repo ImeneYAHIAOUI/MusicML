@@ -1,7 +1,5 @@
 # TeamB Dsl : Monaco Editor 🎵 
 
-## Introduction 
-
 Monaco Editor is a versatile code editor that offers a lightweight and feature-rich environment, known for powering Visual Studio Code. In our project, we leverage the capabilities of Monaco Editor to enhance the experience of working with our DSL implemented using TextX through a user-friendly interface for writing, editing, and visualizing code, providing essential features such as syntax highlighting, autocompletion, and error detection related to our DSL.
 
 Check out an example of Monaco Editor in action, highlighting a syntax error in our DSL:
