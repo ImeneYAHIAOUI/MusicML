@@ -1,8 +1,9 @@
 # TeamB Dsl : MusicML 🎵 
 
-This repository contains an internal Domain-Specific Language (DSL) for composing music using Python and textx as a language development framework. It is based on the MIDI standard.
+This repository contains an internal Domain-Specific Language (DSL) for composing music using Python and textx as a language development framework. The DSL operates on the MIDI standard and is implemented using the `midiutil` Python library.
 
 The DSL is designed for musicians who want to write their partitions using our language and have it generated as a MIDI file that is playable on any MIDI player.
+
 
 
 ## Content
