@@ -20,8 +20,7 @@ monaco.languages.register({
 });
 
 // create Monaco editor
-const value = `Player 'on'
-MusicPiece BillieJean
+const value = `MusicPiece BillieJean
 Author 'Michael Jackson'
 
 DefaultTempo 116 bpm
