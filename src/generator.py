@@ -22,6 +22,10 @@ def generate_midi_file(music_ml_meta, music_ml_model, ml_file_name):
     else:
         midi_file = MIDIFile(track_number, eventtime_is_ticks=True)
 
+    if(music_ml_model.margin > 200) :
+        print("margin error maximum has exceeded, setting margin to 200ms...")
+        music_ml_model.margin = 200
+
     if textx_isinstance(music_ml_model.song, music_ml_meta['Tracks']):
 
         for i, track in enumerate(music_ml_model.song.tracks):
