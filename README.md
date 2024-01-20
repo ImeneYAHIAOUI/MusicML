@@ -68,7 +68,7 @@ To activate the interactive interface dedicated to visualizing the composed piec
 Live on
 ```
 
-#### Example Execution (`BillieJean.mml` in the scenarios directory):
+### Example Execution (`BillieJean.mml` in the scenarios directory):
 
 ![launching](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/images/launching-script.PNG)
 
