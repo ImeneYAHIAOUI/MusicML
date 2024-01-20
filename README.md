@@ -72,7 +72,9 @@ Live on
 
 ![launching](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/images/launching-script.PNG)
 
-A new window dedicated to visualizing the composed piece launched on http://127.0.0.1:5000/ , we click on `Choisir un fichier`and select `BillieJean.mid` from the `scenarios` directory.
+A new window dedicated to visualizing the composed piece  launches at http://127.0.0.1:5000/.
+
+We click on `Choisir un fichier` and select `BillieJean.mid` from the `scenarios` directory.
 
 As a result, we can listen to the dynamically generated music and visually interact with real-time notes :
 ![result](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/images/result-music.PNG)
