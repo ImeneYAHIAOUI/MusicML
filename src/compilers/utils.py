@@ -141,7 +141,7 @@ def current_time_signature(music_ml_model, bar_number):
 def get_original_bar(music_ml_meta, track, bar):
     original_bar = None
     for b in track.bars:
-        if b.name == bar.ref:
+        if not textx_isinstance(b, music_ml_meta["EmptyBar"]) and b.name == bar.ref:
             original_bar = b
             break
     if original_bar is None:

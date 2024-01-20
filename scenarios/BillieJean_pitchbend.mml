@@ -1,0 +1,18 @@
+MusicPiece BillieJean
+Author 'Michael Jackson'
+
+DefaultTempo 116 bpm
+
+DefaultTimeSignature 4/4
+
+
+
+Track Bass Instrument 'Fretless Bass'
+
+CC: ('pitch bend',100, (1, 1, T0))
+CC: ('pitch bend',0, (2, 1, T0))
+
+ | Bar id1 ->  ( 'FA#1', 1/16), ( 'DO#2', p: (1, 1/2), 1/16), ( 'MI2', p: 2, 1/16), ('FA#2', p: (2, 1/2), 1/16), ('MI2', p: 3, 1/16),('DO#2', p: (3, 1/2), 1/16), ('SI1', p: 4, 1/16), ('DO#2', p: (4, 1/2), 1/16)  | ReuseBar id2 use:id1 15 times |
+
+
+

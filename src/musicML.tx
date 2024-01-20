@@ -90,7 +90,7 @@ RegionStart:
 ;
 
 ControlMessage:
-    'CC:' '(' (CC=INT | message=STRING) ',' value=INT ','  position=Position ')'
+    'CC' ':' '(' (CC=INT | message=STRING) ',' value=INT ','  position=Position ')'
 ;
 
 BaseBar:
