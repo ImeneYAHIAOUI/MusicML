@@ -21,7 +21,7 @@ The repository contains the following:
 ## Usage
 **1. Install Python :**
 
-First, ensure that Python is installed on your system. If not, you can download and install it from the official Python website.
+First, ensure that Python is installed on your system. If not, you can download and install it from the [official Python website](https://www.python.org/).
 
 **2. Install Libraries :**
 
