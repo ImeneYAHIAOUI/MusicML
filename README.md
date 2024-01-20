@@ -15,6 +15,14 @@ Additionally, the following add-ons have been integrated:
 - **MIDI Visualizer & Player** : Enables users to witness their musical creations come to life interactively and instantly.
 - **Monaco Editor** : External validator for our DSL, enhancing the editing and validation process.
 
+Furthermore, we've introduced additional scenarios to showcase the capabilities of our language :
+- **Pitch Bend Scenario**: Implemented the bass track from "Billie Jean" with added pitch bend using control commands (CC), demonstrated in `scenario5.sh`.
+
+- **Regions Scenario**: Defined measures and regions for the drum track in "Billie Jean," specifying the order of play, demonstrated in `scenario6.sh`.
+
+- **Sections Scenario**: Implemented the beginning of "Billie Jean" in two distinct sections (A and B), each with specific instructions for drum, bass, and vocal tracks, implemented in `scenario7.sh`.
+
+
 ## Content
 
 The repository contains the following:
@@ -59,6 +67,15 @@ To activate the interactive interface dedicated to visualizing the composed piec
 ```plaintext
 Live on
 ```
+
+#### Example Execution (`scenario.mml` in the scenarios directory):
+
+![launching](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/src/textx-monaco/images/launching-script.PNG)
+
+A new window dedicated to visualizing the composed piece appears; we click on "choose file" and select `scenario.mid` from the `scenarios` directory.
+
+As a result, we can listen to the dynamically generated music and visually interact with real-time notes :
+![result](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/src/textx-monaco/images/result-music.PNG)
 
 ## Resources :
 

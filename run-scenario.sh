@@ -15,7 +15,7 @@ fi
 cd src
 
 echo "Generating scenario for $mml_file ..."
-python main.py --generate "scenarios/$mml_file"
+python main.py --generate "scenarios/$mml_file" 2>/dev/null
 
 echo "Music generation completed."
 
