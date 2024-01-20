@@ -29,7 +29,7 @@ Run the setup.sh script located in the root directory  to install the necessary 
 ```
 ./setup.sh
 ```
-This script checks the installation status of the "midiutil," "textx," and "Flask" packages using pip, installing them if they are not already present.
+This script checks the installation status of the  `midiutil`, `textx` and  `Flask`packages using pip, installing them if they are not already present.
 
 **3. Use DSL:**
 
@@ -46,5 +46,5 @@ Live on
 ```
 ## Resources :
 
-- For the MIDI visualizer and player : [https://surikov.github.io/webaudiofont/](webaudiofont)
-- For the Internal DSL : [https://github.com/textX](textX)
+- For the MIDI visualizer and player : [webaudiofont](https://surikov.github.io/webaudiofont/)
+- For the Internal DSL : [textX](https://github.com/textX)

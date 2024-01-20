@@ -8,6 +8,7 @@ Check out an example of Monaco Editor in action, highlighting a syntax error in 
 ## Usage 
 
 To install the necessary libraries, run the setup.sh script : ```./setup.sh ```
+This script verifies the installation status of the `pygls`, `textx` and  `lsprotocol` packages using pip for running the client, and it also checks the installation status of the `yarn` package using npm, installing it if not already present.
 
 ### server 
 - Run ```./run-server.sh```
@@ -18,7 +19,7 @@ To install the necessary libraries, run the setup.sh script : ```./setup.sh ```
 
 ## references :
 
-- Tutorial : (Integrating TextX and Monaco)[https://tomassetti.me/integrating-textx-and-monaco-a-non-tutorial/]
+- Tutorial : [Integrating TextX and Monaco](https://tomassetti.me/integrating-textx-and-monaco-a-non-tutorial/)
 
 
 
