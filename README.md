@@ -12,8 +12,8 @@ The repository contains the following:
 - **docs** : This section contains explanations of the implemented DSL including its meta-model implemented and its grammar in Backus–Naur form (BNF). 
 
 - **src** : It contains the kernel of the developped language, and the extensions developped. It contains the following sub-directories :
-      -  `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
-      - `textxmonaco` : This sub-directory hosts the Monaco editor designed for the application DSL. For more details, refer to (src/textx-monaco/README.md)[https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/main/src/textx-monaco/README.md]
+  - `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
+  - `textxmonaco` : This sub-directory hosts the Monaco editor designed for the application DSL. For more details, refer to (src/textx-monaco/README.md)[https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/main/src/textx-monaco/README.md]
 
 - **scenarios** : This section comprises various examples and scenarios that demonstrate the full range of functionalities achievable using our DSL.
 
@@ -21,9 +21,11 @@ The repository contains the following:
 
 ## Usage
 1. Install Python :
+
 First, ensure that Python is installed on your system. If not, you can download and install it from the official Python website.
 
 3. Install Libraries :
+
 Run the setup.sh script located in the root directory  to install the necessary libraries.
 ```
 ./setup.sh
@@ -31,13 +33,14 @@ Run the setup.sh script located in the root directory  to install the necessary 
 
 3. Use DSL:
 To use our Domain-Specific Language (DSL), follow these steps:
-* Write a scenario in scenarios directory in the format <file>.mml.
-* Execute the scenario using the following command:
+- Write a scenario in scenarios directory in the format <file>.mml.
+-  Execute the scenario using the following command:
 ```
 ./run-scenario.sh <file>.mml
 ```
 
 4. Explore Provided Scenarios:
+
 Explore some predefined scenarios provided in the root directory executing 
 ```
 ./scenarion<nb>.sh
