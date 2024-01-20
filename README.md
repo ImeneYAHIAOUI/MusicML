@@ -17,14 +17,15 @@ The repository contains the following:
 - **src** : It contains the kernel of the developped language, and the extensions developped. It contains the following sub-directories :
   - `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
   - `textxmonaco` : This sub-directory hosts the Monaco editor designed for the application DSL. For more details, refer to [src/textx-monaco/README.md](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/main/src/textx-monaco/README.md) 
-- **scenarios** : This section comprises various examples and scenarios in the `.mml` format, demonstrating the full range of functionalities achievable using our DSL.
+
+- **scenarios** : This section comprises various examples and scenarios in the `.mml` format, demonstrating the full range of functionalities achievable using our DSL. For more information about these scenarios, refer to the report in the `docs`section.
 
 - **generated** : This section specifically houses MIDI files in the `.mid` format, generated from the implemented scenarios, providing tangible results that highlight the expressive capabilities of the DSL.
 
 ## Usage
 **1. Install Python :**
 
-First, ensure that Python is installed on your system. If not, you can download and install it from the [official Python website](https://www.python.org/).
+First, ensure that Python is installed on your system. If not, you can download and install it from the [official Python website](https://www.python.org/). The recommended version is 3.8.
 
 **2. Install Libraries :**
 
