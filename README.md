@@ -4,12 +4,13 @@ This repository contains an internal Domain-Specific Language (DSL) for composin
 
 The DSL is designed for musicians who want to write their partitions using our language and have it generated as a MIDI file that is playable on any MIDI player.
 
-## Implemented Extensions and Add-Ons
+## Implemented extensions and add-ons
 
 Here are the extensions that have been implemented on top of our language:
 - **Support for bar modifications** 
 - **Support for human like errors**
 - **Support for user interactive input**
+
 Additionally, the following add-ons have been integrated:
 - **MIDI Visualizer & Player** : Enables users to witness their musical creations come to life interactively and instantly.
 - **Monaco Editor** : External validator for our DSL, enhancing the editing and validation process.
@@ -22,6 +23,7 @@ The repository contains the following:
   - `music-ml.bnf` : the grammar defined in Backus–Naur Form (BNF).
   - `notes.md` : detailed notes providing explanations about MIDI.
   - `architecture.svg`: a metamodel representing the MusicML model.
+  - `rapport.pdf`: A report detailing the work that has been accomplished.
 
 - **src** : It contains the kernel of the developped language, and the extensions developped. It contains the following sub-directories :
   - `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
@@ -29,7 +31,7 @@ The repository contains the following:
 
 - **scenarios** : This section comprises various examples and scenarios in the `.mml` format, demonstrating the full range of functionalities achievable using our DSL. For more information about these scenarios, refer to the report in the `docs`section.
 
-- **generated** : This section specifically houses MIDI files in the `.mid` format, generated from the implemented scenarios, providing tangible results that highlight the expressive capabilities of the DSL.
+- **generated** : This section specifically houses MIDI files in the `.mid` format, generated from the implemented scenarios, providing results that highlight the expressive capabilities of the DSL.
 
 ## Usage
 **1. Install Python :**
