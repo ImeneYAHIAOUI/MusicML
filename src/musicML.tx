@@ -2,6 +2,7 @@ MusicPiece:
   ('Live' live=ID)?
   'MusicPiece' name=ID
   ('Author' composer=STRING)?
+   ('HumanError' notes=INT 'notes' margin=INT'ms')?
   ('TicksPerQuarterNote' ticksPerQuarterNote=INT)?
   'DefaultTempo' defaultTempo=INT 'bpm'
   ('Tempos'

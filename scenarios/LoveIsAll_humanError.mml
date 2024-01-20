@@ -1,6 +1,6 @@
-Live on
 MusicPiece LoveIsAll
 Author 'Roger Glover'
+HumanError 5 notes 200ms
 DefaultTempo 110 bpm
 Tempos
 75 bpm(6,2,1/2)
@@ -19,5 +19,5 @@ Track Drum Instrument 'Acoustic Bass Drum'
 | ReuseBar id2 use:id1 2 times
 | Bar id3 -> ('DO2' 'DO#3' , 1/4), ('FA#2' 'MI2', p:2, 1/4), ('DO2' 'DO#3' 'MI2', p:3, 1/8), ('MI2', p: (3, 1/2), 1/8), ('DO2' 'MI2', p:4, 1/8), ('MI2',  p: (4, 1/2), 1/8)
 | Bar id4 -> ('DO2' 'RE#3' , 1/4), ('RE#3', p:2 , 1/8), ('DO2' 'RE#3', p:(2,1/2), 1/4), ('RE#3', p: (3, 1/2), 1/8)
-| ReuseBar id5 use:id4 2 times
+| ReuseBar id5 use:id4 11 times
 |

@@ -42,19 +42,28 @@ def track_settings(midi_file, music_ml_model, music_ml_meta, track, track_number
                                    time_signature.denominator, 24, 8)
     midi_file.addTrackName(track_number, 0, track.name)
 
-
-def play_bars(channel, midi_file, music_ml_meta, music_ml_model, track, track_number, velocity, ticks_to_add=0):
+def play_bars(channel, midi_file, music_ml_meta, music_ml_model, track, track_number, velocity,  ticks_to_add=0):
     i = 0
-    for bar in track.bars:
+    nb_notes=0
+
+    for bar in track.bars:   
         compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity,
-                    ticks_to_add)
+                    nb_notes,ticks_to_add)
         if textx_isinstance(bar, music_ml_meta['Bar']):
+            for music_event in bar.musicalEvents:
+                nb_notes+=1
             i += 1
         if textx_isinstance(bar, music_ml_meta['EmptyBar']) or textx_isinstance(bar, music_ml_meta['ReusedBar']):
             repeat = bar.times
             if repeat == 0:
                 repeat = 1
             i += repeat
+        if textx_isinstance(bar, music_ml_meta['ReusedBar']) :
+             original_bar = get_original_bar(music_ml_meta, track, bar)
+             for music_event in original_bar.musicalEvents:
+                for k in range(bar.times) :
+                    nb_notes+=1
+
 
 
 def define_then_arrange(channel, midi_file, music_ml_meta, music_ml_model, track, track_number, velocity,
@@ -63,8 +72,9 @@ def define_then_arrange(channel, midi_file, music_ml_meta, music_ml_model, track
     for piece in track.arrange:
         if textx_isinstance(piece, music_ml_meta['ArrangedBar']):
             bar = get_original_bar(music_ml_meta, track, piece)
+            print("calling there")
             compile_bar(music_ml_model, music_ml_meta, bar, i, midi_file, track, track_number, channel, velocity,
-                        ticks_to_add)
+                        0,ticks_to_add)
             if textx_isinstance(bar, music_ml_meta['Bar']):
                 i += 1
             if textx_isinstance(bar, music_ml_meta['EmptyBar']) or textx_isinstance(bar, music_ml_meta['ReusedBar']):
