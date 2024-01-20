@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Generating Billie jean music..."
-cd src
-python main.py --generate scenarios/BillieJeanDrum.mml
+
+./generate.sh scenarios/BillieJean.mml
 
 echo "Billie jean music generation completed."

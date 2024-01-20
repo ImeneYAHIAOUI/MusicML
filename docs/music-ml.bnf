@@ -1,93 +1,90 @@
 MusicPiece ::= ('Live' live=ID)?
                'MusicPiece' name=ID
                ('Author' composer=STRING)?
-                ('TicksPerQuarterNote' ticksPerQuarterNote=INT)?
-                'DefaultTempo' defaultTempo=INT 'bpm'
-                ('Tempos' tempos*=Tempo)?
-                DefaultTimeSignature' defaultTimeSignature=DefaultTimeSignature
-                ('TimeSignatures' timeSignatures*=TimeSignature)?
-                 song=Tracks ;
+               ('HumanError' notes=INT 'notes' margin=INT 'ms')?
+               ('TicksPerQuarterNote' ticksPerQuarterNote=INT)?
+               'DefaultTempo' defaultTempo=INT 'bpm'
+               ('Tempos' tempos*=Tempo)?
+               'DefaultTimeSignature' defaultTimeSignature=DefaultTimeSignature
+               ('TimeSignatures' timeSignatures*=TimeSignature)?
+               song=SongDefinition;
 
-Tempo ::= value=INT 'bpm' position=Position ;
+Tempo ::= value=INT 'bpm' position=Position;
 
-TimeSignature ::= numerator=INT '/' denominator=INT bar=INT ;
+TimeSignature ::= numerator=INT '/' denominator=INT bar=INT;
 
-DefaultTimeSignature ::= numerator=INT '/' denominator=INT ;
+DefaultTimeSignature ::= numerator=INT '/' denominator=INT;
 
-Tracks ::= SingleSection | Sections ;
+SongDefinition ::= Tracks | Sections;
 
-SingleSection ::= tracks+=Track ;
+Tracks ::= tracks+=Track;
 
-Sections ::= 'trackNumber:' trackNumber=INT
-             'tracks:' trackDefs+=TrackDef
-             sections+=Section
-              'arrange:' '|' arrange+=STRING ;
+Sections ::= 'tracks' ':' trackDefs+=TrackDef 'sections' ':' sections+=Section 'arrangement' ':' arrange+=STRING;
 
+Section ::= 'Section' name=ID ':' tracks+=SectionTrack;
 
+SectionTrack ::= 'Track' name=ID controlMessages*=ControlMessage music=ContentDefinition;
 
-Section ::= 'Section' name=ID ':' tracks+=SectionTrack ;
+Track ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)? controlMessages*=ControlMessage music=ContentDefinition;
 
-SectionTrack ::= 'Track' name=ID
-                  controlMessages*=ControlMessage
-                  music=Music ;
+TrackDef ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)?;
 
-TrackDef ::= 'Track' name=ID 'Instrument' instrument=STRING ('Channel' channel=INT)? ('velocity' velocity=INT)? ;
+ContentDefinition ::= PlayableBars | ArrangedBars;
 
-Track ::= TrackDef controlMessages*=ControlMessage
-           music=Music ;
+PlayableBars ::= '|' bars+=BaseBar;
 
-Music ::= PlayBars | DefineThenArrange ;
+ArrangedBars ::= 'bars' ':' '|' bars+=BaseBar 'regions' ':' midiRegions*=MidiRegion 'arrangement' ':' arrange+=Arrangement;
 
-PlayBars ::= 'play:' '|' bars+=BaseBar ;
+Arrangement ::= ArrangedBar | ArrangedRegion;
 
-DefineThenArrange ::= 'bars:' '|' bars+=Bar midiRegions*=MidiRegion 'arrange:' '|' arrange+=Arrange ;
+ArrangedBar ::= 'bar' ref=ID (',')?;
 
-Arrange ::= ArrangeBar | ArrangeRegion ;
+ArrangedRegion ::= 'region' name=ID (start=RegionStart)? (',')?;
 
-ArrangeBar ::= 'bar' ref=ID (',')? ;
+RegionStart ::= NegativeNotePosition | NotePosition;
 
-ArrangeRegion ::= 'region' ref=ID (start=RegionStart)? (',')? ;
+ControlMessage ::= 'CC' ':' '(' (CC=INT | message=STRING) ',' value=INT ',' position=Position ')';
 
-RegionStart ::= NegativeNotePosition | NotePosition ;
+BaseBar ::= Bar | ReusedBar | EmptyBar;
 
-ControlMessage ::= 'CC:' '(' (CC=INT | message=STRING) ',' value=INT ',' position=Position ')' ;
+Bar ::= 'Bar' name=ID '->' ('v:' velocity=INT ',')? musicalEvents+=MusicalEvent '|';
 
-BaseBar ::= Bar | ReusedBar | EmptyBar ;
+ReusedBar ::= 'ReuseBar' name=ID 'use:' ref=ID (times=INT 'times')? ('->')? ('v:' velocity=INT ',')? ('a:' '[' musicalEvents*=MusicalEvent ']')? ('r:' '[' removedNotes*=RemoveEvent ']')? ('c:' '[' changedEvents*=ChangeEvent ']')? '|';
 
-Bar ::= 'Bar' name=ID '->' ('v:' velocity=INT ',')? musicalEvents+=MusicalEvent '|' ;
+RemoveEvent ::= '(' values*=STRING ',' position=NotePosition ')' (',')?;
 
-ReusedBar ::= 'ReuseBar' ref=ID (times=INT 'times')? ('->')? ('v:' velocity=INT ',')? ('a:' '[' musicalEvents*=MusicalEvent ']')? ('r:' '[' removedNotes*=RemoveEvent ']')? ('c:' '[' changedEvents*=ChangeEvent ']')? '|' ;
+ChangeEvent ::= '(' value=STRING ',' position=NotePosition ')' '-->' newValue=STRING (',')?;
 
-RemoveEvent ::= '(' values*=STRING ',' position=NotePosition ')' (',')? ;
+EmptyBar ::= 'EmptyBar' (times=INT 'times')? '|';
 
-ChangeEvent ::= '(' value=STRING ',' position=NotePosition ')' '-->' newValue=STRING (',')? ;
+MusicalEvent ::= Note | Rest | Chord;
 
-EmptyBar ::= 'EmptyBar' (times=INT 'times')? '|' ;
+Note ::= '(' ('rep:' repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ',' ('d:')? duration=MidiDuration (',' velocity=INT)? ')' (',')?;
 
-MusicalEvent ::= Note | Rest | Chord ;
+Chord ::= 'Chord' '(' ('rep:' repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)? (',' velocity=INT)? ')' (',')?;
 
-Note ::= '(' ('rep:' repeat=INT ',')? values*=STRING (',' 'p:' position=NotePosition)? ',' ('d:')? duration=MidiDuration (',' velocity=INT)? ')' (',')? ;
+MidiDuration ::= predefined=DurationValue | 'custom:' userDefined=MidiTime;
 
-Chord ::= 'Chord' '(' ('rep:' repeat=INT ',')? notes+=Note (',' 'p:' position=NotePosition)? (',' velocity=INT)? ')' (',')? ;
+MidiTime ::= Tick | BeatFraction;
 
-MidiDuration ::= predefined=DurationValue | 'custom:' userDefined=MidiTime ;
+Tick ::= 'T' value=INT;
 
-MidiTime ::= Tick | BeatFraction ;
+BeatFraction ::= numerator=INT '/' denominator=INT;
 
-Tick ::= 'T' value=INT ;
+DurationValue ::= 'whole' | '2-1/2' | 't' | '1/2' | '2-1/4' | '3-1/2' | '1/4' | '2-1/8' | '1/8' | '2-1/16' | '3-1/8' | '1/16' | '2-1/32' | '3-1/16' | '1/32' | '2-1/64' | '3-1/32' | '1/64' | '2-1/128' | '3-1/64' | '1/128' | '3-1/4';
 
-BeatFraction ::= numerator=INT '/' denominator=INT ;
+Position ::= '(' bar=INT ',' beat=INT ',' offset=MidiTime ')';
 
-DurationValue ::= 'whole' | '2-1/2' | 't' | '1/2' | '2-1/4' | '3-1/2' | '1/4' | '2-1/8' | '1/8' | '2-1/16' | '3-1/8' | '1/16' | '2-1/32' | '3-1/16' | '1/32' | '2-1/64' | '3-1/32' | '1/64' | '2-1/128' | '3-1/64' | '1/128' | '3-1/4' ;
+NotePosition ::= beat=INT | '(' beat=INT ',' offset=MidiTime ')';
 
-Position ::= '(' bar=INT ',' beat=INT ',' offset=MidiTime ')' ;
+NegativeNotePosition ::= '-' NotePosition;
 
-NotePosition ::= beat=INT | '(' beat=INT ',' offset=MidiTime ')' ;
+Rest ::= '(' 'Rest' ('p:' position=NotePosition ',')? duration=MidiDuration ')' (',')?;
 
-NegativeNotePosition ::= '-' NotePosition ;
+MidiRegion ::= 'Region' name=ID '->' '(' start=Position ',' end=Position (',' velocity=INT)? ')';
 
-Rest ::= '(' 'Rest' ('p:' position=NotePosition',')? duration=MidiDuration ')' (',')? ;
+ID ::= [a-zA-Z0-9_]+;
+STRING ::= '[a-zA-Z0-9_]+';
+INT ::= [0-9]+;
 
-MidiRegion ::= 'Region' name=ID '->' '(' position=Position ',' 'duration:' duration=MidiDuration ')' ;
-
-Comment ::= /\/\/.*$/ ;
+Comment ::= /\/\/.*$/;
