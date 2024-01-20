@@ -68,14 +68,14 @@ To activate the interactive interface dedicated to visualizing the composed piec
 Live on
 ```
 
-#### Example Execution (`scenario.mml` in the scenarios directory):
+#### Example Execution (`BillieJean.mml` in the scenarios directory):
 
-![launching](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/src/textx-monaco/images/launching-script.PNG)
+![launching](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/images/launching-script.PNG)
 
-A new window dedicated to visualizing the composed piece appears; we click on "choose file" and select `scenario.mid` from the `scenarios` directory.
+A new window dedicated to visualizing the composed piece appears; we click on "choose file" and select `BillieJean.mid` from the `scenarios` directory.
 
 As a result, we can listen to the dynamically generated music and visually interact with real-time notes :
-![result](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/monaco_editor/src/textx-monaco/images/result-music.PNG)
+![result](https://github.com/benaissanadim/DSL-MusicML-TeamB/blob/images/result-music.PNG)
 
 ## Resources :
 
