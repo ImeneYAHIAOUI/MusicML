@@ -6,7 +6,7 @@ DefaultTempo 116 bpm
 
 DefaultTimeSignature 4/4
 
-Track Drum Instrument 'bongo'
+Track Drum Instrument 'Acoustic Bass Drum'
 
  | Bar id1 -> ('bd' 'ch' , 1/8),  Chord(rep:2,( 'ch', p: (1, 1/2) , 1/8), ('ch' 'sd', p: 2, 1/8), ('ch', p: (2, 1/2) , 1/8), ('bd' 'ch', p: 3, 1/8) ) |
 ReuseBar id2 use:id1  | ReuseBar id3 use:id1 31 times -> a:[(rep:9,'LA#4', 1/8)] | Bar id4 -> (rep:9, 'LA#4', 1/8), ('bd' 'ch' , 1/8), Chord(( 'ch', p: (1, 1/2), 1/8),('ch' 'sd', p: 2, 1/8), ('ch', p: (2, 1/2) , 1/8), ('DO2' 'ch', p: 3, 1/8) ),
