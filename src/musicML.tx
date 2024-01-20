@@ -173,7 +173,7 @@ Rest:
 ;
 
 MidiRegion:
-    'Region' name=ID '->' '(' position=Position  ',' 'duration:'duration=MidiDuration ')'
+    'Region' name=ID '->' '(' start=Position  ',' end=Position ')'
 ;
 
 Comment:

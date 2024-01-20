@@ -6,9 +6,9 @@ def compile_region(music_ml_model, music_ml_meta, region, midi_file, track, trac
         velocity = region.velocity
     original_region = get_original_region(music_ml_meta, track, region)
 
-    original_regions_start_position = position_in_ticks(music_ml_model,music_ml_meta, midi_file, original_region.position)
+    original_regions_start_position = position_in_ticks(music_ml_model,music_ml_meta, midi_file, original_region.start)
 
-    original_regions_end_position = original_regions_start_position + midi_duration_to_ticks(music_ml_meta, music_ml_model, original_region.duration, midi_file.ticks_per_quarternote, original_region.position.bar)
+    original_regions_end_position = position_in_ticks(music_ml_model,music_ml_meta, midi_file, original_region.end)
 
     track_index = track_number
     if midi_file.header.numeric_format == 1:
