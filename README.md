@@ -29,6 +29,7 @@ Run the setup.sh script located in the root directory  to install the necessary 
 ```
 ./setup.sh
 ```
+This script checks the installation status of the "midiutil," "textx," and "Flask" packages using pip, installing them if they are not already present.
 
 **3. Use DSL:**
 
