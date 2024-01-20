@@ -2,7 +2,9 @@
 
 echo "Generating Love is all with human errror..."
 
-./generate.sh  scenarios/LoveIsAll_humanError.mml
+cd src
+
+./main.py --generate  scenarios/LoveIsAll_humanError.mml
 
 echo "music generation completed."
 

@@ -2,6 +2,8 @@
 
 echo "Generating billie jean drums with regions..."
 
-./generate.sh  scenarios/BillieJean_regions.mml
+cd src
+
+./main.py --generate  scenarios/BillieJean_regions.mml
 
 echo "music generation completed."

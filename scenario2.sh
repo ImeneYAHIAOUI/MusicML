@@ -2,6 +2,8 @@
 
 echo "Generating Love is all ..."
 
-./generate.sh  scenarios/LoveIsAll.mml
+cd src
+
+./main.py --generate scenarios/LoveIsAll.mml
 
 echo "Love iss all generation completed."
