@@ -31,7 +31,7 @@ The repository contains the following:
   - `music-ml.bnf` : the grammar defined in Backus–Naur Form (BNF).
   - `notes.md` : detailed notes providing explanations about MIDI.
   - `architecture.svg`: a metamodel representing the MusicML model.
-  - `rapport.pdf`: a report detailing the work that has been accomplished.
+  - `DSL-MusicML.pdf`: a report detailing the work that has been accomplished.
 
 - **src** : It contains the kernel of the developped language, and the extensions developped. It contains the following sub-directories :
   - `app`  : This sub-directory contains the source code for the interactive interface dedicated to visualizing the composed piece.
